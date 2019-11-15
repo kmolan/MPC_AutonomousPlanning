@@ -19,49 +19,48 @@
 #include <Eigen/Geometry>
 #include <Eigen/Dense>
 
-namespace mpc {
-#define Pi 3.142859
+namespace mpcBlock {
 
-    class mpcc {
+    #define Pi 3.142859
+
+    class predictor_class {
 
     public:
-        mpcc();
+        predictor_class(); //Constructor
 
-        void pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg);
+        void pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg); //Subscribes to vehicle pose
 
-        double convert_to_Theta(const geometry_msgs::Quaternion msg);
+        double convert_to_Theta(const geometry_msgs::Quaternion msg); //Converts vehicle orientation from quaternions to euler angles
 
-        void rotate_points(const double theta, float *distX, float *distY);
+        void rotate_points(const double theta, float *distX, float *distY); //Brings WayPoints to the vehicle frame
 
-        double do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY);
+        double do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY); //Calls the MPC optimization routine to solve for optimal input
 
-        void setAngleAndVelocity(double u);
+        void setAngleAndVelocity(double u); //Applies the derived input
 
     private:
         ros::NodeHandle n;
-        ros::Publisher drive_pub;
-        ros::Publisher vis_pub;
-        ros::Subscriber pose_sub;
+        ros::Publisher drive_pub; //publishes on the vehicle state
+        ros::Publisher vis_pub; //For visualization stuff on RViz
+        ros::Subscriber pose_sub; //subscribes to the vehicle pose
 
+        //WayPoint data containers
         std::vector <std::vector<float>> waypoint_data;
         std::vector <std::vector<float>> waypoint_data_long;
         std::vector<float> waypoint_data1;
         std::vector<float> waypoint_data2;
         std::vector<float> waypoint_data3;
-
-        visualization_msgs::Marker marker;
-
-        float angle_factor = 0.1;
-        float look_ahead_distance = 0.7;
-        float nominal_speed = 3;
-        float angle_speed = 2;
-        int first_time = 1;
-
-        double steering_angle = 0.0;
-        int last_index = -1;
-        float last_distance = 0;
         int waypoint_length = 0;
         float rot_waypoint_x = 0;
         float rot_waypoint_y = 0;
+
+        visualization_msgs::Marker marker; //visualization stuff
+
+        float look_ahead_distance = 0.7;
+        float nominal_speed = 3;
+        float angle_speed = 2;
+
+        double steering_angle = 0.0;
+        int last_index = -1;
     };
 }
