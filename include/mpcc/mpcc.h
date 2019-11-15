@@ -1,7 +1,5 @@
 #pragma once
 
-using namespace std;
-
 #include <vector>
 #include <iterator>
 #include <string>
@@ -21,9 +19,10 @@ using namespace std;
 #include <Eigen/Geometry>
 #include <Eigen/Dense>
 
+namespace mpc {
 #define Pi 3.142859
 
-class mpcc{
+    class mpcc {
 
     public:
         mpcc();
@@ -32,7 +31,7 @@ class mpcc{
 
         double convert_to_Theta(const geometry_msgs::Quaternion msg);
 
-        void rotate_points(const double theta, float* distX, float* distY);
+        void rotate_points(const double theta, float *distX, float *distY);
 
         double do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY);
 
@@ -44,11 +43,11 @@ class mpcc{
         ros::Publisher vis_pub;
         ros::Subscriber pose_sub;
 
-        vector<vector<float>> waypoint_data;
-        vector<vector<float>> waypoint_data_long;
-        vector<float> waypoint_data1;
-        vector<float> waypoint_data2;
-        vector<float> waypoint_data3;
+        std::vector <std::vector<float>> waypoint_data;
+        std::vector <std::vector<float>> waypoint_data_long;
+        std::vector<float> waypoint_data1;
+        std::vector<float> waypoint_data2;
+        std::vector<float> waypoint_data3;
 
         visualization_msgs::Marker marker;
 
@@ -64,4 +63,5 @@ class mpcc{
         int waypoint_length = 0;
         float rot_waypoint_x = 0;
         float rot_waypoint_y = 0;
-};
+    };
+}

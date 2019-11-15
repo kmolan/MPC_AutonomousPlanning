@@ -2,7 +2,7 @@
 <package format="2">
   <name>mpcc</name>
   <version>0.0.0</version>
-  <description>The pure_pursuit tracking package for f110 car</description>
+  <description>The mpc package for f110 car</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

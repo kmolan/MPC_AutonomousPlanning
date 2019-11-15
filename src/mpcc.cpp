@@ -5,11 +5,11 @@
 #include "mpcc/mpcc.h"
 //#include"solver.h"
 
-mpcc::mpcc() {
+mpc::mpcc::mpcc() {
     n = ros::NodeHandle();
 
     // load the waypoints and simplify them
-    waypoint_data_long = read_way_point_CSVfile("/home/anmolk/ese680_ws/src/gtpose.csv");
+    waypoint_data_long = mpc::read_way_point_CSVfile("/home/anmolk/ese680_ws/src/gtpose.csv");
 
     waypoint_length = waypoint_data_long[0].size();
 
@@ -46,12 +46,12 @@ mpcc::mpcc() {
     marker.id = 0;
 }
 
-void mpcc::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
+void mpc::mpcc::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
 
     const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
     double currentX = pose_msg.position.x; //vehicle pose X
     double currentY = pose_msg.position.y; //vehicle pose Y
-    double currentTheta = convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
+    double currentTheta = mpc::mpcc::convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
 
     float waypoint_x;
     float waypoint_y;
@@ -76,9 +76,9 @@ void mpcc::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
     rot_waypoint_x = waypoint_x - currentX;
     rot_waypoint_y = waypoint_y - currentY;
 
-    rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
+    mpc::mpcc::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
-    steering_angle = do_MPC(rot_waypoint_x, rot_waypoint_y, currentX, currentY);
+    steering_angle = mpc::mpcc::do_MPC(rot_waypoint_x, rot_waypoint_y, currentX, currentY);
 
     marker.header.frame_id = "map";
     marker.pose.position.x = waypoint_x;
@@ -103,10 +103,10 @@ void mpcc::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
     // vis_pub.publish(marker);
     // }
 
-    setAngleAndVelocity(steering_angle);
+    mpc::mpcc::setAngleAndVelocity(steering_angle);
 }
 
-double mpcc::convert_to_Theta(const geometry_msgs::Quaternion msg){
+double mpc::mpcc::convert_to_Theta(const geometry_msgs::Quaternion msg){
     // the incoming geometry_msgs::Quaternion is transformed to a tf::Quaterion
     tf::Quaternion quat;
     tf::quaternionMsgToTF(msg, quat);
@@ -119,7 +119,7 @@ double mpcc::convert_to_Theta(const geometry_msgs::Quaternion msg){
     return yaw;
 }
 
-void mpcc::rotate_points(const double theta, float *distX, float *distY){
+void mpc::mpcc::rotate_points(const double theta, float *distX, float *distY){
 
     Eigen::Matrix2f rotation_matrix2D;
     Eigen::MatrixXf dist_vector(2,1);
@@ -133,7 +133,7 @@ void mpcc::rotate_points(const double theta, float *distX, float *distY){
     *distY = dist_vector(1,0);
 }
 
-double mpcc::do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY){
+double mpc::mpcc::do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY){
 
     /* set_defaults();
      * setup_indexing();
@@ -149,7 +149,7 @@ double mpcc::do_MPC(const float waypoint_x, const float waypoint_y, const double
     return steering_angle;
 }
 
-void mpcc::setAngleAndVelocity(double u) {
+void mpc::mpcc::setAngleAndVelocity(double u) {
 
     ackermann_msgs::AckermannDriveStamped drive_msg;
     double steering_limit;
@@ -169,7 +169,7 @@ void mpcc::setAngleAndVelocity(double u) {
 
 int main(int argc, char ** argv) {
     ros::init(argc, argv, "mpcc node");
-    mpcc pp;
+    mpc::mpcc pp;
     ros::spin();
     return 0;
 }
