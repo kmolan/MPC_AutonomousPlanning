@@ -171,7 +171,7 @@ void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 }
 
 int main(int argc, char ** argv) {
-    ros::init(argc, argv, "mpc node");
+    ros::init(argc, argv, "mpc_node");
     mpcBlock::predictor_class pp;
     ros::spin();
     return 0;

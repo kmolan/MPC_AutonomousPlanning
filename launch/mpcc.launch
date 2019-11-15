@@ -1,4 +1,3 @@
 <launch>
-  <node pkg="mpcc" name="mpcc_node" type="mpcc" respawn="true" output="screen" />
-  </node>
+  <node name="mpcc_node" pkg="mpcc" type="mpcc_node" respawn="true" output="screen" />
 </launch>
