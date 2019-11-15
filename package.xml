@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>mpcc</name>
-  <version>0.0.0</version>
-  <description>The mpc package for f110 car</description>
+  <name>mpc_auto</name>
+  <version>1.0.0</version>
+  <description>The MPC package for f110 car</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

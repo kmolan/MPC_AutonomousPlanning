@@ -1,8 +1,7 @@
-//getparam file
 //consistent data types, not everything double!
 
-#include "mpcc/read_way_point_CSVfile.h"
-#include "mpcc/mpcc.h"
+#include "mpc_auto/read_way_point_CSVfile.h"
+#include "mpc_auto/mpc_auto.h"
 //#include"solver.h"
 
 mpcBlock::predictor_class::predictor_class() {
@@ -176,7 +175,7 @@ void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 }
 
 int main(int argc, char ** argv) {
-    ros::init(argc, argv, "mpc_node");
+    ros::init(argc, argv, "mpc_auto_node");
     mpcBlock::predictor_class pp;
     ros::spin();
     return 0;

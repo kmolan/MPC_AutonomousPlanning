@@ -1,0 +1,7 @@
+<launch>
+
+  <rosparam command="load" file="$(find mpc_auto)/config/mpc_planning_params.yaml" />
+
+  <node name="mpc_auto_node" pkg="mpc_auto" type="mpc_auto_node" respawn="true" output="screen" />
+
+</launch>
