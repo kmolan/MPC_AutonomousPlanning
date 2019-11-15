@@ -61,6 +61,13 @@ namespace mpcBlock {
         float angle_speed = 2;
 
         double steering_angle = 0.0;
+        double steering_limit;
+        double drive_velocity; //constant slow velocity model
         int last_index = -1;
+
+        std::string waypoint_filename;
+        std::string pose_topic;
+        std::string drive_topic;
+        std::string visualization_topic;
     };
 }

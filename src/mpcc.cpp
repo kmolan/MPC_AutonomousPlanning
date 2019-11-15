@@ -10,7 +10,14 @@ mpcBlock::predictor_class::predictor_class() {
     n = ros::NodeHandle();
 
     // load the WayPoints and simplify them
-    waypoint_data_long = mpcBlock::read_way_point_CSVfile("/home/anmolk/ese680_ws/src/gtpose.csv");
+    n.getParam("waypoint_filename", waypoint_filename);
+    n.getParam("pose_topic", pose_topic);
+    n.getParam("drive_topic", drive_topic);
+    n.getParam("visualization_topic", visualization_topic);
+    n.getParam("steering_limit", steering_limit);
+    n.getParam("drive_velocity", drive_velocity);
+
+    waypoint_data_long = mpcBlock::read_way_point_CSVfile(waypoint_filename);
 
     waypoint_length = waypoint_data_long[0].size();
 
@@ -25,9 +32,9 @@ mpcBlock::predictor_class::predictor_class() {
     waypoint_data.push_back(waypoint_data3);
     waypoint_length = waypoint_data[0].size();
 
-    pose_sub = n.subscribe("pf/pose/odom", 1, &mpcBlock::predictor_class::pose_callback, this);
-    drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>("drive", 1); //publishes steering angle and velocity
-    vis_pub = n.advertise<visualization_msgs::Marker>( "visualization_marker", 0 );
+    pose_sub = n.subscribe(pose_topic, 1, &mpcBlock::predictor_class::pose_callback, this);
+    drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1); //publishes steering angle and velocity
+    vis_pub = n.advertise<visualization_msgs::Marker>( visualization_topic, 0 );
 
     marker.header.frame_id = "map";
     marker.ns = "my_namespace";
@@ -153,8 +160,6 @@ double mpcBlock::predictor_class::do_MPC(const float waypoint_x, const float way
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 
     ackermann_msgs::AckermannDriveStamped drive_msg;
-    double steering_limit;
-    steering_limit = 0.4189;
 
     if(u < -steering_limit){
         u = -steering_limit;
@@ -165,7 +170,7 @@ void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 
     drive_msg.drive.steering_angle = u; //Sets steering angle
     //drive_msg.drive.speed = nominal_speed - (nominal_speed - angle_speed) * fabs(u) / 0.4189;
-    drive_msg.drive.speed = 2; //constant slow velocity model
+    drive_msg.drive.speed = drive_velocity; //constant slow velocity model
     drive_pub.publish(drive_msg); //Sets velocity based on steering angle conditions
 
 }

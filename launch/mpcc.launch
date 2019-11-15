@@ -1,3 +1,7 @@
 <launch>
+
+  <rosparam command="load" file="$(find mpcc)/config/mpc_planning_params.yaml" />
+
   <node name="mpcc_node" pkg="mpcc" type="mpcc_node" respawn="true" output="screen" />
+
 </launch>

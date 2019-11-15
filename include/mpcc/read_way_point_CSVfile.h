@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ros/ros.h>
 #include <vector>
 #include <iterator>
 #include <string>
@@ -13,6 +14,11 @@ namespace mpcBlock {
         // modified from https://thispointer.com/how-to-read-data-from-a-csv-file-in-c/
         std::string delm = ",";
         std::ifstream file(filename);
+
+        if(!file.is_open()){
+            ROS_ERROR("Cannot find the csv file!");
+        }
+
         std::vector <std::vector<float>> dataVector_out;
         std::string line = "";
         std::vector<float> dataVector0;
