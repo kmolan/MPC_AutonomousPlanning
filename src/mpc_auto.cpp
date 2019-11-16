@@ -21,13 +21,14 @@ mpcBlock::predictor_class::predictor_class() {
     n.getParam("drive_topic", drive_topic);
     n.getParam("visualization_topic", visualization_topic);
     n.getParam("steering_limit", steering_limit);
-    n.getParam("drive_velocity", drive_velocity);
+    n.getParam("high_velocity", high_velocity);
+    n.getParam("low_velocity", low_velocity);
 
     waypoint_data_long = mpcBlock::read_way_point_CSVfile(waypoint_filename);
 
     waypoint_length = waypoint_data_long[0].size();
 
-    for (int i = 0; i < waypoint_length; i+=250) { //250 is the sample length
+    for (int i = 0; i < waypoint_length; i++) { //250 is the sample length
         waypoint_data1.push_back(waypoint_data_long[0][i]);
         waypoint_data2.push_back(waypoint_data_long[1][i]);
         waypoint_data3.push_back(waypoint_data_long[2][i]);
@@ -158,23 +159,8 @@ double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float way
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 
     ackermann_msgs::AckermannDriveStamped drive_msg;
-
-//    if(u < -steering_limit){
-//        u = -steering_limit;
-//    }
-//    if(u > steering_limit){
-//        u = steering_limit;
-//    }
-
     drive_msg.drive.steering_angle = u; //Sets steering angle
-    if(std::abs(u) > 0.3){
-        drive_velocity = 1.5; //make a param
-    }
-    if(std::abs(u) > 0.15 && std::abs(u) < 0.3){
-        drive_velocity = 3.5;
-    }
-    //drive_msg.drive.speed = nominal_speed - (nominal_speed - angle_speed) * fabs(u) / 0.4189;
-    drive_msg.drive.speed = drive_velocity; //constant slow velocity model
+    drive_msg.drive.speed = high_velocity - (high_velocity - low_velocity) * fabs(u) / steering_limit; //Zirui's magical interpolation function
     drive_pub.publish(drive_msg); //Sets velocity based on steering angle conditions
 
 }

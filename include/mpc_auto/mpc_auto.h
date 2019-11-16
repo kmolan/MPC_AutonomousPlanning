@@ -57,12 +57,11 @@ namespace mpcBlock {
         visualization_msgs::Marker marker; //visualization stuff
 
         float look_ahead_distance = 0.7;
-        float nominal_speed = 3;
-        float angle_speed = 2;
 
         double steering_angle = 0.0;
         double steering_limit;
-        double drive_velocity; //constant slow velocity model
+        double high_velocity;
+        double low_velocity;
         int last_index = -1;
 
         std::string waypoint_filename;

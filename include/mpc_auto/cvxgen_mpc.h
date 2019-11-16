@@ -16,7 +16,7 @@ public:
         params.A[2] = 0;
         params.A[3] = 1;
 
-        params.B[0] = 0.23; // v*deltaT
+        params.B[0] = 7.0/30.0; // v*deltaT
 
         params.Q[0] = 1; //State cost is unity
         params.Q[1] = 0;
@@ -51,6 +51,10 @@ public:
     float solve_mpc(double y_waypoint, double x_waypoint){
         run_cvxgenOptimization::update_model(y_waypoint, x_waypoint);
         auto num_iters = solve();
+
+        if(!work.converged){
+            ROS_ERROR("Optimization not converged");
+        }
 
         return vars.u_0[0];
     }
