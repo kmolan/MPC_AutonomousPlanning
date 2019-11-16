@@ -2,7 +2,14 @@
 
 #include "mpc_auto/read_way_point_CSVfile.h"
 #include "mpc_auto/mpc_auto.h"
-#include "cvxgen_mpc.h"
+#include "cvxgen/solver.h"
+
+Vars vars;
+Params params;
+Workspace work;
+Settings settings;
+
+#include "mpc_auto/cvxgen_mpc.h"
 
 mpcBlock::predictor_class::predictor_class() {
 
@@ -86,7 +93,7 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
 
     mpcBlock::predictor_class::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
-    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_x, rot_waypoint_y);
+    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x);
 
     std::cout << "steering angle: "<< steering_angle << std::endl;
 
@@ -160,6 +167,12 @@ void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 //    }
 
     drive_msg.drive.steering_angle = u; //Sets steering angle
+    if(std::abs(u) > 0.3){
+        drive_velocity = 1.5; //make a param
+    }
+    if(std::abs(u) > 0.15 && std::abs(u) < 0.3){
+        drive_velocity = 3.5;
+    }
     //drive_msg.drive.speed = nominal_speed - (nominal_speed - angle_speed) * fabs(u) / 0.4189;
     drive_msg.drive.speed = drive_velocity; //constant slow velocity model
     drive_pub.publish(drive_msg); //Sets velocity based on steering angle conditions

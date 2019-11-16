@@ -1,5 +1,5 @@
 #File name for the csv
-waypoint_filename: "/home/anmolk/ese680_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/gtpose.csv"
+waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/gtpose.csv"
 
 #Subscriber and publisher topics
 pose_topic: "gt_pose" #"pf/pose/odom"
@@ -8,4 +8,4 @@ visualization_topic: "visualization_marker"
 
 #Physical parameters
 steering_limit: 0.4189
-drive_velocity: 2
+drive_velocity: 5
