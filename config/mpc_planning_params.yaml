@@ -2,7 +2,7 @@
 waypoint_filename: "/home/anmolk/ese680_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/gtpose.csv"
 
 #Subscriber and publisher topics
-pose_topic: "pf/pose/odom"
+pose_topic: "gt_pose" #"pf/pose/odom"
 drive_topic: "drive"
 visualization_topic: "visualization_marker"
 

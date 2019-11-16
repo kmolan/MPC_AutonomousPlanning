@@ -28,13 +28,13 @@ namespace mpcBlock {
     public:
         predictor_class(); //Constructor
 
-        void pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg); //Subscribes to vehicle pose
+        void pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg); //Subscribes to vehicle pose
 
         double convert_to_Theta(const geometry_msgs::Quaternion msg); //Converts vehicle orientation from quaternions to euler angles
 
         void rotate_points(const double theta, float *distX, float *distY); //Brings WayPoints to the vehicle frame
 
-        double do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY); //Calls the MPC optimization routine to solve for optimal input
+        double do_MPC(const float waypoint_y, const float waypoint_x); //Calls the MPC optimization routine to solve for optimal input
 
         void setAngleAndVelocity(double u); //Applies the derived input
 

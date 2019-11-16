@@ -2,13 +2,13 @@
 
 #include "mpc_auto/read_way_point_CSVfile.h"
 #include "mpc_auto/mpc_auto.h"
-//#include"solver.h"
+#include "cvxgen_mpc.h"
 
 mpcBlock::predictor_class::predictor_class() {
 
-    n = ros::NodeHandle();
+    n = ros::NodeHandle(); //Initialize node
 
-    // load the WayPoints and simplify them
+    //Get parameters
     n.getParam("waypoint_filename", waypoint_filename);
     n.getParam("pose_topic", pose_topic);
     n.getParam("drive_topic", drive_topic);
@@ -20,7 +20,7 @@ mpcBlock::predictor_class::predictor_class() {
 
     waypoint_length = waypoint_data_long[0].size();
 
-    for (int i = 0; i < waypoint_length; i+=250) {
+    for (int i = 0; i < waypoint_length; i+=250) { //250 is the sample length
         waypoint_data1.push_back(waypoint_data_long[0][i]);
         waypoint_data2.push_back(waypoint_data_long[1][i]);
         waypoint_data3.push_back(waypoint_data_long[2][i]);
@@ -35,6 +35,7 @@ mpcBlock::predictor_class::predictor_class() {
     drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1); //publishes steering angle and velocity
     vis_pub = n.advertise<visualization_msgs::Marker>( visualization_topic, 0 );
 
+    //visualization stuff
     marker.header.frame_id = "map";
     marker.ns = "my_namespace";
     marker.type = visualization_msgs::Marker::SPHERE;
@@ -53,12 +54,12 @@ mpcBlock::predictor_class::predictor_class() {
     marker.id = 0;
 }
 
-void mpcBlock::predictor_class::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
+void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg) { //
 
-    const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
-    double currentX = pose_msg.position.x; //vehicle pose X
-    double currentY = pose_msg.position.y; //vehicle pose Y
-    double currentTheta = mpcBlock::predictor_class::convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
+    //const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
+    double currentX = pose_msg->pose.position.x; //vehicle pose X
+    double currentY = pose_msg->pose.position.y; //vehicle pose Y
+    double currentTheta = mpcBlock::predictor_class::convert_to_Theta(pose_msg->pose.orientation); //vehicle orientation theta converted from quaternion to euler angle
 
     float waypoint_x;
     float waypoint_y;
@@ -85,7 +86,9 @@ void mpcBlock::predictor_class::pose_callback(const nav_msgs::Odometry::ConstPtr
 
     mpcBlock::predictor_class::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
-    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_x, rot_waypoint_y, currentX, currentY);
+    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_x, rot_waypoint_y);
+
+    std::cout << "steering angle: "<< steering_angle << std::endl;
 
     marker.header.frame_id = "map";
     marker.pose.position.x = waypoint_x;
@@ -97,18 +100,6 @@ void mpcBlock::predictor_class::pose_callback(const nav_msgs::Odometry::ConstPtr
     marker.header.stamp = ros::Time();
     marker.lifetime = ros::Duration(0.1);
     vis_pub.publish(marker);
-
-    // marker.header.frame_id = "laser";
-    // marker.pose.position.x = rot_waypoint_x;
-    // marker.pose.position.y = rot_waypoint_y;
-    // marker.color.r = 0.0;
-    // marker.color.g = 0.0;
-    // marker.color.b = 1.0;
-    // marker.id += 1;
-    // marker.header.stamp = ros::Time();
-    // marker.lifetime = ros::Duration(0.1);
-    // vis_pub.publish(marker);
-    // }
 
     mpcBlock::predictor_class::setAngleAndVelocity(steering_angle);
 }
@@ -140,7 +131,7 @@ void mpcBlock::predictor_class::rotate_points(const double theta, float *distX, 
     *distY = dist_vector(1,0);
 }
 
-double mpcBlock::predictor_class::do_MPC(const float waypoint_x, const float waypoint_y, const double currentX, const double currentY){
+double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x){
 
     /* set_defaults();
      * setup_indexing();
@@ -152,20 +143,21 @@ double mpcBlock::predictor_class::do_MPC(const float waypoint_x, const float way
      * }
      * return vars.u_10[0]
      */
-    double steering_angle = 0;
-    return steering_angle;
+    run_cvxgenOptimization temp_class;
+
+    return temp_class.solve_mpc(waypoint_y, waypoint_x);
 }
 
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 
     ackermann_msgs::AckermannDriveStamped drive_msg;
 
-    if(u < -steering_limit){
-        u = -steering_limit;
-    }
-    if(u > steering_limit){
-        u = steering_limit;
-    }
+//    if(u < -steering_limit){
+//        u = -steering_limit;
+//    }
+//    if(u > steering_limit){
+//        u = steering_limit;
+//    }
 
     drive_msg.drive.steering_angle = u; //Sets steering angle
     //drive_msg.drive.speed = nominal_speed - (nominal_speed - angle_speed) * fabs(u) / 0.4189;

@@ -123,6 +123,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include
+  include/cvxgen
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
 )
@@ -154,6 +155,10 @@ add_executable(mpc_auto_node src/mpc_auto.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(mpc_auto_node
+  ${PROJECT_SOURCE_DIR}/include/cvxgen/solver.o
+  ${PROJECT_SOURCE_DIR}/include/cvxgen/ldl.o
+  ${PROJECT_SOURCE_DIR}/include/cvxgen/util.o
+  ${PROJECT_SOURCE_DIR}/include/cvxgen/matrix_support.o
   ${catkin_LIBRARIES}
 )
 
