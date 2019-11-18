@@ -15,13 +15,27 @@
 #include <nav_msgs/Odometry.h>
 #include <visualization_msgs/Marker.h>
 #include <tf/transform_datatypes.h>
-#include <math.h>
+#include <cmath>
 #include <Eigen/Geometry>
 #include <Eigen/Dense>
+
 
 namespace mpcBlock {
 
     #define Pi 3.142859
+
+    struct laserdata{
+
+        double angle_increment;
+        double angle_sweep;
+
+        int zero_angle; //zero degree
+        int left_angle; //45 degree
+        int right_angle; //45 degree
+
+        std::vector<double> horizontal_scans;
+
+    };
 
     class predictor_class {
 
@@ -30,11 +44,13 @@ namespace mpcBlock {
 
         void pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg); //Subscribes to vehicle pose
 
-        double convert_to_Theta(const geometry_msgs::Quaternion msg); //Converts vehicle orientation from quaternions to euler angles
+        void lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg);
 
-        void rotate_points(const double theta, float *distX, float *distY); //Brings WayPoints to the vehicle frame
+        static double convert_to_Theta(geometry_msgs::Quaternion msg); //Converts vehicle orientation from quaternions to euler angles
 
-        double do_MPC(const float waypoint_y, const float waypoint_x); //Calls the MPC optimization routine to solve for optimal input
+        static  void rotate_points(double theta, float *distX, float *distY); //Brings WayPoints to the vehicle frame
+
+        static double do_MPC(float waypoint_y, float waypoint_x); //Calls the MPC optimization routine to solve for optimal input
 
         void setAngleAndVelocity(double u); //Applies the derived input
 
@@ -42,6 +58,8 @@ namespace mpcBlock {
         ros::NodeHandle n;
         ros::Publisher drive_pub; //publishes on the vehicle state
         ros::Publisher vis_pub; //For visualization stuff on RViz
+
+        ros::Subscriber laser_sub; //subscribes to the laser scan
         ros::Subscriber pose_sub; //subscribes to the vehicle pose
 
         //WayPoint data containers
@@ -67,6 +85,10 @@ namespace mpcBlock {
         std::string waypoint_filename;
         std::string pose_topic;
         std::string drive_topic;
+        std::string laser_topic;
         std::string visualization_topic;
+
+        mpcBlock::laserdata current_scan; //struct to hold the laser data
     };
+
 }

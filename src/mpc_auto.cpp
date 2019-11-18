@@ -18,6 +18,7 @@ mpcBlock::predictor_class::predictor_class() {
     //Get parameters
     n.getParam("waypoint_filename", waypoint_filename);
     n.getParam("pose_topic", pose_topic);
+    n.getParam("laser_topic", laser_topic);
     n.getParam("drive_topic", drive_topic);
     n.getParam("visualization_topic", visualization_topic);
     n.getParam("steering_limit", steering_limit);
@@ -40,8 +41,16 @@ mpcBlock::predictor_class::predictor_class() {
     waypoint_length = waypoint_data[0].size();
 
     pose_sub = n.subscribe(pose_topic, 1, &mpcBlock::predictor_class::pose_callback, this);
+    laser_sub = n.subscribe(laser_topic, 1, &mpcBlock::predictor_class::lidar_callback, this);
+
     drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1); //publishes steering angle and velocity
-    vis_pub = n.advertise<visualization_msgs::Marker>( visualization_topic, 0 );
+    vis_pub = n.advertise<visualization_msgs::Marker>(visualization_topic, 0);
+
+    current_scan.angle_increment = 0.00582316;
+    current_scan.angle_sweep = 6.28319;
+    current_scan.zero_angle = round(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for zero angle
+    current_scan.left_angle = round(0.6666*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 22.5 degree
+    current_scan.right_angle = round(0.5625*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 22.5 degree angle
 
     //visualization stuff
     marker.header.frame_id = "map";
@@ -68,15 +77,15 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
     double currentX = pose_msg->pose.position.x; //vehicle pose X
     double currentY = pose_msg->pose.position.y; //vehicle pose Y
     double currentTheta = mpcBlock::predictor_class::convert_to_Theta(pose_msg->pose.orientation); //vehicle orientation theta converted from quaternion to euler angle
+    std::cout<< "current theta" << currentTheta << std::endl;
 
     float waypoint_x;
     float waypoint_y;
-    float waypoint_distance = sqrt( std::pow(currentX - waypoint_x, 2) + std::pow(currentY - waypoint_y, 2) );
     float distance_min = FLT_MAX;
     float ind_min = 0;
 
-    for(int i = 0; i < waypoint_length; i ++){
-        float distance = sqrt( std::pow(currentX - waypoint_data[0][i], 2) + std::pow(currentY - waypoint_data[1][i], 2) );
+    for(int i = 0; i < waypoint_length; i++){
+        float distance = sqrt(std::pow(currentX - waypoint_data[0][i], 2) + std::pow(currentY - waypoint_data[1][i], 2) );
         rot_waypoint_x = (waypoint_data[0][i] - currentX) * cos(-currentTheta) - (waypoint_data[1][i] - currentY) * sin(-currentTheta); //anmol: make it a rotation matrix
 
         if (distance_min > distance && distance >= look_ahead_distance && rot_waypoint_x > 0) {
@@ -96,7 +105,7 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
 
     steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x);
 
-    std::cout << "steering angle: "<< steering_angle << std::endl;
+    //std::cout << "steering angle: "<< steering_angle << std::endl;
 
     marker.header.frame_id = "map";
     marker.pose.position.x = waypoint_x;
@@ -112,8 +121,9 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
     mpcBlock::predictor_class::setAngleAndVelocity(steering_angle);
 }
 
+
 double mpcBlock::predictor_class::convert_to_Theta(const geometry_msgs::Quaternion msg){
-    // the incoming geometry_msgs::Quaternion is transformed to a tf::Quaterion
+    // the incoming geometry_msgs::Quaternion is transformed to a tf::Quaternion
     tf::Quaternion quat;
     tf::quaternionMsgToTF(msg, quat);
 
@@ -137,6 +147,61 @@ void mpcBlock::predictor_class::rotate_points(const double theta, float *distX, 
 
     *distX = dist_vector(0,0);
     *distY = dist_vector(1,0);
+}
+
+
+void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
+
+    std::vector<double> temp_vector;
+
+    for(int i = current_scan.right_angle; i<current_scan.left_angle; i++){
+        temp_vector.push_back(scan_msg->ranges[i]);
+    }
+
+    int max_count = INT_MIN;
+    int start_index = 0;
+    int i = 0;
+    float lower_threshold = 1.0;
+    int x_lower_limit = 0;
+    int x_upper_limit = 0;
+
+    while(i < temp_vector.size()){
+        int count=0;
+
+        if(temp_vector[i] >= lower_threshold){
+            start_index = i;
+            int j = i;
+
+            while(j<temp_vector.size()){
+
+                if(temp_vector[j] > lower_threshold){
+                    count++;
+                }
+
+                else{
+                    break;
+                }
+
+                j++;
+            }
+
+            if(count > max_count){
+                max_count = count;
+                x_lower_limit = start_index;
+                x_upper_limit = j;
+            }
+
+            i = start_index+1;
+        }
+
+        else{
+            i++;
+        }
+    }
+
+/*    std::cout << "start index: " << x_lower_limit << std::endl;
+    std::cout << "end index: " << x_upper_limit << std::endl;
+    std::cout<< "size is: " << temp_vector.size() << std::endl;*/
 }
 
 double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x){

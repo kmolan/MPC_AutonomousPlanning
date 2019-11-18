@@ -18,20 +18,20 @@ public:
 
         params.B[0] = 7.0/30.0; // v*deltaT
 
-        params.Q[0] = 1; //State cost is unity
+        params.Q[0] = 4; //State cost is unity
         params.Q[1] = 0;
         params.Q[2] = 0;
-        params.Q[3] = 1;
+        params.Q[3] = 4;
 
-        params.R[0] = 0; //Input cost is zero
+        params.R[0] = 2; //Input cost is zero
         params.R[1] = 0;
         params.R[2] = 0;
         params.R[3] = 0;
 
-        params.Q_final[0] = 1; //Final state cost is unity
+        params.Q_final[0] = 4; //Final state cost is unity
         params.Q_final[0] = 0;
         params.Q_final[0] = 0;
-        params.Q_final[0] = 1;
+        params.Q_final[0] = 4;
 
         // setting up initial position
         params.x_0[0] = 0;

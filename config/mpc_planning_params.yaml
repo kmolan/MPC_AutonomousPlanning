@@ -4,6 +4,7 @@ waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs
 #Subscriber and publisher topics
 pose_topic: "gt_pose" #"pf/pose/odom"
 drive_topic: "drive"
+laser_topic: "scan"
 visualization_topic: "visualization_marker"
 
 #Physical parameters
