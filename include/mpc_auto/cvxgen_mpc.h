@@ -9,7 +9,7 @@ public:
         run_cvxgenOptimization::generate_matrices();
     }
 
-    void generate_matrices(){
+    static void generate_matrices(){
 
         params.A[0] = 1;
         params.A[1] = 0;
@@ -18,17 +18,17 @@ public:
 
         params.B[0] = 7.0/30.0; // v*deltaT
 
-        params.Q[0] = 4; //State cost is unity
+        params.Q[0] = 4; //State cost
         params.Q[1] = 0;
         params.Q[2] = 0;
         params.Q[3] = 4;
 
-        params.R[0] = 2; //Input cost is zero
+        params.R[0] = 2; //Input cost
         params.R[1] = 0;
         params.R[2] = 0;
         params.R[3] = 0;
 
-        params.Q_final[0] = 4; //Final state cost is unity
+        params.Q_final[0] = 4; //Final state cost
         params.Q_final[0] = 0;
         params.Q_final[0] = 0;
         params.Q_final[0] = 4;
@@ -40,16 +40,19 @@ public:
         params.u_max[0] = 0.4189;
         params.u_max[1] = 1;
 
+        params.s[0] = 0;
+
     }
 
-    void update_model(double y_waypoint, double x_waypoint){
+    static void update_model(double y_waypoint, double x_waypoint, float y_mid){
         //goal point (waypoint for now)
         params.w[0] = y_waypoint;
         params.w[1] = x_waypoint;
+        params.y_mid[0] = y_mid;
     }
 
-    float solve_mpc(double y_waypoint, double x_waypoint){
-        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint);
+    static float solve_mpc(double y_waypoint, double x_waypoint, float y_mid){
+        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint, y_mid);
         auto num_iters = solve();
 
         if(!work.converged){

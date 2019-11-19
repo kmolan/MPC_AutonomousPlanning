@@ -1,4 +1,13 @@
-# Produced by CVXGEN, 2019-11-15 22:05:47 -0500.
+# Produced by CVXGEN, 2019-11-18 22:35:27 -0500.
+# CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
+# The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
+# CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial
+# applications without prior written permission from Jacob Mattingley.
+
+# Filename: description.cvxgen.
+# Description: A description of the CVXGEN problem.
+
+# Produced by CVXGEN, 2019-11-14 21:07:27 -0500.
 # CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
 # The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
 # CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial
@@ -14,23 +23,25 @@ dimensions
 end
 
 parameters
-  A (n,n)  # dynamics matrix, unity for now
-  B  # transfer matrix, scalar = v*delT, v= velocity, delT = sample time
-  Q (n,n) psd  # state cost, unity for now
-  Q_final (n,n) psd  # final state cost, unity for now
-  R (m,m) psd  # input cost, zero matrix for now
+  A (n,n)  # Dynamics matrix
+  B  # Transfer matrix, scalar = v*delT, v= velocity, delT = sample time
+  Q (n,n) psd  # State cost, unity for now
+  Q_final (n,n) psd  # Final state cost
+  R (m,m) psd  # Input cost
   x[0] (n)  # initial state.
   w (n) #waypoint vector
   u_max (m) nonnegative  # theta limit = [0.4189 ; 1]
+  y_mid #upper limit for horizontal direction
+  s nonnegative #weight on midline
 end
 
 variables
-  x[t] (n), t=1..T+1  # state = [x ; y]
+  x[t] (n), t=1..T+1  # state = [y ; x]
   u[t] (m), t=0..T  # input = [theta ; 1]
 end
 
 minimize
-  sum[t=0..T](quad(x[t] - w, Q) + quad(u[t], R)) + quad(x[T+1]-w, Q_final)
+  sum[t=0..T](quad(x[t] - w, Q) + quad(u[t], R) + s*norm_inf(y_mid - x[t+1][1])) + quad(x[T+1]-w, Q_final)
 
 subject to
   x[t+1] == A*x[t] + B*(u[t]), t=0..T  # dynamics constraints.

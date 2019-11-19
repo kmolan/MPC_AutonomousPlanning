@@ -48,9 +48,11 @@ mpcBlock::predictor_class::predictor_class() {
 
     current_scan.angle_increment = 0.00582316;
     current_scan.angle_sweep = 6.28319;
-    current_scan.zero_angle = round(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for zero angle
-    current_scan.left_angle = round(0.6666*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 22.5 degree
-    current_scan.right_angle = round(0.5625*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 22.5 degree angle
+    current_scan.left_angle = round(0.625*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 45 degree
+    current_scan.right_angle = round(0.375*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 45 degree angle
+
+    current_scan.y_lower_distance = -1;
+    current_scan.y_upper_distance = 1;
 
     //visualization stuff
     marker.header.frame_id = "map";
@@ -77,7 +79,6 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
     double currentX = pose_msg->pose.position.x; //vehicle pose X
     double currentY = pose_msg->pose.position.y; //vehicle pose Y
     double currentTheta = mpcBlock::predictor_class::convert_to_Theta(pose_msg->pose.orientation); //vehicle orientation theta converted from quaternion to euler angle
-    std::cout<< "current theta" << currentTheta << std::endl;
 
     float waypoint_x;
     float waypoint_y;
@@ -103,9 +104,8 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
 
     mpcBlock::predictor_class::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
-    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x);
-
-    //std::cout << "steering angle: "<< steering_angle << std::endl;
+    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x, current_scan.y_mid_distance);
+    std::cout << "steering angle: " << steering_angle << std::endl;
 
     marker.header.frame_id = "map";
     marker.pose.position.x = waypoint_x;
@@ -149,76 +149,72 @@ void mpcBlock::predictor_class::rotate_points(const double theta, float *distX, 
     *distY = dist_vector(1,0);
 }
 
-
 void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
 
-    std::vector<double> temp_vector;
+    current_scan.horizontal_scans = {};
 
     for(int i = current_scan.right_angle; i<current_scan.left_angle; i++){
-        temp_vector.push_back(scan_msg->ranges[i]);
+        current_scan.horizontal_scans.push_back(scan_msg->ranges[i]);
     }
 
     int max_count = INT_MIN;
     int start_index = 0;
     int i = 0;
-    float lower_threshold = 1.0;
-    int x_lower_limit = 0;
-    int x_upper_limit = 0;
+    float lower_threshold = 2.5;
+    int x_lower_index = 0;
+    int x_upper_index = 0;
 
-    while(i < temp_vector.size()){
+    while(i < current_scan.horizontal_scans.size()){
         int count=0;
 
-        if(temp_vector[i] >= lower_threshold){
+        if (lower_threshold <= current_scan.horizontal_scans[i]) {
             start_index = i;
             int j = i;
 
-            while(j<temp_vector.size()){
+            while (j < current_scan.horizontal_scans.size()) {
 
-                if(temp_vector[j] > lower_threshold){
-                    count++;
-                }
-
-                else{
+                if (lower_threshold > current_scan.horizontal_scans[j]) {
                     break;
+                }
+                else {
+                    count++;
                 }
 
                 j++;
             }
 
-            if(count > max_count){
+            if (count > max_count) {
                 max_count = count;
-                x_lower_limit = start_index;
-                x_upper_limit = j;
+                x_lower_index = start_index;
+                x_upper_index = j;
             }
 
-            i = start_index+1;
+            i = start_index + 1;
         }
 
-        else{
+        else {
             i++;
         }
     }
 
-/*    std::cout << "start index: " << x_lower_limit << std::endl;
-    std::cout << "end index: " << x_upper_limit << std::endl;
-    std::cout<< "size is: " << temp_vector.size() << std::endl;*/
+    std::cout << "1 lower: " << x_lower_index << std::endl;
+    std::cout << "1 upper: " << x_upper_index << std::endl;
+
+    current_scan.y_lower_distance = 0.15 + current_scan.horizontal_scans[x_lower_index]*std::sin(-Pi/4.0 + x_lower_index*current_scan.angle_increment);
+    current_scan.y_upper_distance = -0.15 + current_scan.horizontal_scans[x_upper_index-1]*std::sin(-Pi/4.0 + x_upper_index*current_scan.angle_increment);
+
+    current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
+
+    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
+    std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
+    std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
 }
 
-double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x){
+double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x, const float y_mid){
 
-    /* set_defaults();
-     * setup_indexing();
-     *
-     * optimizer::params.A[0] = 1; ......
-     * solve();
-     * if(work.converged){
-     * conditions.. ROS_ERROR
-     * }
-     * return vars.u_10[0]
-     */
     run_cvxgenOptimization temp_class;
 
-    return temp_class.solve_mpc(waypoint_y, waypoint_x);
+    return temp_class.solve_mpc(waypoint_y, waypoint_x, y_mid);
 }
 
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {

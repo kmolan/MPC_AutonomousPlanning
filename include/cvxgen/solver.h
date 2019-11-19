@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-11-15 22:05:48 -0500.  */
+/* Produced by CVXGEN, 2019-11-18 22:35:31 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -31,110 +31,130 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef struct Params_t
-{
-    double x_0[2];
-    double w[2];
-    double Q[4];
-    double R[4];
-    double Q_final[4];
-    double A[4];
-    double B[1];
-    double u_max[2];
-    double *x[1];
+    
+typedef struct Params_t {
+  double x_0[2];
+  double w[2];
+  double Q[4];
+  double R[4];
+  double s[1];
+  double y_mid[1];
+  double Q_final[4];
+  double A[4];
+  double B[1];
+  double u_max[2];
+  double *x[1];
 } Params;
-typedef struct Vars_t
-{
-    double *u_0; /* 2 rows. */
-    double *x_1; /* 2 rows. */
-    double *u_1; /* 2 rows. */
-    double *x_2; /* 2 rows. */
-    double *u_2; /* 2 rows. */
-    double *x_3; /* 2 rows. */
-    double *u_3; /* 2 rows. */
-    double *x_4; /* 2 rows. */
-    double *u_4; /* 2 rows. */
-    double *x_5; /* 2 rows. */
-    double *u_5; /* 2 rows. */
-    double *x_6; /* 2 rows. */
-    double *u_6; /* 2 rows. */
-    double *x_7; /* 2 rows. */
-    double *u_7; /* 2 rows. */
-    double *x_8; /* 2 rows. */
-    double *u_8; /* 2 rows. */
-    double *x_9; /* 2 rows. */
-    double *u_9; /* 2 rows. */
-    double *x_10; /* 2 rows. */
-    double *u_10; /* 2 rows. */
-    double *x_11; /* 2 rows. */
-    double *t_01; /* 2 rows. */
-    double *t_02; /* 2 rows. */
-    double *t_03; /* 2 rows. */
-    double *t_04; /* 2 rows. */
-    double *t_05; /* 2 rows. */
-    double *t_06; /* 2 rows. */
-    double *t_07; /* 2 rows. */
-    double *t_08; /* 2 rows. */
-    double *t_09; /* 2 rows. */
-    double *t_10; /* 2 rows. */
-    double *t_11; /* 2 rows. */
-    double *u[11];
-    double *x[12];
+typedef struct Vars_t {
+  double *u_0; /* 2 rows. */
+  double *t_01; /* 1 rows. */
+  double *x_1; /* 2 rows. */
+  double *u_1; /* 2 rows. */
+  double *t_02; /* 1 rows. */
+  double *x_2; /* 2 rows. */
+  double *u_2; /* 2 rows. */
+  double *t_03; /* 1 rows. */
+  double *x_3; /* 2 rows. */
+  double *u_3; /* 2 rows. */
+  double *t_04; /* 1 rows. */
+  double *x_4; /* 2 rows. */
+  double *u_4; /* 2 rows. */
+  double *t_05; /* 1 rows. */
+  double *x_5; /* 2 rows. */
+  double *u_5; /* 2 rows. */
+  double *t_06; /* 1 rows. */
+  double *x_6; /* 2 rows. */
+  double *u_6; /* 2 rows. */
+  double *t_07; /* 1 rows. */
+  double *x_7; /* 2 rows. */
+  double *u_7; /* 2 rows. */
+  double *t_08; /* 1 rows. */
+  double *x_8; /* 2 rows. */
+  double *u_8; /* 2 rows. */
+  double *t_09; /* 1 rows. */
+  double *x_9; /* 2 rows. */
+  double *u_9; /* 2 rows. */
+  double *t_10; /* 1 rows. */
+  double *x_10; /* 2 rows. */
+  double *u_10; /* 2 rows. */
+  double *t_11; /* 1 rows. */
+  double *x_11; /* 2 rows. */
+  double *t_12; /* 2 rows. */
+  double *t_13; /* 2 rows. */
+  double *t_14; /* 2 rows. */
+  double *t_15; /* 2 rows. */
+  double *t_16; /* 2 rows. */
+  double *t_17; /* 2 rows. */
+  double *t_18; /* 2 rows. */
+  double *t_19; /* 2 rows. */
+  double *t_20; /* 2 rows. */
+  double *t_21; /* 2 rows. */
+  double *t_22; /* 2 rows. */
+  double *u[11];
+  double *x[12];
 } Vars;
-typedef struct Workspace_t
-{
-    double h[66];
-    double s_inv[66];
-    double s_inv_z[66];
-    double b[22];
-    double q[66];
-    double rhs[220];
-    double x[220];
-    double *s;
-    double *z;
-    double *y;
-    double lhs_aff[220];
-    double lhs_cc[220];
-    double buffer[220];
-    double buffer2[220];
-    double KKT[458];
-    double L[337];
-    double d[220];
-    double v[220];
-    double d_inv[220];
-    double gap;
-    double optval;
-    double ineq_resid_squared;
-    double eq_resid_squared;
-    double block_33[1];
-    /* Pre-op symbols. */
-    double quad_902543003648[1];
-    double quad_622431752192[1];
-    double quad_781620764672[1];
-    int converged;
+typedef struct Workspace_t {
+  double h[88];
+  double s_inv[88];
+  double s_inv_z[88];
+  double b[22];
+  double q[77];
+  double rhs[275];
+  double x[275];
+  double *s;
+  double *z;
+  double *y;
+  double lhs_aff[275];
+  double lhs_cc[275];
+  double buffer[275];
+  double buffer2[275];
+  double KKT[568];
+  double L[414];
+  double d[275];
+  double v[275];
+  double d_inv[275];
+  double gap;
+  double optval;
+  double ineq_resid_squared;
+  double eq_resid_squared;
+  double block_33[1];
+  /* Pre-op symbols. */
+  double quad_902543003648[1];
+  double quad_622431752192[1];
+  double quad_781620764672[1];
+  int converged;
 } Workspace;
-typedef struct Settings_t
-{
-    double resid_tol;
-    double eps;
-    int max_iters;
-    int refine_steps;
-    int better_start;
-    /* Better start obviates the need for s_init and z_init. */
-    double s_init;
-    double z_init;
-    int verbose;
-    /* Show extra details of the iterative refinement steps. */
-    int verbose_refinement;
-    int debug;
-    /* For regularization. Minimum value of abs(D_ii) in the kkt D factor. */
-    double kkt_reg;
+typedef struct Settings_t {
+  double resid_tol;
+  double eps;
+  int max_iters;
+  int refine_steps;
+  int better_start;
+  /* Better start obviates the need for s_init and z_init. */
+  double s_init;
+  double z_init;
+  int verbose;
+  /* Show extra details of the iterative refinement steps. */
+  int verbose_refinement;
+  int debug;
+  /* For regularization. Minimum value of abs(D_ii) in the kkt D factor. */
+  double kkt_reg;
 } Settings;
 extern Vars vars;
 extern Params params;
 extern Workspace work;
 extern Settings settings;
+/* Function definitions in util.c: */
+void tic(void);
+float toc(void);
+float tocq(void);
+void printmatrix(char *name, double *A, int m, int n, int sparse);
+double unif(double lower, double upper);
+float ran1(long*idum, int reset);
+float randn_internal(long *idum, int reset);
+double randn(void);
+void reset_rand(void);
+
 /* Function definitions in ldl.c: */
 void ldl_solve(double *target, double *var);
 void ldl_factor(void);
@@ -175,17 +195,6 @@ long solve(void);
 /* Function definitions in testsolver.c: */
 int main(int argc, char **argv);
 void load_default_data(void);
-
-/* Function definitions in util.c: */
-void tic(void);
-float toc(void);
-float tocq(void);
-void printmatrix(char *name, double *A, int m, int n, int sparse);
-double unif(double lower, double upper);
-float ran1(long *idum, int reset);
-float randn_internal(long *idum, int reset);
-double randn(void);
-void reset_rand(void);
 
 #ifdef __cplusplus
 }

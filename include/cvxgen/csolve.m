@@ -4,7 +4,7 @@
 %
 % solves the convex optimization problem
 %
-%   minimize(quad_form(x_0 - w, Q) + quad_form(u_0, R) + quad_form(x_1 - w, Q) + quad_form(u_1, R) + quad_form(x_2 - w, Q) + quad_form(u_2, R) + quad_form(x_3 - w, Q) + quad_form(u_3, R) + quad_form(x_4 - w, Q) + quad_form(u_4, R) + quad_form(x_5 - w, Q) + quad_form(u_5, R) + quad_form(x_6 - w, Q) + quad_form(u_6, R) + quad_form(x_7 - w, Q) + quad_form(u_7, R) + quad_form(x_8 - w, Q) + quad_form(u_8, R) + quad_form(x_9 - w, Q) + quad_form(u_9, R) + quad_form(x_10 - w, Q) + quad_form(u_10, R) + quad_form(x_11 - w, Q_final))
+%   minimize(quad_form(x_0 - w, Q) + quad_form(u_0, R) + s*norm(y_mid - x_1(1), inf) + quad_form(x_1 - w, Q) + quad_form(u_1, R) + s*norm(y_mid - x_2(1), inf) + quad_form(x_2 - w, Q) + quad_form(u_2, R) + s*norm(y_mid - x_3(1), inf) + quad_form(x_3 - w, Q) + quad_form(u_3, R) + s*norm(y_mid - x_4(1), inf) + quad_form(x_4 - w, Q) + quad_form(u_4, R) + s*norm(y_mid - x_5(1), inf) + quad_form(x_5 - w, Q) + quad_form(u_5, R) + s*norm(y_mid - x_6(1), inf) + quad_form(x_6 - w, Q) + quad_form(u_6, R) + s*norm(y_mid - x_7(1), inf) + quad_form(x_7 - w, Q) + quad_form(u_7, R) + s*norm(y_mid - x_8(1), inf) + quad_form(x_8 - w, Q) + quad_form(u_8, R) + s*norm(y_mid - x_9(1), inf) + quad_form(x_9 - w, Q) + quad_form(u_9, R) + s*norm(y_mid - x_10(1), inf) + quad_form(x_10 - w, Q) + quad_form(u_10, R) + s*norm(y_mid - x_11(1), inf) + quad_form(x_11 - w, Q_final))
 %   subject to
 %     x_1 == A*x_0 + B*u_0
 %     x_2 == A*x_1 + B*u_1
@@ -59,9 +59,11 @@
 %        Q   2 x 2    PSD
 %  Q_final   2 x 2    PSD
 %        R   2 x 2    PSD
+%        s   1 x 1    positive
 %    u_max   2 x 1    positive
 %        w   2 x 1
 %      x_0   2 x 1
+%    y_mid   1 x 1
 %
 % Note:
 %   - Check status.converged, which will be 1 if optimization succeeded.
@@ -70,9 +72,9 @@
 %   - To change iterations, use settings.max_iters = 20.
 %   - You may wish to compare with cvxsolve to check the solver is correct.
 %
-% Specify params.A, ..., params.x_0, then run
+% Specify params.A, ..., params.y_mid, then run
 %   [vars, status] = csolve(params, settings)
-% Produced by CVXGEN, 2019-11-15 22:05:47 -0500.
+% Produced by CVXGEN, 2019-11-18 22:35:27 -0500.
 % CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
 % The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
 % CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial

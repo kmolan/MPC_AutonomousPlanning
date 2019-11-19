@@ -1,0 +1,8 @@
+prefix=/usr/local
+
+Name: mpc_auto
+Description: Description of mpc_auto
+Version: 1.0.0
+Cflags: 
+Libs: -L/usr/local/lib 
+Requires: 

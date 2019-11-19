@@ -1,0 +1,8 @@
+prefix=/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel
+
+Name: mpc_auto
+Description: Description of mpc_auto
+Version: 1.0.0
+Cflags: 
+Libs: -L/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib 
+Requires: 

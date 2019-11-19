@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/setup.sh
