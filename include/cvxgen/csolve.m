@@ -28,28 +28,6 @@
 %     abs(u_8) <= u_max
 %     abs(u_9) <= u_max
 %     abs(u_10) <= u_max
-%     x_1 <= y_upper
-%     x_2 <= y_upper
-%     x_3 <= y_upper
-%     x_4 <= y_upper
-%     x_5 <= y_upper
-%     x_6 <= y_upper
-%     x_7 <= y_upper
-%     x_8 <= y_upper
-%     x_9 <= y_upper
-%     x_10 <= y_upper
-%     x_11 <= y_upper
-%     x_1 >= y_lower
-%     x_2 >= y_lower
-%     x_3 >= y_lower
-%     x_4 >= y_lower
-%     x_5 >= y_lower
-%     x_6 >= y_lower
-%     x_7 >= y_lower
-%     x_8 >= y_lower
-%     x_9 >= y_lower
-%     x_10 >= y_lower
-%     x_11 >= y_lower
 %
 % with variables
 %      u_0   2 x 1
@@ -84,8 +62,6 @@
 %    u_max   2 x 1    positive
 %        w   2 x 1
 %      x_0   2 x 1
-%  y_lower   2 x 1
-%  y_upper   2 x 1
 %
 % Note:
 %   - Check status.converged, which will be 1 if optimization succeeded.
@@ -94,9 +70,9 @@
 %   - To change iterations, use settings.max_iters = 20.
 %   - You may wish to compare with cvxsolve to check the solver is correct.
 %
-% Specify params.A, ..., params.y_upper, then run
+% Specify params.A, ..., params.x_0, then run
 %   [vars, status] = csolve(params, settings)
-% Produced by CVXGEN, 2019-11-20 04:24:23 -0500.
+% Produced by CVXGEN, 2019-11-15 22:05:47 -0500.
 % CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
 % The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
 % CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial

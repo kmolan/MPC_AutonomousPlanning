@@ -24,6 +24,15 @@ mpcBlock::predictor_class::predictor_class() {
     n.getParam("steering_limit", steering_limit);
     n.getParam("high_velocity", high_velocity);
     n.getParam("low_velocity", low_velocity);
+    n.getParam("lower_threshold", lower_threshold);
+    n.getParam("midline_threshold", midline_threshold);
+    n.getParam("breakneck_steering", breakneck_steering);
+    n.getParam("min_halfspace_width",min_halfspace_width);
+    n.getParam("breakneck_steering_threshold", breakneck_steering_threshold);
+    n.getParam("Q_matrix_1", Q_matrix_1);
+    n.getParam("Q_matrix_2" ,Q_matrix_2);
+    n.getParam("R_matrix_1", R_matrix_1);
+    n.getParam("B_matrix", B_matrix);
 
     waypoint_data_long = mpcBlock::read_way_point_CSVfile(waypoint_filename);
 
@@ -105,13 +114,13 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
 
     mpcBlock::predictor_class::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
-    if(current_scan.y_mid_distance>0.5){
-        current_scan.y_mid_distance=0;
+    if(current_scan.y_mid_distance > midline_threshold){
+        current_scan.y_mid_distance = 0;
     }
 
-    rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance;
+    rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance; //offset by midline
 
-    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x, current_scan.y_upper_distance, current_scan.y_lower_distance);
+    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x);
     std::cout << "steering angle: " << steering_angle << std::endl;
 
     marker.header.frame_id = "map";
@@ -158,10 +167,6 @@ void mpcBlock::predictor_class::rotate_points(const double theta, float *distX, 
 
 void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
 
-    current_scan.horizontal_scans = {};
-    int max_count = INT_MIN;
-    int start_index = 0;
-    float lower_threshold = 1.0;
     int x_lower_index = current_scan.right_angle;
     int x_upper_index = current_scan.left_angle;
 
@@ -179,72 +184,40 @@ void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::Con
         }
     }
 
-    std::cout << "u index: " << 180*(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
-    std::cout << "l index: " << 180*(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
-    std::cout << "sin u index: " << std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) << std::endl;
-    std::cout << "sin l index: " << std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) << std::endl;
-    std::cout << "scan msg lower :" << scan_msg->ranges[x_lower_index] << std::endl;
-    std::cout << "scan msg upper :" << scan_msg->ranges[x_upper_index-1] << std::endl;
-
-//    for(int i = current_scan.right_angle; i<current_scan.left_angle; i++){
-//        current_scan.horizontal_scans.push_back(scan_msg->ranges[i]);
-//    }
-//
-//    std::cout << "s index: " << current_scan.horizontal_scans.size() << std::endl;
-//    int i=0;
-//    while(i < current_scan.horizontal_scans.size()){
-//        int count = 0;
-//        if(current_scan.horizontal_scans[i] > 0.0){
-//            start_index = i;
-//            int j = i+1;
-//            while(j < current_scan.horizontal_scans.size()){
-//                if(current_scan.horizontal_scans[j] < 0.0){
-//                    break;
-//                }
-//                else{
-//                    count++;
-//                    if(count > max_count){
-//                        max_count = count;
-//                        x_upper_index = j;
-//                        x_lower_index = start_index;
-//                    }
-//                }
-//                j++;
-//            }
-//            i = j;
-//        }
-//        else{
-//            i++;
-//        }
-//    }
+//    std::cout << "u index: " << 180*(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
+//    std::cout << "l index: " << 180*(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
+//    std::cout << "sin u index: " << std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) << std::endl;
+//    std::cout << "sin l index: " << std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) << std::endl;
+//    std::cout << "scan msg lower :" << scan_msg->ranges[x_lower_index] << std::endl;
+//    std::cout << "scan msg upper :" << scan_msg->ranges[x_upper_index-1] << std::endl;
 
     current_scan.y_lower_distance = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
     current_scan.y_upper_distance =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
 
-    if(current_scan.y_lower_distance > -0.2){
+    if(current_scan.y_lower_distance > -min_halfspace_width){
         current_scan.y_lower_distance = 0;
     }
 
-    if(current_scan.y_upper_distance < 0.2){
+    if(current_scan.y_upper_distance < min_halfspace_width){
         current_scan.y_upper_distance = 0;
     }
 
     current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
 
-    if(current_scan.y_lower_distance > -0.15 && current_scan.y_upper_distance < 0.15){
-        current_scan.y_mid_distance = 0.4;
+    if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
+        current_scan.y_mid_distance = breakneck_steering;
     }
 
-    std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
-    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
-    std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
+//    std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
+//    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
+//    std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
 }
 
-double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x, const float y_upper, const float y_lower){
+double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x){
 
-    run_cvxgenOptimization temp_class;
+    run_cvxgenOptimization temp_class(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix);
 
-    return temp_class.solve_mpc(waypoint_y, waypoint_x, y_upper, y_lower);
+    return temp_class.solve_mpc(waypoint_y, waypoint_x);
 }
 
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {

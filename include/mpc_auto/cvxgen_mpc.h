@@ -3,35 +3,35 @@
 class run_cvxgenOptimization{
 public:
 
-    run_cvxgenOptimization(){
+    run_cvxgenOptimization(const double Q_matrix_1, const double Q_matrix_2, const double R_matrix_1, const double B_matrix){
         set_defaults();
         setup_indexing();
-        run_cvxgenOptimization::generate_matrices();
+        run_cvxgenOptimization::generate_matrices(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix);
     }
 
-    static void generate_matrices(){
+    void generate_matrices(const double Q_matrix_1, const double Q_matrix_2, const double R_matrix_1, const double B_matrix){
 
         params.A[0] = 1;
         params.A[1] = 0;
         params.A[2] = 0;
         params.A[3] = 1;
 
-        params.B[0] = 7.0/30.0; // v*deltaT
+        params.B[0] = B_matrix; // v*deltaT
 
-        params.Q[0] = 4; //State cost
+        params.Q[0] = Q_matrix_1; //State cost
         params.Q[1] = 0;
         params.Q[2] = 0;
-        params.Q[3] = 4;
+        params.Q[3] = Q_matrix_2;
 
-        params.R[0] = 2; //Input cost
+        params.R[0] = R_matrix_1; //Input cost
         params.R[1] = 0;
         params.R[2] = 0;
         params.R[3] = 0;
 
-        params.Q_final[0] = 4; //Final state cost
+        params.Q_final[0] = Q_matrix_1; //Final state cost
         params.Q_final[0] = 0;
         params.Q_final[0] = 0;
-        params.Q_final[0] = 4;
+        params.Q_final[0] = Q_matrix_2;
 
         // setting up initial position
         params.x_0[0] = 0;
@@ -39,21 +39,16 @@ public:
 
         params.u_max[0] = 0.4189;
         params.u_max[1] = 1;
-
-//        params.y_upper[1] = FLT_MAX;
-//        params.y_lower[1] = FLT_MIN;
     }
 
-    static void update_model(double y_waypoint, double x_waypoint, float y_upper, float y_lower){
+    void update_model(double y_waypoint, double x_waypoint){
         //goal point (waypoint for now)
         params.w[0] = y_waypoint;
         params.w[1] = x_waypoint;
-        params.y_upper[0] = 3;
-        params.y_lower[0] = -3;
     }
 
-    static float solve_mpc(double y_waypoint, double x_waypoint, float y_upper, float y_lower){
-        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint, y_upper, y_lower);
+    float solve_mpc(double y_waypoint, double x_waypoint){
+        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint);
         auto num_iters = solve();
 
         if(!work.converged){

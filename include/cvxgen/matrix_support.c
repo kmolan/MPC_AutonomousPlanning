@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-11-20 04:24:25 -0500.  */
+/* Produced by CVXGEN, 2019-11-15 22:05:48 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -166,50 +166,6 @@ void multbymG(double *lhs, double *rhs) {
   lhs[63] = -rhs[21]*(-1)-rhs[43]*(1);
   lhs[64] = -rhs[20]*(-1)-rhs[42]*(-1);
   lhs[65] = -rhs[21]*(-1)-rhs[43]*(-1);
-  lhs[66] = -rhs[44]*(1);
-  lhs[67] = -rhs[45]*(1);
-  lhs[68] = -rhs[46]*(1);
-  lhs[69] = -rhs[47]*(1);
-  lhs[70] = -rhs[48]*(1);
-  lhs[71] = -rhs[49]*(1);
-  lhs[72] = -rhs[50]*(1);
-  lhs[73] = -rhs[51]*(1);
-  lhs[74] = -rhs[52]*(1);
-  lhs[75] = -rhs[53]*(1);
-  lhs[76] = -rhs[54]*(1);
-  lhs[77] = -rhs[55]*(1);
-  lhs[78] = -rhs[56]*(1);
-  lhs[79] = -rhs[57]*(1);
-  lhs[80] = -rhs[58]*(1);
-  lhs[81] = -rhs[59]*(1);
-  lhs[82] = -rhs[60]*(1);
-  lhs[83] = -rhs[61]*(1);
-  lhs[84] = -rhs[62]*(1);
-  lhs[85] = -rhs[63]*(1);
-  lhs[86] = -rhs[64]*(1);
-  lhs[87] = -rhs[65]*(1);
-  lhs[88] = -rhs[44]*(-1);
-  lhs[89] = -rhs[45]*(-1);
-  lhs[90] = -rhs[46]*(-1);
-  lhs[91] = -rhs[47]*(-1);
-  lhs[92] = -rhs[48]*(-1);
-  lhs[93] = -rhs[49]*(-1);
-  lhs[94] = -rhs[50]*(-1);
-  lhs[95] = -rhs[51]*(-1);
-  lhs[96] = -rhs[52]*(-1);
-  lhs[97] = -rhs[53]*(-1);
-  lhs[98] = -rhs[54]*(-1);
-  lhs[99] = -rhs[55]*(-1);
-  lhs[100] = -rhs[56]*(-1);
-  lhs[101] = -rhs[57]*(-1);
-  lhs[102] = -rhs[58]*(-1);
-  lhs[103] = -rhs[59]*(-1);
-  lhs[104] = -rhs[60]*(-1);
-  lhs[105] = -rhs[61]*(-1);
-  lhs[106] = -rhs[62]*(-1);
-  lhs[107] = -rhs[63]*(-1);
-  lhs[108] = -rhs[64]*(-1);
-  lhs[109] = -rhs[65]*(-1);
 }
 void multbymGT(double *lhs, double *rhs) {
   lhs[0] = -rhs[0]*(1)-rhs[2]*(-1)-rhs[4]*(-1);
@@ -256,28 +212,28 @@ void multbymGT(double *lhs, double *rhs) {
   lhs[41] = -rhs[57]*(1)-rhs[59]*(-1);
   lhs[42] = -rhs[62]*(1)-rhs[64]*(-1);
   lhs[43] = -rhs[63]*(1)-rhs[65]*(-1);
-  lhs[44] = -rhs[66]*(1)-rhs[88]*(-1);
-  lhs[45] = -rhs[67]*(1)-rhs[89]*(-1);
-  lhs[46] = -rhs[68]*(1)-rhs[90]*(-1);
-  lhs[47] = -rhs[69]*(1)-rhs[91]*(-1);
-  lhs[48] = -rhs[70]*(1)-rhs[92]*(-1);
-  lhs[49] = -rhs[71]*(1)-rhs[93]*(-1);
-  lhs[50] = -rhs[72]*(1)-rhs[94]*(-1);
-  lhs[51] = -rhs[73]*(1)-rhs[95]*(-1);
-  lhs[52] = -rhs[74]*(1)-rhs[96]*(-1);
-  lhs[53] = -rhs[75]*(1)-rhs[97]*(-1);
-  lhs[54] = -rhs[76]*(1)-rhs[98]*(-1);
-  lhs[55] = -rhs[77]*(1)-rhs[99]*(-1);
-  lhs[56] = -rhs[78]*(1)-rhs[100]*(-1);
-  lhs[57] = -rhs[79]*(1)-rhs[101]*(-1);
-  lhs[58] = -rhs[80]*(1)-rhs[102]*(-1);
-  lhs[59] = -rhs[81]*(1)-rhs[103]*(-1);
-  lhs[60] = -rhs[82]*(1)-rhs[104]*(-1);
-  lhs[61] = -rhs[83]*(1)-rhs[105]*(-1);
-  lhs[62] = -rhs[84]*(1)-rhs[106]*(-1);
-  lhs[63] = -rhs[85]*(1)-rhs[107]*(-1);
-  lhs[64] = -rhs[86]*(1)-rhs[108]*(-1);
-  lhs[65] = -rhs[87]*(1)-rhs[109]*(-1);
+  lhs[44] = 0;
+  lhs[45] = 0;
+  lhs[46] = 0;
+  lhs[47] = 0;
+  lhs[48] = 0;
+  lhs[49] = 0;
+  lhs[50] = 0;
+  lhs[51] = 0;
+  lhs[52] = 0;
+  lhs[53] = 0;
+  lhs[54] = 0;
+  lhs[55] = 0;
+  lhs[56] = 0;
+  lhs[57] = 0;
+  lhs[58] = 0;
+  lhs[59] = 0;
+  lhs[60] = 0;
+  lhs[61] = 0;
+  lhs[62] = 0;
+  lhs[63] = 0;
+  lhs[64] = 0;
+  lhs[65] = 0;
 }
 void multbyP(double *lhs, double *rhs) {
   /* TODO use the fact that P is symmetric? */
@@ -484,50 +440,6 @@ void fillh(void) {
   work.h[63] = 0;
   work.h[64] = 0;
   work.h[65] = 0;
-  work.h[66] = params.y_upper[0];
-  work.h[67] = params.y_upper[1];
-  work.h[68] = params.y_upper[0];
-  work.h[69] = params.y_upper[1];
-  work.h[70] = params.y_upper[0];
-  work.h[71] = params.y_upper[1];
-  work.h[72] = params.y_upper[0];
-  work.h[73] = params.y_upper[1];
-  work.h[74] = params.y_upper[0];
-  work.h[75] = params.y_upper[1];
-  work.h[76] = params.y_upper[0];
-  work.h[77] = params.y_upper[1];
-  work.h[78] = params.y_upper[0];
-  work.h[79] = params.y_upper[1];
-  work.h[80] = params.y_upper[0];
-  work.h[81] = params.y_upper[1];
-  work.h[82] = params.y_upper[0];
-  work.h[83] = params.y_upper[1];
-  work.h[84] = params.y_upper[0];
-  work.h[85] = params.y_upper[1];
-  work.h[86] = params.y_upper[0];
-  work.h[87] = params.y_upper[1];
-  work.h[88] = -params.y_lower[0];
-  work.h[89] = -params.y_lower[1];
-  work.h[90] = -params.y_lower[0];
-  work.h[91] = -params.y_lower[1];
-  work.h[92] = -params.y_lower[0];
-  work.h[93] = -params.y_lower[1];
-  work.h[94] = -params.y_lower[0];
-  work.h[95] = -params.y_lower[1];
-  work.h[96] = -params.y_lower[0];
-  work.h[97] = -params.y_lower[1];
-  work.h[98] = -params.y_lower[0];
-  work.h[99] = -params.y_lower[1];
-  work.h[100] = -params.y_lower[0];
-  work.h[101] = -params.y_lower[1];
-  work.h[102] = -params.y_lower[0];
-  work.h[103] = -params.y_lower[1];
-  work.h[104] = -params.y_lower[0];
-  work.h[105] = -params.y_lower[1];
-  work.h[106] = -params.y_lower[0];
-  work.h[107] = -params.y_lower[1];
-  work.h[108] = -params.y_lower[0];
-  work.h[109] = -params.y_lower[1];
 }
 void fillb(void) {
   work.b[0] = params.A[0]*params.x_0[0]+params.A[2]*params.x_0[1];

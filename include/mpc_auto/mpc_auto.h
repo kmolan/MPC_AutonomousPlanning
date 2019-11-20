@@ -33,7 +33,6 @@ namespace mpcBlock {
             int left_angle; //45 degree
             int right_angle; //45 degree
 
-            std::vector<double> horizontal_scans = {};
             float y_upper_distance;
             float y_lower_distance;
             float y_mid_distance;
@@ -52,7 +51,7 @@ namespace mpcBlock {
 
         static  void rotate_points(double theta, float *distX, float *distY); //Brings WayPoints to the vehicle frame
 
-        static double do_MPC(float waypoint_y, float waypoint_x, float y_upper, float y_lower); //Calls the MPC optimization routine to solve for optimal input
+        double do_MPC(float waypoint_y, float waypoint_x); //Calls the MPC optimization routine to solve for optimal input
 
         void setAngleAndVelocity(double u); //Applies the derived input
 
@@ -91,6 +90,17 @@ namespace mpcBlock {
         std::string visualization_topic;
 
         mpcBlock::laserdata current_scan; //struct to hold the laser data
+
+        //MPC stuff
+        float lower_threshold;
+        float midline_threshold;
+        float breakneck_steering;
+        float min_halfspace_width;
+        float breakneck_steering_threshold;
+        double Q_matrix_1;
+        double Q_matrix_2;
+        double R_matrix_1;
+        double B_matrix;
     };
 
 }
