@@ -29,6 +29,7 @@ namespace mpcBlock {
             double angle_increment;
             double angle_sweep;
 
+            int zero_angle; //0 degree
             int left_angle; //45 degree
             int right_angle; //45 degree
 
@@ -51,7 +52,7 @@ namespace mpcBlock {
 
         static  void rotate_points(double theta, float *distX, float *distY); //Brings WayPoints to the vehicle frame
 
-        static double do_MPC(float waypoint_y, float waypoint_x, float y_mid); //Calls the MPC optimization routine to solve for optimal input
+        static double do_MPC(float waypoint_y, float waypoint_x, float y_upper, float y_lower); //Calls the MPC optimization routine to solve for optimal input
 
         void setAngleAndVelocity(double u); //Applies the derived input
 

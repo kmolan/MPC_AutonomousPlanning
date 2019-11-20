@@ -40,19 +40,20 @@ public:
         params.u_max[0] = 0.4189;
         params.u_max[1] = 1;
 
-        params.s[0] = 0;
-
+//        params.y_upper[1] = FLT_MAX;
+//        params.y_lower[1] = FLT_MIN;
     }
 
-    static void update_model(double y_waypoint, double x_waypoint, float y_mid){
+    static void update_model(double y_waypoint, double x_waypoint, float y_upper, float y_lower){
         //goal point (waypoint for now)
         params.w[0] = y_waypoint;
         params.w[1] = x_waypoint;
-        params.y_mid[0] = y_mid;
+        params.y_upper[0] = 3;
+        params.y_lower[0] = -3;
     }
 
-    static float solve_mpc(double y_waypoint, double x_waypoint, float y_mid){
-        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint, y_mid);
+    static float solve_mpc(double y_waypoint, double x_waypoint, float y_upper, float y_lower){
+        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint, y_upper, y_lower);
         auto num_iters = solve();
 
         if(!work.converged){

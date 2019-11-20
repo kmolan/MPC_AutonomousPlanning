@@ -48,8 +48,9 @@ mpcBlock::predictor_class::predictor_class() {
 
     current_scan.angle_increment = 0.00582316;
     current_scan.angle_sweep = 6.28319;
-    current_scan.left_angle = round(0.625*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 45 degree
-    current_scan.right_angle = round(0.375*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 45 degree angle
+    current_scan.zero_angle = round(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 0 degree
+    current_scan.left_angle = round(0.75*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 90 degree
+    current_scan.right_angle = round(0.25*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 90 degree angle
 
     current_scan.y_lower_distance = -1;
     current_scan.y_upper_distance = 1;
@@ -104,7 +105,13 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
 
     mpcBlock::predictor_class::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
-    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x, current_scan.y_mid_distance);
+    if(current_scan.y_mid_distance>0.5){
+        current_scan.y_mid_distance=0;
+    }
+
+    rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance;
+
+    steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x, current_scan.y_upper_distance, current_scan.y_lower_distance);
     std::cout << "steering angle: " << steering_angle << std::endl;
 
     marker.header.frame_id = "map";
@@ -152,76 +159,99 @@ void mpcBlock::predictor_class::rotate_points(const double theta, float *distX, 
 void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
 
     current_scan.horizontal_scans = {};
-
-    for(int i = current_scan.right_angle; i<current_scan.left_angle; i++){
-        current_scan.horizontal_scans.push_back(scan_msg->ranges[i]);
-    }
-
     int max_count = INT_MIN;
     int start_index = 0;
-    int i = 0;
-    float lower_threshold = 2.5;
-    int x_lower_index = 0;
-    int x_upper_index = 0;
+    float lower_threshold = 1.0;
+    int x_lower_index = current_scan.right_angle;
+    int x_upper_index = current_scan.left_angle;
 
-    while(i < current_scan.horizontal_scans.size()){
-        int count=0;
-
-        if (lower_threshold <= current_scan.horizontal_scans[i]) {
-            start_index = i;
-            int j = i;
-
-            while (j < current_scan.horizontal_scans.size()) {
-
-                if (lower_threshold > current_scan.horizontal_scans[j]) {
-                    break;
-                }
-                else {
-                    count++;
-                }
-
-                j++;
-            }
-
-            if (count > max_count) {
-                max_count = count;
-                x_lower_index = start_index;
-                x_upper_index = j;
-            }
-
-            i = start_index + 1;
-        }
-
-        else {
-            i++;
+    for(int i = current_scan.zero_angle; i>=current_scan.right_angle; i--){
+        if(scan_msg->ranges[i] < lower_threshold){
+            x_lower_index = i;
+            break;
         }
     }
 
-    std::cout << "1 lower: " << x_lower_index << std::endl;
-    std::cout << "1 upper: " << x_upper_index << std::endl;
+    for(int i = current_scan.zero_angle; i<=current_scan.left_angle; i++){
+        if(scan_msg->ranges[i] < lower_threshold){
+            x_upper_index = i;
+            break;
+        }
+    }
 
-    current_scan.y_lower_distance = 0.15 + current_scan.horizontal_scans[x_lower_index]*std::sin(-Pi/4.0 + x_lower_index*current_scan.angle_increment);
-    current_scan.y_upper_distance = -0.15 + current_scan.horizontal_scans[x_upper_index-1]*std::sin(-Pi/4.0 + x_upper_index*current_scan.angle_increment);
+    std::cout << "u index: " << 180*(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
+    std::cout << "l index: " << 180*(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
+    std::cout << "sin u index: " << std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) << std::endl;
+    std::cout << "sin l index: " << std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) << std::endl;
+    std::cout << "scan msg lower :" << scan_msg->ranges[x_lower_index] << std::endl;
+    std::cout << "scan msg upper :" << scan_msg->ranges[x_upper_index-1] << std::endl;
+
+//    for(int i = current_scan.right_angle; i<current_scan.left_angle; i++){
+//        current_scan.horizontal_scans.push_back(scan_msg->ranges[i]);
+//    }
+//
+//    std::cout << "s index: " << current_scan.horizontal_scans.size() << std::endl;
+//    int i=0;
+//    while(i < current_scan.horizontal_scans.size()){
+//        int count = 0;
+//        if(current_scan.horizontal_scans[i] > 0.0){
+//            start_index = i;
+//            int j = i+1;
+//            while(j < current_scan.horizontal_scans.size()){
+//                if(current_scan.horizontal_scans[j] < 0.0){
+//                    break;
+//                }
+//                else{
+//                    count++;
+//                    if(count > max_count){
+//                        max_count = count;
+//                        x_upper_index = j;
+//                        x_lower_index = start_index;
+//                    }
+//                }
+//                j++;
+//            }
+//            i = j;
+//        }
+//        else{
+//            i++;
+//        }
+//    }
+
+    current_scan.y_lower_distance = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
+    current_scan.y_upper_distance =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
+
+    if(current_scan.y_lower_distance > -0.2){
+        current_scan.y_lower_distance = 0;
+    }
+
+    if(current_scan.y_upper_distance < 0.2){
+        current_scan.y_upper_distance = 0;
+    }
 
     current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
 
-    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
+    if(current_scan.y_lower_distance > -0.15 && current_scan.y_upper_distance < 0.15){
+        current_scan.y_mid_distance = 0.4;
+    }
+
     std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
+    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
     std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
 }
 
-double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x, const float y_mid){
+double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x, const float y_upper, const float y_lower){
 
     run_cvxgenOptimization temp_class;
 
-    return temp_class.solve_mpc(waypoint_y, waypoint_x, y_mid);
+    return temp_class.solve_mpc(waypoint_y, waypoint_x, y_upper, y_lower);
 }
 
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 
     ackermann_msgs::AckermannDriveStamped drive_msg;
     drive_msg.drive.steering_angle = u; //Sets steering angle
-    drive_msg.drive.speed = high_velocity - (high_velocity - low_velocity) * fabs(u) / steering_limit; //Zirui's magical interpolation function
+    drive_msg.drive.speed = high_velocity - (high_velocity - low_velocity) * std::abs(u) / steering_limit; //Zirui's magical interpolation function
     drive_pub.publish(drive_msg); //Sets velocity based on steering angle conditions
 
 }

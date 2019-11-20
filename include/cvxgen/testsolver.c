@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-11-18 22:35:31 -0500.  */
+/* Produced by CVXGEN, 2019-11-20 04:24:25 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -62,18 +62,20 @@ void load_default_data(void) {
   params.R[2] = 0;
   params.R[1] = 0;
   params.R[3] = 1.2072428781381868;
-  params.s[0] = 0.10293440660165976;
-  params.y_mid[0] = -0.23676062539745413;
   /* Make this a diagonal PSD matrix, even though it's not diagonal. */
-  params.Q_final[0] = 1.0298762108785668;
+  params.Q_final[0] = 1.0514672033008299;
   params.Q_final[2] = 0;
   params.Q_final[1] = 0;
-  params.Q_final[3] = 1.456833224394711;
-  params.A[0] = 0.596576190459043;
-  params.A[1] = -0.8860508694080989;
-  params.A[2] = 0.7050196079205251;
-  params.A[3] = 0.3634512696654033;
-  params.B[0] = -1.9040724704913385;
-  params.u_max[0] = 1.117708175981764;
-  params.u_max[1] = 0.5185048938149308;
+  params.Q_final[3] = 1.4408098436506365;
+  params.A[0] = -1.8804951564857322;
+  params.A[1] = -0.17266710242115568;
+  params.A[2] = 0.596576190459043;
+  params.A[3] = -0.8860508694080989;
+  params.B[0] = 0.7050196079205251;
+  params.u_max[0] = 1.1817256348327017;
+  params.u_max[1] = 0.04796376475433073;
+  params.y_upper[0] = 0.23541635196352795;
+  params.y_upper[1] = -0.9629902123701384;
+  params.y_lower[0] = -0.3395952119597214;
+  params.y_lower[1] = -0.865899672914725;
 }
