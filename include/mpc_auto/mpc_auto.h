@@ -18,6 +18,7 @@
 #include <cmath>
 #include <Eigen/Geometry>
 #include <Eigen/Dense>
+#include "cvxgen_mpc.h"
 
 
 namespace mpcBlock {
@@ -30,8 +31,8 @@ namespace mpcBlock {
             double angle_sweep;
 
             int zero_angle; //0 degree
-            int left_angle; //45 degree
-            int right_angle; //45 degree
+            int left_angle; //90 degree
+            int right_angle; //90 degree
 
             float y_upper_distance;
             float y_lower_distance;
@@ -64,12 +65,9 @@ namespace mpcBlock {
         ros::Subscriber pose_sub; //subscribes to the vehicle pose
 
         //WayPoint data containers
-        std::vector <std::vector<float>> waypoint_data;
-        std::vector <std::vector<float>> waypoint_data_long;
+        std::vector <std::vector<float>> waypoint_data_full;
         std::vector<float> waypoint_data1;
         std::vector<float> waypoint_data2;
-        std::vector<float> waypoint_data3;
-        int waypoint_length = 0;
         float rot_waypoint_x = 0;
         float rot_waypoint_y = 0;
 

@@ -34,20 +34,12 @@ mpcBlock::predictor_class::predictor_class() {
     n.getParam("R_matrix_1", R_matrix_1);
     n.getParam("B_matrix", B_matrix);
 
-    waypoint_data_long = mpcBlock::read_way_point_CSVfile(waypoint_filename);
+    waypoint_data_full = mpcBlock::read_way_point_CSVfile(waypoint_filename);
 
-    waypoint_length = waypoint_data_long[0].size();
-
-    for (int i = 0; i < waypoint_length; i++) { //250 is the sample length
-        waypoint_data1.push_back(waypoint_data_long[0][i]);
-        waypoint_data2.push_back(waypoint_data_long[1][i]);
-        waypoint_data3.push_back(waypoint_data_long[2][i]);
+    for (int i = 0; i < waypoint_data_full[0].size(); i++) {
+        waypoint_data1.push_back(waypoint_data_full[0][i]);
+        waypoint_data2.push_back(waypoint_data_full[1][i]);
     }
-
-    waypoint_data.push_back(waypoint_data1);
-    waypoint_data.push_back(waypoint_data2);
-    waypoint_data.push_back(waypoint_data3);
-    waypoint_length = waypoint_data[0].size();
 
     pose_sub = n.subscribe(pose_topic, 1, &mpcBlock::predictor_class::pose_callback, this);
     laser_sub = n.subscribe(laser_topic, 1, &mpcBlock::predictor_class::lidar_callback, this);
@@ -57,9 +49,9 @@ mpcBlock::predictor_class::predictor_class() {
 
     current_scan.angle_increment = 0.00582316;
     current_scan.angle_sweep = 6.28319;
-    current_scan.zero_angle = round(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 0 degree
-    current_scan.left_angle = round(0.75*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 90 degree
-    current_scan.right_angle = round(0.25*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 90 degree angle
+    current_scan.zero_angle = int(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 0 degree
+    current_scan.left_angle = int(0.75*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 90 degree
+    current_scan.right_angle = int(0.25*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 90 degree angle
 
     current_scan.y_lower_distance = -1;
     current_scan.y_upper_distance = 1;
@@ -93,11 +85,11 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
     float waypoint_x;
     float waypoint_y;
     float distance_min = FLT_MAX;
-    float ind_min = 0;
+    int ind_min = 0;
 
-    for(int i = 0; i < waypoint_length; i++){
-        float distance = sqrt(std::pow(currentX - waypoint_data[0][i], 2) + std::pow(currentY - waypoint_data[1][i], 2) );
-        rot_waypoint_x = (waypoint_data[0][i] - currentX) * cos(-currentTheta) - (waypoint_data[1][i] - currentY) * sin(-currentTheta); //anmol: make it a rotation matrix
+    for(int i = 0; i < waypoint_data1.size(); i++){
+        float distance = sqrt(std::pow(currentX - waypoint_data1[i], 2) + std::pow(currentY - waypoint_data2[i], 2) );
+        rot_waypoint_x = (waypoint_data1[i] - currentX) * cos(-currentTheta) - (waypoint_data2[i] - currentY) * sin(-currentTheta); //anmol: make it a rotation matrix
 
         if (distance_min > distance && distance >= look_ahead_distance && rot_waypoint_x > 0) {
             distance_min = distance;
@@ -106,8 +98,8 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
     }
 
     last_index = ind_min;
-    waypoint_x = waypoint_data[0][last_index];
-    waypoint_y = waypoint_data[1][last_index];
+    waypoint_x = waypoint_data1[last_index];
+    waypoint_y = waypoint_data2[last_index];
 
     rot_waypoint_x = waypoint_x - currentX;
     rot_waypoint_y = waypoint_y - currentY;
@@ -215,9 +207,9 @@ void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::Con
 
 double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x){
 
-    run_cvxgenOptimization temp_class(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix);
+    (run_cvxgenOptimization(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix));
 
-    return temp_class.solve_mpc(waypoint_y, waypoint_x);
+    return run_cvxgenOptimization::solve_mpc(waypoint_y, waypoint_x);
 }
 
 void mpcBlock::predictor_class::setAngleAndVelocity(double u) {

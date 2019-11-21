@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cvxgen/solver.h>
+
 class run_cvxgenOptimization{
 public:
 
@@ -9,7 +11,7 @@ public:
         run_cvxgenOptimization::generate_matrices(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix);
     }
 
-    void generate_matrices(const double Q_matrix_1, const double Q_matrix_2, const double R_matrix_1, const double B_matrix){
+    static void generate_matrices(const double Q_matrix_1, const double Q_matrix_2, const double R_matrix_1, const double B_matrix){
 
         params.A[0] = 1;
         params.A[1] = 0;
@@ -41,13 +43,13 @@ public:
         params.u_max[1] = 1;
     }
 
-    void update_model(double y_waypoint, double x_waypoint){
+    static void update_model(double y_waypoint, double x_waypoint){
         //goal point (waypoint for now)
         params.w[0] = y_waypoint;
         params.w[1] = x_waypoint;
     }
 
-    float solve_mpc(double y_waypoint, double x_waypoint){
+    static float solve_mpc(double y_waypoint, double x_waypoint){
         run_cvxgenOptimization::update_model(y_waypoint, x_waypoint);
         auto num_iters = solve();
 
