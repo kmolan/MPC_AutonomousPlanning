@@ -1,5 +1,3 @@
-//consistent data types, not everything double!
-
 #include "mpc_auto/read_way_point_CSVfile.h"
 #include "mpc_auto/mpc_auto.h"
 #include "cvxgen/solver.h"
@@ -15,24 +13,7 @@ mpcBlock::predictor_class::predictor_class() {
 
     n = ros::NodeHandle(); //Initialize node
 
-    //Get parameters
-    n.getParam("waypoint_filename", waypoint_filename);
-    n.getParam("pose_topic", pose_topic);
-    n.getParam("laser_topic", laser_topic);
-    n.getParam("drive_topic", drive_topic);
-    n.getParam("visualization_topic", visualization_topic);
-    n.getParam("steering_limit", steering_limit);
-    n.getParam("high_velocity", high_velocity);
-    n.getParam("low_velocity", low_velocity);
-    n.getParam("lower_threshold", lower_threshold);
-    n.getParam("midline_threshold", midline_threshold);
-    n.getParam("breakneck_steering", breakneck_steering);
-    n.getParam("min_halfspace_width",min_halfspace_width);
-    n.getParam("breakneck_steering_threshold", breakneck_steering_threshold);
-    n.getParam("Q_matrix_1", Q_matrix_1);
-    n.getParam("Q_matrix_2" ,Q_matrix_2);
-    n.getParam("R_matrix_1", R_matrix_1);
-    n.getParam("B_matrix", B_matrix);
+    GetParams();
 
     waypoint_data_full = mpcBlock::read_way_point_CSVfile(waypoint_filename);
 
@@ -41,8 +22,8 @@ mpcBlock::predictor_class::predictor_class() {
         waypoint_data2.push_back(waypoint_data_full[1][i]);
     }
 
-    pose_sub = n.subscribe(pose_topic, 1, &mpcBlock::predictor_class::pose_callback, this);
-    laser_sub = n.subscribe(laser_topic, 1, &mpcBlock::predictor_class::lidar_callback, this);
+    localization_sub = n.subscribe(pose_topic, 1, &mpcBlock::predictor_class::pose_callback, this);
+    lidar_sub = n.subscribe(laser_topic, 1, &mpcBlock::predictor_class::lidar_callback, this);
 
     drive_pub = n.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1); //publishes steering angle and velocity
     vis_pub = n.advertise<visualization_msgs::Marker>(visualization_topic, 0);
@@ -73,6 +54,29 @@ mpcBlock::predictor_class::predictor_class() {
     marker.color.g = 0.0;
     marker.color.b = 0.0;
     marker.id = 0;
+}
+
+void mpcBlock::predictor_class::GetParams() {
+
+    //Get parameters
+    n.getParam("waypoint_filename", waypoint_filename);
+    n.getParam("look_ahead_distance", look_ahead_distance);
+    n.getParam("pose_topic", pose_topic);
+    n.getParam("laser_topic", laser_topic);
+    n.getParam("drive_topic", drive_topic);
+    n.getParam("visualization_topic", visualization_topic);
+    n.getParam("steering_limit", steering_limit);
+    n.getParam("high_velocity", high_velocity);
+    n.getParam("low_velocity", low_velocity);
+    n.getParam("lower_threshold", lower_threshold);
+    n.getParam("midline_threshold", midline_threshold);
+    n.getParam("breakneck_steering", breakneck_steering);
+    n.getParam("min_halfspace_width",min_halfspace_width);
+    n.getParam("breakneck_steering_threshold", breakneck_steering_threshold);
+    n.getParam("Q_matrix_1", Q_matrix_1);
+    n.getParam("Q_matrix_2" ,Q_matrix_2);
+    n.getParam("R_matrix_1", R_matrix_1);
+    n.getParam("B_matrix", B_matrix);
 }
 
 void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg) { //
@@ -113,7 +117,7 @@ void mpcBlock::predictor_class::pose_callback(const geometry_msgs::PoseStamped::
     rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance; //offset by midline
 
     steering_angle = mpcBlock::predictor_class::do_MPC(rot_waypoint_y, rot_waypoint_x);
-    std::cout << "steering angle: " << steering_angle << std::endl;
+    ROS_INFO("steering angle: %f", steering_angle);
 
     marker.header.frame_id = "map";
     marker.pose.position.x = waypoint_x;
@@ -176,13 +180,6 @@ void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::Con
         }
     }
 
-//    std::cout << "u index: " << 180*(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
-//    std::cout << "l index: " << 180*(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
-//    std::cout << "sin u index: " << std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) << std::endl;
-//    std::cout << "sin l index: " << std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) << std::endl;
-//    std::cout << "scan msg lower :" << scan_msg->ranges[x_lower_index] << std::endl;
-//    std::cout << "scan msg upper :" << scan_msg->ranges[x_upper_index-1] << std::endl;
-
     current_scan.y_lower_distance = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
     current_scan.y_upper_distance =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
 
@@ -199,10 +196,6 @@ void mpcBlock::predictor_class::lidar_callback(const sensor_msgs::LaserScan::Con
     if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
         current_scan.y_mid_distance = breakneck_steering;
     }
-
-//    std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
-//    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
-//    std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
 }
 
 double mpcBlock::predictor_class::do_MPC(const float waypoint_y, const float waypoint_x){
@@ -221,9 +214,24 @@ void mpcBlock::predictor_class::setAngleAndVelocity(double u) {
 
 }
 
+void mpcBlock::predictor_class::debug() { //Prints stuff on console for debugging. Commented out code is temporarily not being debugged
+
+    //    std::cout << "u index: " << 180*(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
+    //    std::cout << "l index: " << 180*(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size()))/Pi << std::endl;
+    //    std::cout << "sin u index: " << std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) << std::endl;
+    //    std::cout << "sin l index: " << std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) << std::endl;
+    //    std::cout << "scan msg lower :" << scan_msg->ranges[x_lower_index] << std::endl;
+    //    std::cout << "scan msg upper :" << scan_msg->ranges[x_upper_index-1] << std::endl;
+
+    //    std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
+    //    std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
+    //    std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
+
+}
+
 int main(int argc, char ** argv) {
     ros::init(argc, argv, "mpc_auto_node");
-    mpcBlock::predictor_class pp;
+    mpcBlock::predictor_class mpc_class_init;
     ros::spin();
     return 0;
 }
