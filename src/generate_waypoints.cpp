@@ -1,3 +1,5 @@
+/**Reads Waypoint CSV Files and generates optimum waypoint based on vehicle coordinates**/
+
 #include "mpc_auto/read_waypoints.h"
 #include "mpc_auto/generate_waypoints.h"
 

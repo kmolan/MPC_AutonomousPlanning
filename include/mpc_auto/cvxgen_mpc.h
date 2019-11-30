@@ -1,4 +1,4 @@
-//header file for setting and generating mpc output
+/**Helper class to set and initiate the MPC optimization routine**/
 
 #pragma once
 

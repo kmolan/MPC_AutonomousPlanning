@@ -1,3 +1,5 @@
+/**Optional node for visualization of the waypoint**/
+
 #include "mpc_auto/waypoint_visualization.h"
 
 mpcBlock::visualizeWaypoint::visualizeWaypoint() {

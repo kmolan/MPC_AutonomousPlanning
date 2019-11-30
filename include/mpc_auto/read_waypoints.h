@@ -1,3 +1,5 @@
+/**Helper function that reads CSV file and converts into std::vectors**/
+
 #pragma once
 
 #include <ros/ros.h>

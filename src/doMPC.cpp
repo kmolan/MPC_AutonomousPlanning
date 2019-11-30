@@ -1,3 +1,5 @@
+/** Looks at desired goal, and generates optimum sterring input based on least collisions **/
+
 #include "mpc_auto/doMPC.h"
 
 Vars vars;
