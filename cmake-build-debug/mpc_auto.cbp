@@ -27,8 +27,8 @@
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="mpc_auto_node">
-				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/mpc_auto_node" prefix_auto="0" extension_auto="0"/>
+			<Target title="doMPC">
+				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/doMPC" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -52,14 +52,14 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 mpc_auto_node"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 doMPC"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
-			<Target title="mpc_auto_node/fast">
-				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/mpc_auto_node" prefix_auto="0" extension_auto="0"/>
+			<Target title="doMPC/fast">
+				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/doMPC" prefix_auto="0" extension_auto="0"/>
 				<Option working_dir="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
@@ -83,7 +83,69 @@
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 mpc_auto_node/fast"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 doMPC/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="waypoint_visualization">
+				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/waypoint_visualization" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DROS_BUILD_SHARED_LIBS=1"/>
+					<Add option="-DROS_PACKAGE_NAME=&quot;mpc_auto&quot;"/>
+					<Add option="-DROSCONSOLE_BACKEND_LOG4CXX"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include/cvxgen"/>
+					<Add directory="/opt/ros/melodic/include"/>
+					<Add directory="/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"/>
+					<Add directory="/usr/include/eigen3"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 waypoint_visualization"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="waypoint_visualization/fast">
+				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/waypoint_visualization" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DROS_BUILD_SHARED_LIBS=1"/>
+					<Add option="-DROS_PACKAGE_NAME=&quot;mpc_auto&quot;"/>
+					<Add option="-DROSCONSOLE_BACKEND_LOG4CXX"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include/cvxgen"/>
+					<Add directory="/opt/ros/melodic/include"/>
+					<Add directory="/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"/>
+					<Add directory="/usr/include/eigen3"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 waypoint_visualization/fast"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -294,6 +356,68 @@
 				<Option type="4"/>
 				<MakeCommands>
 					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 std_msgs_generate_messages_lisp"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="generate_waypoints">
+				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/generate_waypoints" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DROS_BUILD_SHARED_LIBS=1"/>
+					<Add option="-DROS_PACKAGE_NAME=&quot;mpc_auto&quot;"/>
+					<Add option="-DROSCONSOLE_BACKEND_LOG4CXX"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include/cvxgen"/>
+					<Add directory="/opt/ros/melodic/include"/>
+					<Add directory="/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"/>
+					<Add directory="/usr/include/eigen3"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 generate_waypoints"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="generate_waypoints/fast">
+				<Option output="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto/generate_waypoints" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel/lib/mpc_auto"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DROS_BUILD_SHARED_LIBS=1"/>
+					<Add option="-DROS_PACKAGE_NAME=&quot;mpc_auto&quot;"/>
+					<Add option="-DROSCONSOLE_BACKEND_LOG4CXX"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include"/>
+					<Add directory="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/include/cvxgen"/>
+					<Add directory="/opt/ros/melodic/include"/>
+					<Add directory="/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"/>
+					<Add directory="/usr/include/eigen3"/>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 generate_waypoints/fast"/>
 					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
 					<Clean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 					<DistClean command="/usr/bin/make -j8 -f &quot;/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
@@ -916,8 +1040,14 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/src/mpc_auto.cpp">
-			<Option target="mpc_auto_node"/>
+		<Unit filename="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/src/doMPC.cpp">
+			<Option target="doMPC"/>
+		</Unit>
+		<Unit filename="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/src/generate_waypoints.cpp">
+			<Option target="generate_waypoints"/>
+		</Unit>
+		<Unit filename="/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/src/waypoint_visualization.cpp">
+			<Option target="waypoint_visualization"/>
 		</Unit>
 		<Unit filename="/usr/src/googletest/googlemock/src/gmock-all.cc">
 			<Option target="gmock_main"/>

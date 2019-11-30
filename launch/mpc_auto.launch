@@ -3,5 +3,7 @@
   <rosparam command="load" file="$(find mpc_auto)/config/mpc_planning_params.yaml" />
 
   <node name="mpc_auto_node" pkg="mpc_auto" type="mpc_auto_node" respawn="true" output="screen" />
+  <node name="waypoint_visualization" pkg="mpc_auto" type="waypoint_visualization" respawn="true" output="screen" />
+  <node name="doMPC" pkg="mpc_auto" type="doMPC" respawn="true" output="screen" />
 
 </launch>

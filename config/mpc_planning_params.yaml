@@ -5,7 +5,11 @@ waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs
 pose_topic: "gt_pose" #"pf/pose/odom"
 drive_topic: "drive"
 laser_topic: "scan"
+
+#Visualization stuff
 visualization_topic: "visualization_marker"
+marker_x_topic: "chosen_x_waypoint"
+marker_y_topic: "chosen_y_waypoint"
 
 #Physical parameters
 steering_limit: 0.4189
@@ -13,7 +17,7 @@ high_velocity: 6
 low_velocity: 1
 
 #waypoint parameters
-look_ahead_distance: 1.0
+look_ahead_distance: 0.7
 
 #MPC Tuning parameters
 lower_threshold: 1.0 #The threshold that decides if there's an obstacle (should prolly make it velocity based)

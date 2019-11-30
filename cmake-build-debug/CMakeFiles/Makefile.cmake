@@ -242,7 +242,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/mpc_auto_node.dir/DependInfo.cmake"
+  "CMakeFiles/doMPC.dir/DependInfo.cmake"
+  "CMakeFiles/waypoint_visualization.dir/DependInfo.cmake"
   "CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/DependInfo.cmake"
   "CMakeFiles/tf2_msgs_generate_messages_py.dir/DependInfo.cmake"
   "CMakeFiles/tf2_msgs_generate_messages_lisp.dir/DependInfo.cmake"
@@ -261,6 +262,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/nav_msgs_generate_messages_py.dir/DependInfo.cmake"
   "CMakeFiles/std_msgs_generate_messages_nodejs.dir/DependInfo.cmake"
   "CMakeFiles/std_msgs_generate_messages_lisp.dir/DependInfo.cmake"
+  "CMakeFiles/generate_waypoints.dir/DependInfo.cmake"
   "CMakeFiles/sensor_msgs_generate_messages_cpp.dir/DependInfo.cmake"
   "CMakeFiles/geometry_msgs_generate_messages_py.dir/DependInfo.cmake"
   "CMakeFiles/tests.dir/DependInfo.cmake"

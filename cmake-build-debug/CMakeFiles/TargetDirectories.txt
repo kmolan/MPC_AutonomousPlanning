@@ -1,5 +1,6 @@
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/list_install_components.dir
-/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/mpc_auto_node.dir
+/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/doMPC.dir
+/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/waypoint_visualization.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/install/strip.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/tf2_msgs_generate_messages_py.dir
@@ -21,6 +22,7 @@
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/nav_msgs_generate_messages_py.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/std_msgs_generate_messages_nodejs.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/std_msgs_generate_messages_lisp.dir
+/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/generate_waypoints.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/sensor_msgs_generate_messages_cpp.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/geometry_msgs_generate_messages_py.dir
 /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/tests.dir

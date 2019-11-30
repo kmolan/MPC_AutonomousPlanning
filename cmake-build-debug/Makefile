@@ -168,17 +168,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named mpc_auto_node
+# Target rules for targets named doMPC
 
 # Build rule for target.
-mpc_auto_node: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 mpc_auto_node
-.PHONY : mpc_auto_node
+doMPC: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 doMPC
+.PHONY : doMPC
 
 # fast build rule for target.
-mpc_auto_node/fast:
-	$(MAKE) -f CMakeFiles/mpc_auto_node.dir/build.make CMakeFiles/mpc_auto_node.dir/build
-.PHONY : mpc_auto_node/fast
+doMPC/fast:
+	$(MAKE) -f CMakeFiles/doMPC.dir/build.make CMakeFiles/doMPC.dir/build
+.PHONY : doMPC/fast
+
+#=============================================================================
+# Target rules for targets named waypoint_visualization
+
+# Build rule for target.
+waypoint_visualization: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 waypoint_visualization
+.PHONY : waypoint_visualization
+
+# fast build rule for target.
+waypoint_visualization/fast:
+	$(MAKE) -f CMakeFiles/waypoint_visualization.dir/build.make CMakeFiles/waypoint_visualization.dir/build
+.PHONY : waypoint_visualization/fast
 
 #=============================================================================
 # Target rules for targets named tf2_msgs_generate_messages_nodejs
@@ -413,6 +426,19 @@ std_msgs_generate_messages_lisp: cmake_check_build_system
 std_msgs_generate_messages_lisp/fast:
 	$(MAKE) -f CMakeFiles/std_msgs_generate_messages_lisp.dir/build.make CMakeFiles/std_msgs_generate_messages_lisp.dir/build
 .PHONY : std_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named generate_waypoints
+
+# Build rule for target.
+generate_waypoints: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 generate_waypoints
+.PHONY : generate_waypoints
+
+# fast build rule for target.
+generate_waypoints/fast:
+	$(MAKE) -f CMakeFiles/generate_waypoints.dir/build.make CMakeFiles/generate_waypoints.dir/build
+.PHONY : generate_waypoints/fast
 
 #=============================================================================
 # Target rules for targets named sensor_msgs_generate_messages_cpp
@@ -947,32 +973,86 @@ gtest/fast:
 	$(MAKE) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
-src/mpc_auto.o: src/mpc_auto.cpp.o
+src/doMPC.o: src/doMPC.cpp.o
 
-.PHONY : src/mpc_auto.o
+.PHONY : src/doMPC.o
 
 # target to build an object file
-src/mpc_auto.cpp.o:
-	$(MAKE) -f CMakeFiles/mpc_auto_node.dir/build.make CMakeFiles/mpc_auto_node.dir/src/mpc_auto.cpp.o
-.PHONY : src/mpc_auto.cpp.o
+src/doMPC.cpp.o:
+	$(MAKE) -f CMakeFiles/doMPC.dir/build.make CMakeFiles/doMPC.dir/src/doMPC.cpp.o
+.PHONY : src/doMPC.cpp.o
 
-src/mpc_auto.i: src/mpc_auto.cpp.i
+src/doMPC.i: src/doMPC.cpp.i
 
-.PHONY : src/mpc_auto.i
+.PHONY : src/doMPC.i
 
 # target to preprocess a source file
-src/mpc_auto.cpp.i:
-	$(MAKE) -f CMakeFiles/mpc_auto_node.dir/build.make CMakeFiles/mpc_auto_node.dir/src/mpc_auto.cpp.i
-.PHONY : src/mpc_auto.cpp.i
+src/doMPC.cpp.i:
+	$(MAKE) -f CMakeFiles/doMPC.dir/build.make CMakeFiles/doMPC.dir/src/doMPC.cpp.i
+.PHONY : src/doMPC.cpp.i
 
-src/mpc_auto.s: src/mpc_auto.cpp.s
+src/doMPC.s: src/doMPC.cpp.s
 
-.PHONY : src/mpc_auto.s
+.PHONY : src/doMPC.s
 
 # target to generate assembly for a file
-src/mpc_auto.cpp.s:
-	$(MAKE) -f CMakeFiles/mpc_auto_node.dir/build.make CMakeFiles/mpc_auto_node.dir/src/mpc_auto.cpp.s
-.PHONY : src/mpc_auto.cpp.s
+src/doMPC.cpp.s:
+	$(MAKE) -f CMakeFiles/doMPC.dir/build.make CMakeFiles/doMPC.dir/src/doMPC.cpp.s
+.PHONY : src/doMPC.cpp.s
+
+src/generate_waypoints.o: src/generate_waypoints.cpp.o
+
+.PHONY : src/generate_waypoints.o
+
+# target to build an object file
+src/generate_waypoints.cpp.o:
+	$(MAKE) -f CMakeFiles/generate_waypoints.dir/build.make CMakeFiles/generate_waypoints.dir/src/generate_waypoints.cpp.o
+.PHONY : src/generate_waypoints.cpp.o
+
+src/generate_waypoints.i: src/generate_waypoints.cpp.i
+
+.PHONY : src/generate_waypoints.i
+
+# target to preprocess a source file
+src/generate_waypoints.cpp.i:
+	$(MAKE) -f CMakeFiles/generate_waypoints.dir/build.make CMakeFiles/generate_waypoints.dir/src/generate_waypoints.cpp.i
+.PHONY : src/generate_waypoints.cpp.i
+
+src/generate_waypoints.s: src/generate_waypoints.cpp.s
+
+.PHONY : src/generate_waypoints.s
+
+# target to generate assembly for a file
+src/generate_waypoints.cpp.s:
+	$(MAKE) -f CMakeFiles/generate_waypoints.dir/build.make CMakeFiles/generate_waypoints.dir/src/generate_waypoints.cpp.s
+.PHONY : src/generate_waypoints.cpp.s
+
+src/waypoint_visualization.o: src/waypoint_visualization.cpp.o
+
+.PHONY : src/waypoint_visualization.o
+
+# target to build an object file
+src/waypoint_visualization.cpp.o:
+	$(MAKE) -f CMakeFiles/waypoint_visualization.dir/build.make CMakeFiles/waypoint_visualization.dir/src/waypoint_visualization.cpp.o
+.PHONY : src/waypoint_visualization.cpp.o
+
+src/waypoint_visualization.i: src/waypoint_visualization.cpp.i
+
+.PHONY : src/waypoint_visualization.i
+
+# target to preprocess a source file
+src/waypoint_visualization.cpp.i:
+	$(MAKE) -f CMakeFiles/waypoint_visualization.dir/build.make CMakeFiles/waypoint_visualization.dir/src/waypoint_visualization.cpp.i
+.PHONY : src/waypoint_visualization.cpp.i
+
+src/waypoint_visualization.s: src/waypoint_visualization.cpp.s
+
+.PHONY : src/waypoint_visualization.s
+
+# target to generate assembly for a file
+src/waypoint_visualization.cpp.s:
+	$(MAKE) -f CMakeFiles/waypoint_visualization.dir/build.make CMakeFiles/waypoint_visualization.dir/src/waypoint_visualization.cpp.s
+.PHONY : src/waypoint_visualization.cpp.s
 
 # Help Target
 help:
@@ -981,7 +1061,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... list_install_components"
-	@echo "... mpc_auto_node"
+	@echo "... doMPC"
+	@echo "... waypoint_visualization"
 	@echo "... tf2_msgs_generate_messages_nodejs"
 	@echo "... install/strip"
 	@echo "... tf2_msgs_generate_messages_py"
@@ -1003,6 +1084,7 @@ help:
 	@echo "... nav_msgs_generate_messages_py"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_lisp"
+	@echo "... generate_waypoints"
 	@echo "... sensor_msgs_generate_messages_cpp"
 	@echo "... geometry_msgs_generate_messages_py"
 	@echo "... tests"
@@ -1047,9 +1129,15 @@ help:
 	@echo "... gmock"
 	@echo "... gtest_main"
 	@echo "... gtest"
-	@echo "... src/mpc_auto.o"
-	@echo "... src/mpc_auto.i"
-	@echo "... src/mpc_auto.s"
+	@echo "... src/doMPC.o"
+	@echo "... src/doMPC.i"
+	@echo "... src/doMPC.s"
+	@echo "... src/generate_waypoints.o"
+	@echo "... src/generate_waypoints.i"
+	@echo "... src/generate_waypoints.s"
+	@echo "... src/waypoint_visualization.o"
+	@echo "... src/waypoint_visualization.i"
+	@echo "... src/waypoint_visualization.s"
 .PHONY : help
 
 
