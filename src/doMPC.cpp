@@ -15,12 +15,12 @@ mpcBlock::doMPC::doMPC() {
 
     getParams();
 
-    lidar_sub = nodeH.subscribe(laser_topic, 1, &mpcBlock::doMPC::lidar_callback, this);
+    lidar_sub = nodeH.subscribe(laser_topic, 10, &mpcBlock::doMPC::lidar_callback, this);
 
     drive_pub = nodeH.advertise<ackermann_msgs::AckermannDriveStamped>(drive_topic, 1); //publishes steering angle and velocity
 
-    marker_x_subs = nodeH.subscribe(marker_x_topic, 1, &mpcBlock::doMPC::marker_x_callback, this); //publish x-waypoint
-    marker_y_subs = nodeH.subscribe(marker_y_topic, 1, &mpcBlock::doMPC::marker_y_callback, this); //publish y-waypoint
+    marker_x_subs = nodeH.subscribe(marker_x_topic, 10, &mpcBlock::doMPC::marker_x_callback, this); //subscribe x-waypoint
+    marker_y_subs = nodeH.subscribe(marker_y_topic, 10, &mpcBlock::doMPC::marker_y_callback, this); //subscribe y-waypoint
 
     current_scan.angle_increment = 0.00582316;
     current_scan.angle_sweep = 6.28319;

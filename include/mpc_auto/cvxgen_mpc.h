@@ -17,6 +17,8 @@ public:
     run_cvxgenOptimization(const double Q_matrix_1, const double Q_matrix_2, const double R_matrix_1, const double B_matrix){
         set_defaults();
         setup_indexing();
+        settings.verbose = 0;
+        settings.eps = 1e-2;
         run_cvxgenOptimization::generate_matrices(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix);
     }
 

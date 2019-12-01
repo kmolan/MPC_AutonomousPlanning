@@ -26,7 +26,7 @@ breakneck_steering: 0.4 #Steering for when obstacle on waypoint (needs most tuni
 breakneck_steering_threshold: 0.15 #Half-space width for breakneck_steering activation
 min_halfspace_width: 0.2 #If halfspace on any side is less than this, set to zero. Prevents running into obstacle. Tune.
 
-Q_matrix_1: 16 #State cost on waypoint error (horizontal)
-Q_matrix_2: 16 #State cost on waypoint error (vertical)
-R_matrix_1: 2 #Input cost
+Q_matrix_1: 1 #State cost on waypoint error (horizontal)
+Q_matrix_2: 1 #State cost on waypoint error (vertical)
+R_matrix_1: 1 #Input cost
 B_matrix: 0.2334 #velocity*deltaT (deltaT = 1/30)

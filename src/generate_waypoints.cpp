@@ -102,7 +102,8 @@ void mpcBlock::generate_waypoints::publisherCallback() {
 }
 
 void mpcBlock::generate_waypoints::debug() { //Prints stuff on console for debugging
-
+    ROS_INFO("x %f", rot_waypoint_x);
+    ROS_INFO("y %f", rot_waypoint_y);
 }
 
 int main(int argc, char ** argv) {
