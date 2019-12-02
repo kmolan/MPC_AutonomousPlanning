@@ -3,6 +3,7 @@
 #pragma once
 
 #include <cvxgen/solver.h>
+#include <ros/ros.h>
 
 class run_cvxgenOptimization{
 public:
@@ -17,8 +18,6 @@ public:
     run_cvxgenOptimization(const double Q_matrix_1, const double Q_matrix_2, const double R_matrix_1, const double B_matrix){
         set_defaults();
         setup_indexing();
-        settings.verbose = 0;
-        settings.eps = 1e-2;
         run_cvxgenOptimization::generate_matrices(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix);
     }
 
@@ -59,6 +58,8 @@ public:
 
         params.u_max[0] = 0.4189;
         params.u_max[1] = 1;
+
+        params.S[0] = 5.0/50.0; //TODO: Tune
     }
 
     /*!
@@ -81,6 +82,9 @@ public:
     static float solve_mpc(double y_waypoint, double x_waypoint){
         run_cvxgenOptimization::update_model(y_waypoint, x_waypoint);
         auto num_iters = solve();
+
+        settings.verbose = 0;
+        settings.eps = 1e-2;
 
         if(!work.converged){
             ROS_ERROR("Optimization not converged");

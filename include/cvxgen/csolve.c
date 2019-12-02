@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-11-15 22:05:47 -0500.  */
+/* Produced by CVXGEN, 2019-12-01 02:43:25 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -215,6 +215,35 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     }
   }
   this_var_errors = 0;
+  xm = mxGetField(prhs[0], 0, "S");
+  if (xm == NULL) {
+    printf("could not find params.S.\n");
+  } else {
+    if (!((mxGetM(xm) == 1) && (mxGetN(xm) == 1))) {
+      printf("S must be size (1,1), not (%d,%d).\n", mxGetM(xm), mxGetN(xm));
+      this_var_errors++;
+    }
+    if (mxIsComplex(xm)) {
+      printf("parameter S must be real.\n");
+      this_var_errors++;
+    }
+    if (!mxIsClass(xm, "double")) {
+      printf("parameter S must be a full matrix of doubles.\n");
+      this_var_errors++;
+    }
+    if (mxIsSparse(xm)) {
+      printf("parameter S must be a full matrix.\n");
+      this_var_errors++;
+    }
+    if (this_var_errors == 0) {
+      dest = params.S;
+      src = mxGetPr(xm);
+      for (i = 0; i < 1; i++)
+        *dest++ = *src++;
+      valid_vars++;
+    }
+  }
+  this_var_errors = 0;
   xm = mxGetField(prhs[0], 0, "u_max");
   if (xm == NULL) {
     printf("could not find params.u_max.\n");
@@ -301,8 +330,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
       valid_vars++;
     }
   }
-  if (valid_vars != 8) {
-    printf("Error: %d parameters are invalid.\n", 8 - valid_vars);
+  if (valid_vars != 9) {
+    printf("Error: %d parameters are invalid.\n", 9 - valid_vars);
     mexErrMsgTxt("invalid parameters found.");
   }
   if (prepare_for_c) {
@@ -323,6 +352,8 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
       printf("  params.B[%d] = %.6g;\n", i, params.B[i]);
     for (i = 0; i < 2; i++)
       printf("  params.u_max[%d] = %.6g;\n", i, params.u_max[i]);
+    for (i = 0; i < 1; i++)
+      printf("  params.S[%d] = %.6g;\n", i, params.S[i]);
   }
   /* Perform the actual solve in here. */
   steps = solve();

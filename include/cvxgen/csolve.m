@@ -28,6 +28,16 @@
 %     abs(u_8) <= u_max
 %     abs(u_9) <= u_max
 %     abs(u_10) <= u_max
+%     norm(u_1(1) - u_0(1), inf) <= S
+%     norm(u_2(1) - u_1(1), inf) <= S
+%     norm(u_3(1) - u_2(1), inf) <= S
+%     norm(u_4(1) - u_3(1), inf) <= S
+%     norm(u_5(1) - u_4(1), inf) <= S
+%     norm(u_6(1) - u_5(1), inf) <= S
+%     norm(u_7(1) - u_6(1), inf) <= S
+%     norm(u_8(1) - u_7(1), inf) <= S
+%     norm(u_9(1) - u_8(1), inf) <= S
+%     norm(u_10(1) - u_9(1), inf) <= S
 %
 % with variables
 %      u_0   2 x 1
@@ -59,6 +69,7 @@
 %        Q   2 x 2    PSD
 %  Q_final   2 x 2    PSD
 %        R   2 x 2    PSD
+%        S   1 x 1    positive
 %    u_max   2 x 1    positive
 %        w   2 x 1
 %      x_0   2 x 1
@@ -72,7 +83,7 @@
 %
 % Specify params.A, ..., params.x_0, then run
 %   [vars, status] = csolve(params, settings)
-% Produced by CVXGEN, 2019-11-15 22:05:47 -0500.
+% Produced by CVXGEN, 2019-12-01 02:43:25 -0500.
 % CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
 % The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
 % CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial

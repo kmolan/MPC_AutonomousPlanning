@@ -95,6 +95,7 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
 
     if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
         current_scan.y_mid_distance = breakneck_steering;
+        ROS_WARN("breakneck steering implemented");
     }
 
     if(current_scan.y_mid_distance > midline_threshold){

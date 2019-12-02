@@ -14,7 +14,7 @@ marker_y_topic: "chosen_y_waypoint"
 #Physical parameters
 steering_limit: 0.4189
 high_velocity: 6
-low_velocity: 1
+low_velocity: 2
 
 #waypoint parameters
 look_ahead_distance: 0.7

@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-11-15 22:05:48 -0500.  */
+/* Produced by CVXGEN, 2019-12-01 02:43:26 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -74,4 +74,5 @@ void load_default_data(void) {
   params.B[0] = 0.7050196079205251;
   params.u_max[0] = 1.1817256348327017;
   params.u_max[1] = 0.04796376475433073;
+  params.S[0] = 1.117708175981764;
 }
