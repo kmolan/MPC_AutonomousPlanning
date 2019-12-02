@@ -10,7 +10,6 @@ Settings settings;
 #include "mpc_auto/cvxgen_mpc.h"
 
 mpcBlock::doMPC::doMPC() {
-
     nodeH = ros::NodeHandle(); //Initialize node
 
     getParams();
