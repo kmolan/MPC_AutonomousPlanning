@@ -1,7 +1,6 @@
 /snap/clion/92/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning
 -- Using CATKIN_DEVEL_PREFIX: /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/devel
--- Using CMAKE_PREFIX_PATH: /home/anmolk/mpc_ws/devel;/opt/ros/melodic
--- This workspace overlays: /home/anmolk/mpc_ws/devel;/opt/ros/melodic
+-- Using CMAKE_PREFIX_PATH: 
 -- Found PythonInterp: /usr/bin/python2 (found suitable version "2.7.15", minimum required is "2") 
 -- Using PYTHON_EXECUTABLE: /usr/bin/python2
 -- Using Debian Python package layout
@@ -15,7 +14,20 @@
 -- Using Python nosetests: /usr/bin/nosetests-2.7
 -- catkin 0.7.19
 -- BUILD_SHARED_LIBS is on
--- Using these message generators: gencpp;geneus;genlisp;gennodejs;genpy
--- Configuring done
--- Generating done
--- Build files have been written to: /home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug
+Traceback (most recent call last):
+  File "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/catkin_generated/generate_cached_setup.py", line 20, in <module>
+    from catkin.environment_cache import generate_environment_script
+ImportError: No module named catkin.environment_cache
+CMake Error at /opt/ros/melodic/share/catkin/cmake/safe_execute_process.cmake:11 (message):
+  execute_process(/usr/bin/python2
+  "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/catkin_generated/generate_cached_setup.py")
+  returned error code 1
+Call Stack (most recent call first):
+  /opt/ros/melodic/share/catkin/cmake/all.cmake:208 (safe_execute_process)
+  /opt/ros/melodic/share/catkin/cmake/catkinConfig.cmake:20 (include)
+  CMakeLists.txt:10 (find_package)
+
+
+-- Configuring incomplete, errors occurred!
+See also "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/CMakeOutput.log".
+See also "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/CMakeFiles/CMakeError.log".

@@ -140,7 +140,7 @@ int main(int argc, char ** argv) {
     ros::init(argc, argv, "doMPC");
     mpcBlock::doMPC mpc_class_init;
 
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(1000);
 
     while(ros::ok()){
 

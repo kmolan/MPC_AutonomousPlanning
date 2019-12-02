@@ -14,8 +14,8 @@ theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
-high_velocity: 0
-low_velocity: 0
+high_velocity: 6
+low_velocity: 1
 
 #waypoint parameters
 look_ahead_distance: 0.7

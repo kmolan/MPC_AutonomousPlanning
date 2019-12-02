@@ -72,6 +72,7 @@ void mpcBlock::generate_waypoints::pose_callback(const geometry_msgs::PoseStampe
 
     float temp_prev_theta = std::atan2(waypoint_y - prev_waypoint[1], waypoint_x - prev_waypoint[0]);
     float temp_next_theta = std::atan2(next_waypoint[1] - waypoint_y, next_waypoint[0] - waypoint_x);
+    std::cout<< "num1 " << next_waypoint[1] - waypoint_y << " num2 " << next_waypoint[0] - waypoint_x << std::endl;
 
     mpcBlock::generate_waypoints::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
@@ -122,7 +123,7 @@ int main(int argc, char ** argv) {
     ros::init(argc, argv, "mpc_auto_node");
     mpcBlock::generate_waypoints wp_class_init;
 
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(1000);
 
     while(ros::ok()){
         wp_class_init.debug();

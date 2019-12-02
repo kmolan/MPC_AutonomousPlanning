@@ -468,7 +468,7 @@ xmlrpcpp_DIR:PATH=/opt/ros/melodic/share/xmlrpcpp/cmake
 ########################
 
 //catkin environment
-CATKIN_ENV:INTERNAL=/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/catkin_generated/env_cached.sh
+CATKIN_ENV:INTERNAL=
 CATKIN_TEST_RESULTS_DIR:INTERNAL=/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/cmake-build-debug/test_results
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
