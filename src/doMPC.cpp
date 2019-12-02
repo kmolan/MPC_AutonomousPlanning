@@ -111,7 +111,11 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
 
 void mpcBlock::doMPC::controller_callback() {
 
+    settings.verbose = 0;
+    settings.eps = 1e-2;
+
     (run_cvxgenOptimization(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix));
+
     steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x);
 
 }
@@ -127,9 +131,9 @@ void mpcBlock::doMPC::publisherCallback() {
 
 void mpcBlock::doMPC::debug() { //Prints stuff on console for debugging. Commented out code is temporarily not being debugged
 
-        std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
-        std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
-        std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
+//        std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
+//        std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
+//        std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
 }
 
 int main(int argc, char ** argv) {

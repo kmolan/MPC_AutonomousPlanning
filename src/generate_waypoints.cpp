@@ -20,6 +20,7 @@ mpcBlock::generate_waypoints::generate_waypoints() {
 
     marker_x_pubs = n.advertise<std_msgs::Float64>(marker_x_topic, 1); //publish x-waypoint
     marker_y_pubs = n.advertise<std_msgs::Float64>(marker_y_topic,1); //publish y-waypoint
+    theta_pubs = n.advertise<std_msgs::Float64>(theta_topic, 1);
 
 }
 
@@ -31,6 +32,7 @@ void mpcBlock::generate_waypoints::GetParams() {
     n.getParam("pose_topic", pose_topic);
     n.getParam("marker_x_topic", marker_x_topic);
     n.getParam("marker_y_topic", marker_y_topic);
+    n.getParam("theta_topic", theta_topic);
 }
 
 void mpcBlock::generate_waypoints::pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg) { //
@@ -59,13 +61,23 @@ void mpcBlock::generate_waypoints::pose_callback(const geometry_msgs::PoseStampe
     waypoint_x = waypoint_data1[last_index];
     waypoint_y = waypoint_data2[last_index];
 
+    prev_waypoint[0] = waypoint_data1[last_index-1];
+    prev_waypoint[1] = waypoint_data2[last_index-1];
+
+    next_waypoint[0] = waypoint_data1[last_index+1];
+    next_waypoint[1] = waypoint_data2[last_index+1];
+
     rot_waypoint_x = waypoint_x - currentX;
     rot_waypoint_y = waypoint_y - currentY;
+
+    float temp_prev_theta = std::atan2(waypoint_y - prev_waypoint[1], waypoint_x - prev_waypoint[0]);
+    float temp_next_theta = std::atan2(next_waypoint[1] - waypoint_y, next_waypoint[0] - waypoint_x);
 
     mpcBlock::generate_waypoints::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
     chosen_waypoint_x.data = rot_waypoint_x;
     chosen_waypoint_y.data = rot_waypoint_y;
+    chosen_theta.data = currentTheta - (temp_prev_theta + temp_next_theta)/2.0;
 }
 
 
@@ -99,11 +111,11 @@ void mpcBlock::generate_waypoints::rotate_points(const double theta, float *dist
 void mpcBlock::generate_waypoints::publisherCallback() {
     marker_y_pubs.publish(chosen_waypoint_y);
     marker_x_pubs.publish(chosen_waypoint_x);
+    theta_pubs.publish(chosen_theta);
 }
 
 void mpcBlock::generate_waypoints::debug() { //Prints stuff on console for debugging
-    ROS_INFO("x %f", rot_waypoint_x);
-    ROS_INFO("y %f", rot_waypoint_y);
+    ROS_INFO("chosen theta: %f", chosen_theta.data);
 }
 
 int main(int argc, char ** argv) {

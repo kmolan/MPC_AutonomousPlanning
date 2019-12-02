@@ -10,11 +10,12 @@ laser_topic: "scan"
 visualization_topic: "visualization_marker"
 marker_x_topic: "chosen_x_waypoint"
 marker_y_topic: "chosen_y_waypoint"
+theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
-high_velocity: 6
-low_velocity: 2
+high_velocity: 0
+low_velocity: 0
 
 #waypoint parameters
 look_ahead_distance: 0.7

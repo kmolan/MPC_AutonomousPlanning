@@ -81,10 +81,8 @@ public:
      */
     static float solve_mpc(double y_waypoint, double x_waypoint){
         run_cvxgenOptimization::update_model(y_waypoint, x_waypoint);
-        auto num_iters = solve();
 
-        settings.verbose = 0;
-        settings.eps = 1e-2;
+        auto num_iters = solve();
 
         if(!work.converged){
             ROS_ERROR("Optimization not converged");

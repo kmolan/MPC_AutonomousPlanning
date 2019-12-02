@@ -70,6 +70,7 @@ namespace mpcBlock {
         ros::NodeHandle n; ///< NodeHandle
         ros::Publisher marker_x_pubs; ///<publishes the current waypoint, x-coordinate
         ros::Publisher marker_y_pubs; ///<publishes the current waypoint, y-coordinate
+        ros::Publisher theta_pubs; ///<publishes the current waypoint's approach heading angle
 
         ros::Subscriber localization_sub; ///<  subscribes to the particle filter for localization
 
@@ -84,8 +85,13 @@ namespace mpcBlock {
 
         std::string marker_x_topic; ///<Topic over which marker_x_pubs publishes
         std::string marker_y_topic; ///<Topic over which marker_y_pubs publishes
+        std::string theta_topic; ///<Topic over which theta_pubs publishes
         std_msgs::Float64 chosen_waypoint_x; ///<Container for current waypoint x-coordinate
         std_msgs::Float64 chosen_waypoint_y; ///<Container for current waypoint y-coordinate
+        std_msgs::Float64 chosen_theta; ///<Final steering angle at the waypoint
+
+        float prev_waypoint[2]; ///< array containing x- and y-coordinate of previous waypoint
+        float next_waypoint[2]; ///<array containing x- and y-coordinate of next waypoint
 
         int last_index = -1; ///<Index of the selected optimal waypoint
 
