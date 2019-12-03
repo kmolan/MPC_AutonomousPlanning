@@ -35,12 +35,12 @@ void mpcBlock::generate_waypoints::GetParams() {
     n.getParam("theta_topic", theta_topic);
 }
 
-void mpcBlock::generate_waypoints::pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg) { //
+void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
 
-    //const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
-    double currentX = pose_msg->pose.position.x; //vehicle pose X
-    double currentY = pose_msg->pose.position.y; //vehicle pose Y
-    double currentTheta = mpcBlock::generate_waypoints::convert_to_Theta(pose_msg->pose.orientation); //vehicle orientation theta converted from quaternion to euler angle
+    const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
+    double currentX = pose_msg.position.x; //vehicle pose X
+    double currentY = pose_msg.position.y; //vehicle pose Y
+    double currentTheta = mpcBlock::generate_waypoints::convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
 
     float waypoint_x;
     float waypoint_y;

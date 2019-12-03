@@ -2,8 +2,8 @@
 waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/gtpose_fast.csv"
 
 #Subscriber and publisher topics
-pose_topic: "gt_pose" #"pf/pose/odom"
-drive_topic: "drive"
+pose_topic: "pf/pose/odom"
+drive_topic: "drive" #vesc/.....
 laser_topic: "scan"
 
 #Visualization stuff
@@ -14,8 +14,8 @@ theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
-high_velocity: 6
-low_velocity: 1
+high_velocity: 6 #2.5
+low_velocity: 1 #1.0
 
 #waypoint parameters
 look_ahead_distance: 0.7
@@ -29,5 +29,5 @@ min_halfspace_width: 0.2 #If halfspace on any side is less than this, set to zer
 
 Q_matrix_1: 1 #State cost on waypoint error (horizontal)
 Q_matrix_2: 1 #State cost on waypoint error (vertical)
-R_matrix_1: 1 #Input cost
+R_matrix_1: 3 #Input cost
 B_matrix: 0.2334 #velocity*deltaT (deltaT = 1/30)

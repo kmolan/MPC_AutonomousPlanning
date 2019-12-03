@@ -45,7 +45,7 @@ namespace mpcBlock {
          * @brief subscribes to the pose of the vehicle using particle filter
          * @param pose_msg container pointer for the vehicle pose
          */
-        void pose_callback(const geometry_msgs::PoseStamped::ConstPtr &pose_msg);
+        void pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg);
 
         /*!
          * @brief fetches parameters and assigns it to member variables
