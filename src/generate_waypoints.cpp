@@ -17,6 +17,7 @@ mpcBlock::generate_waypoints::generate_waypoints() {
     }
 
     localization_sub = n.subscribe(pose_topic, 1, &mpcBlock::generate_waypoints::pose_callback, this);
+    ackermann_subs = n.subscribe(drive_topic, 1, &mpcBlock::generate_waypoints::ackermann_callback, this);
 
     marker_x_pubs = n.advertise<std_msgs::Float64>(marker_x_topic, 1); //publish x-waypoint
     marker_y_pubs = n.advertise<std_msgs::Float64>(marker_y_topic,1); //publish y-waypoint
@@ -33,14 +34,21 @@ void mpcBlock::generate_waypoints::GetParams() {
     n.getParam("marker_x_topic", marker_x_topic);
     n.getParam("marker_y_topic", marker_y_topic);
     n.getParam("theta_topic", theta_topic);
+    n.getParam("drive_topic", drive_topic);
 }
 
-void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
+void mpcBlock::generate_waypoints::updatePositions() {
+    if(pf_update){
+        prev_loop_time = current_loop_time;
+        pf_update = false;
+    }
 
-    const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
-    double currentX = pose_msg.position.x; //vehicle pose X
-    double currentY = pose_msg.position.y; //vehicle pose Y
-    double currentTheta = mpcBlock::generate_waypoints::convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
+    else {
+        current_loop_time = ros::Time::now().toNSec();
+    }
+
+    currentApproxX = currentX + currentVelocity*std::cos(currentTheta)*(current_loop_time - prev_loop_time)/1000000000.0;
+    currentApproxY = currentY + currentVelocity*std::sin(currentTheta)*(current_loop_time - prev_loop_time)/1000000000.0;
 
     float waypoint_x;
     float waypoint_y;
@@ -48,8 +56,8 @@ void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::Const
     int ind_min = 0;
 
     for(int i = 0; i < waypoint_data1.size(); i++){
-        float distance = sqrt(std::pow(currentX - waypoint_data1[i], 2) + std::pow(currentY - waypoint_data2[i], 2) );
-        rot_waypoint_x = (waypoint_data1[i] - currentX) * cos(-currentTheta) - (waypoint_data2[i] - currentY) * sin(-currentTheta); //TODO: make it a rotation matrix
+        float distance = sqrt(std::pow(currentApproxX - waypoint_data1[i], 2) + std::pow(currentApproxY - waypoint_data2[i], 2) );
+        rot_waypoint_x = (waypoint_data1[i] - currentApproxX) * cos(-currentTheta) - (waypoint_data2[i] - currentApproxY) * sin(-currentTheta); //TODO: make it a rotation matrix
 
         if (distance_min > distance && distance >= look_ahead_distance && rot_waypoint_x > 0) {
             distance_min = distance;
@@ -67,8 +75,8 @@ void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::Const
     next_waypoint[0] = waypoint_data1[last_index+1];
     next_waypoint[1] = waypoint_data2[last_index+1];
 
-    rot_waypoint_x = waypoint_x - currentX;
-    rot_waypoint_y = waypoint_y - currentY;
+    rot_waypoint_x = waypoint_x - currentApproxX;
+    rot_waypoint_y = waypoint_y - currentApproxY;
 
     float temp_prev_theta = std::atan2(waypoint_y - prev_waypoint[1], waypoint_x - prev_waypoint[0]);
     float temp_next_theta = std::atan2(next_waypoint[1] - waypoint_y, next_waypoint[0] - waypoint_x);
@@ -86,6 +94,23 @@ void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::Const
     if(chosen_theta.data > 0.4189){
         chosen_theta.data = 0.4189;
     }
+
+    prev_loop_time = current_loop_time;
+}
+
+void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
+
+    const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
+    currentX = pose_msg.position.x; //vehicle pose X
+    currentY = pose_msg.position.y; //vehicle pose Y
+    currentTheta = mpcBlock::generate_waypoints::convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
+
+    pf_update = true;
+}
+
+void mpcBlock::generate_waypoints::ackermann_callback(const ackermann_msgs::AckermannDriveStamped::ConstPtr &ackermsg) {
+    currentVelocity = ackermsg->drive.speed;
+    currentSteering = ackermsg->drive.steering_angle;
 }
 
 
@@ -133,6 +158,7 @@ int main(int argc, char ** argv) {
     ros::Rate loop_rate(1000);
 
     while(ros::ok()){
+        wp_class_init.updatePositions();
         wp_class_init.debug();
         wp_class_init.publisherCallback();
 

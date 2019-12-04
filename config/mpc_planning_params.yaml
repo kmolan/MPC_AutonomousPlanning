@@ -14,13 +14,13 @@ theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
-high_velocity: 6
-low_velocity: 1.0
+high_velocity: 5
+low_velocity: 1
 
 #waypoint parameters
 look_ahead_distance: 0.7
 
-steering_angle_change: 0.1
+steering_angle_change: 0.01
 
 #MPC Tuning parameters
 lower_threshold: 1.0 #The threshold that decides if there's an obstacle (should prolly make it velocity based)

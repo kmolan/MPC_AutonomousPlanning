@@ -65,6 +65,8 @@ void mpcBlock::doMPC::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) 
 
 void mpcBlock::doMPC::final_theta_callback(const std_msgs::Float64::ConstPtr &msg) {
     chosen_theta = msg->data;
+
+    mpcBlock::doMPC::controller_callback();
 }
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
@@ -110,20 +112,26 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     }
 
     rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance; //offset by midline
-
-    mpcBlock::doMPC::controller_callback();
 }
 
 void mpcBlock::doMPC::controller_callback() {
+    current_loop_time = ros::Time::now().toNSec();
 
     (run_cvxgenOptimization(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix));
 
     steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x, chosen_theta);
 
-    if(std::abs(steering_angle - prev_steering_angle) > steering_angle_change){
-        steering_angle = (steering_angle + prev_steering_angle)/2.6;
+    if( (current_loop_time - prev_loop_time)*1000000000 > 0.01) {
+        steering_angle = (steering_angle + prev_steering_angle) / 2.0; //TODO: add more previous iterations?
+        prev_steering_angle = steering_angle;
     }
-    prev_steering_angle = steering_angle;
+
+    if(std::isnan(steering_angle)){
+        ROS_WARN("Steering angle is NAN!");
+        steering_angle = prev_steering_angle;
+    }
+
+    prev_loop_time = current_loop_time;
 }
 
 void mpcBlock::doMPC::publisherCallback() {
@@ -141,14 +149,13 @@ void mpcBlock::doMPC::debug() { //Prints stuff on console for debugging. Comment
 //        std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
 //        std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
     ROS_INFO("steering angle: %f", steering_angle);
-
 }
 
 int main(int argc, char ** argv) {
     ros::init(argc, argv, "doMPC");
     mpcBlock::doMPC mpc_class_init;
 
-    ros::Rate loop_rate(800);
+    ros::Rate loop_rate(1000);
 
     while(ros::ok()){
 

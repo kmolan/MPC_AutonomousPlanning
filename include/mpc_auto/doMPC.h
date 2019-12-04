@@ -125,6 +125,9 @@ namespace mpcBlock{
         double rot_waypoint_y = 0; ///<optimal waypoint in vehicle frame, y-direction
         double chosen_theta = 0;
 
+        double current_loop_time; ///<Keeps track of controller_callback function
+        double prev_loop_time; ///<Keeps track of controller_callback function
+
         //MPC parameters
         float lower_threshold; ///< The threshold that decides if there's an obstacle //TODO: Make this velocity based
         float midline_threshold; ///< Decides to ignore for large gaps that occurs in cornering
