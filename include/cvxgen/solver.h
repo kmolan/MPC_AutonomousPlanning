@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-12-01 02:43:27 -0500.  */
+/* Produced by CVXGEN, 2019-12-04 05:11:40 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -42,6 +42,7 @@ typedef struct Params_t {
   double B[1];
   double u_max[2];
   double S[1];
+  double u_f[1];
   double *x[1];
 } Params;
 typedef struct Vars_t {
@@ -67,6 +68,86 @@ typedef struct Vars_t {
   double *x_10; /* 2 rows. */
   double *u_10; /* 2 rows. */
   double *x_11; /* 2 rows. */
+  double *u_11; /* 2 rows. */
+  double *x_12; /* 2 rows. */
+  double *u_12; /* 2 rows. */
+  double *x_13; /* 2 rows. */
+  double *u_13; /* 2 rows. */
+  double *x_14; /* 2 rows. */
+  double *u_14; /* 2 rows. */
+  double *x_15; /* 2 rows. */
+  double *u_15; /* 2 rows. */
+  double *x_16; /* 2 rows. */
+  double *u_16; /* 2 rows. */
+  double *x_17; /* 2 rows. */
+  double *u_17; /* 2 rows. */
+  double *x_18; /* 2 rows. */
+  double *u_18; /* 2 rows. */
+  double *x_19; /* 2 rows. */
+  double *u_19; /* 2 rows. */
+  double *x_20; /* 2 rows. */
+  double *u_20; /* 2 rows. */
+  double *x_21; /* 2 rows. */
+  double *u_21; /* 2 rows. */
+  double *x_22; /* 2 rows. */
+  double *u_22; /* 2 rows. */
+  double *x_23; /* 2 rows. */
+  double *u_23; /* 2 rows. */
+  double *x_24; /* 2 rows. */
+  double *u_24; /* 2 rows. */
+  double *x_25; /* 2 rows. */
+  double *u_25; /* 2 rows. */
+  double *x_26; /* 2 rows. */
+  double *u_26; /* 2 rows. */
+  double *x_27; /* 2 rows. */
+  double *u_27; /* 2 rows. */
+  double *x_28; /* 2 rows. */
+  double *u_28; /* 2 rows. */
+  double *x_29; /* 2 rows. */
+  double *u_29; /* 2 rows. */
+  double *x_30; /* 2 rows. */
+  double *u_30; /* 2 rows. */
+  double *x_31; /* 2 rows. */
+  double *u_31; /* 2 rows. */
+  double *x_32; /* 2 rows. */
+  double *u_32; /* 2 rows. */
+  double *x_33; /* 2 rows. */
+  double *u_33; /* 2 rows. */
+  double *x_34; /* 2 rows. */
+  double *u_34; /* 2 rows. */
+  double *x_35; /* 2 rows. */
+  double *u_35; /* 2 rows. */
+  double *x_36; /* 2 rows. */
+  double *u_36; /* 2 rows. */
+  double *x_37; /* 2 rows. */
+  double *u_37; /* 2 rows. */
+  double *x_38; /* 2 rows. */
+  double *u_38; /* 2 rows. */
+  double *x_39; /* 2 rows. */
+  double *u_39; /* 2 rows. */
+  double *x_40; /* 2 rows. */
+  double *u_40; /* 2 rows. */
+  double *x_41; /* 2 rows. */
+  double *u_41; /* 2 rows. */
+  double *x_42; /* 2 rows. */
+  double *u_42; /* 2 rows. */
+  double *x_43; /* 2 rows. */
+  double *u_43; /* 2 rows. */
+  double *x_44; /* 2 rows. */
+  double *u_44; /* 2 rows. */
+  double *x_45; /* 2 rows. */
+  double *u_45; /* 2 rows. */
+  double *x_46; /* 2 rows. */
+  double *u_46; /* 2 rows. */
+  double *x_47; /* 2 rows. */
+  double *u_47; /* 2 rows. */
+  double *x_48; /* 2 rows. */
+  double *u_48; /* 2 rows. */
+  double *x_49; /* 2 rows. */
+  double *u_49; /* 2 rows. */
+  double *x_50; /* 2 rows. */
+  double *u_50; /* 2 rows. */
+  double *x_51; /* 2 rows. */
   double *t_01; /* 2 rows. */
   double *t_02; /* 2 rows. */
   double *t_03; /* 2 rows. */
@@ -78,39 +159,119 @@ typedef struct Vars_t {
   double *t_09; /* 2 rows. */
   double *t_10; /* 2 rows. */
   double *t_11; /* 2 rows. */
-  double *t_12; /* 1 rows. */
-  double *t_13; /* 1 rows. */
-  double *t_14; /* 1 rows. */
-  double *t_15; /* 1 rows. */
-  double *t_16; /* 1 rows. */
-  double *t_17; /* 1 rows. */
-  double *t_18; /* 1 rows. */
-  double *t_19; /* 1 rows. */
-  double *t_20; /* 1 rows. */
-  double *t_21; /* 1 rows. */
-  double *u[11];
-  double *x[12];
+  double *t_12; /* 2 rows. */
+  double *t_13; /* 2 rows. */
+  double *t_14; /* 2 rows. */
+  double *t_15; /* 2 rows. */
+  double *t_16; /* 2 rows. */
+  double *t_17; /* 2 rows. */
+  double *t_18; /* 2 rows. */
+  double *t_19; /* 2 rows. */
+  double *t_20; /* 2 rows. */
+  double *t_21; /* 2 rows. */
+  double *t_22; /* 2 rows. */
+  double *t_23; /* 2 rows. */
+  double *t_24; /* 2 rows. */
+  double *t_25; /* 2 rows. */
+  double *t_26; /* 2 rows. */
+  double *t_27; /* 2 rows. */
+  double *t_28; /* 2 rows. */
+  double *t_29; /* 2 rows. */
+  double *t_30; /* 2 rows. */
+  double *t_31; /* 2 rows. */
+  double *t_32; /* 2 rows. */
+  double *t_33; /* 2 rows. */
+  double *t_34; /* 2 rows. */
+  double *t_35; /* 2 rows. */
+  double *t_36; /* 2 rows. */
+  double *t_37; /* 2 rows. */
+  double *t_38; /* 2 rows. */
+  double *t_39; /* 2 rows. */
+  double *t_40; /* 2 rows. */
+  double *t_41; /* 2 rows. */
+  double *t_42; /* 2 rows. */
+  double *t_43; /* 2 rows. */
+  double *t_44; /* 2 rows. */
+  double *t_45; /* 2 rows. */
+  double *t_46; /* 2 rows. */
+  double *t_47; /* 2 rows. */
+  double *t_48; /* 2 rows. */
+  double *t_49; /* 2 rows. */
+  double *t_50; /* 2 rows. */
+  double *t_51; /* 2 rows. */
+  double *t_52; /* 1 rows. */
+  double *t_53; /* 1 rows. */
+  double *t_54; /* 1 rows. */
+  double *t_55; /* 1 rows. */
+  double *t_56; /* 1 rows. */
+  double *t_57; /* 1 rows. */
+  double *t_58; /* 1 rows. */
+  double *t_59; /* 1 rows. */
+  double *t_60; /* 1 rows. */
+  double *t_61; /* 1 rows. */
+  double *t_62; /* 1 rows. */
+  double *t_63; /* 1 rows. */
+  double *t_64; /* 1 rows. */
+  double *t_65; /* 1 rows. */
+  double *t_66; /* 1 rows. */
+  double *t_67; /* 1 rows. */
+  double *t_68; /* 1 rows. */
+  double *t_69; /* 1 rows. */
+  double *t_70; /* 1 rows. */
+  double *t_71; /* 1 rows. */
+  double *t_72; /* 1 rows. */
+  double *t_73; /* 1 rows. */
+  double *t_74; /* 1 rows. */
+  double *t_75; /* 1 rows. */
+  double *t_76; /* 1 rows. */
+  double *t_77; /* 1 rows. */
+  double *t_78; /* 1 rows. */
+  double *t_79; /* 1 rows. */
+  double *t_80; /* 1 rows. */
+  double *t_81; /* 1 rows. */
+  double *t_82; /* 1 rows. */
+  double *t_83; /* 1 rows. */
+  double *t_84; /* 1 rows. */
+  double *t_85; /* 1 rows. */
+  double *t_86; /* 1 rows. */
+  double *t_87; /* 1 rows. */
+  double *t_88; /* 1 rows. */
+  double *t_89; /* 1 rows. */
+  double *t_90; /* 1 rows. */
+  double *t_91; /* 1 rows. */
+  double *t_92; /* 1 rows. */
+  double *t_93; /* 1 rows. */
+  double *t_94; /* 1 rows. */
+  double *t_95; /* 1 rows. */
+  double *t_96; /* 1 rows. */
+  double *t_97; /* 1 rows. */
+  double *t_98; /* 1 rows. */
+  double *t_99; /* 1 rows. */
+  double *t_100; /* 1 rows. */
+  double *t_101; /* 1 rows. */
+  double *u[51];
+  double *x[52];
 } Vars;
 typedef struct Workspace_t {
-  double h[96];
-  double s_inv[96];
-  double s_inv_z[96];
-  double b[22];
-  double q[76];
-  double rhs[290];
-  double x[290];
+  double h[456];
+  double s_inv[456];
+  double s_inv_z[456];
+  double b[103];
+  double q[356];
+  double rhs[1371];
+  double x[1371];
   double *s;
   double *z;
   double *y;
-  double lhs_aff[290];
-  double lhs_cc[290];
-  double buffer[290];
-  double buffer2[290];
-  double KKT[618];
-  double L[495];
-  double d[290];
-  double v[290];
-  double d_inv[290];
+  double lhs_aff[1371];
+  double lhs_cc[1371];
+  double buffer[1371];
+  double buffer2[1371];
+  double KKT[2939];
+  double L[2376];
+  double d[1371];
+  double v[1371];
+  double d_inv[1371];
   double gap;
   double optval;
   double ineq_resid_squared;

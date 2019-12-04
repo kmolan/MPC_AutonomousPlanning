@@ -20,6 +20,7 @@ mpcBlock::doMPC::doMPC() {
 
     marker_x_subs = nodeH.subscribe(marker_x_topic, 10, &mpcBlock::doMPC::marker_x_callback, this); //subscribe x-waypoint
     marker_y_subs = nodeH.subscribe(marker_y_topic, 10, &mpcBlock::doMPC::marker_y_callback, this); //subscribe y-waypoint
+    final_theta_subs = nodeH.subscribe(theta_topic, 10, &mpcBlock::doMPC::final_theta_callback, this);
 
     current_scan.angle_increment = 0.00582316;
     current_scan.angle_sweep = 6.28319;
@@ -36,7 +37,9 @@ void mpcBlock::doMPC::getParams() {
     //Get parameters
     nodeH.getParam("laser_topic", laser_topic);
     nodeH.getParam("drive_topic", drive_topic);
+    nodeH.getParam("steering_angle_change", steering_angle_change);
     nodeH.getParam("marker_x_topic", marker_x_topic);
+    nodeH.getParam("theta_topic", theta_topic);
     nodeH.getParam("marker_y_topic", marker_y_topic);
     nodeH.getParam("steering_limit", steering_limit);
     nodeH.getParam("high_velocity", high_velocity);
@@ -58,6 +61,10 @@ void mpcBlock::doMPC::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) 
 
 void mpcBlock::doMPC::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) {
     rot_waypoint_y = msg->data;
+}
+
+void mpcBlock::doMPC::final_theta_callback(const std_msgs::Float64::ConstPtr &msg) {
+    chosen_theta = msg->data;
 }
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
@@ -90,6 +97,7 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
         current_scan.y_upper_distance = 0;
     }
 
+    current_scan.y_mid_distance = 0;
     current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
 
     if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
@@ -104,19 +112,18 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance; //offset by midline
 
     mpcBlock::doMPC::controller_callback();
-
-    ROS_INFO("steering angle: %f", steering_angle);
 }
 
 void mpcBlock::doMPC::controller_callback() {
 
-    settings.verbose = 0;
-    settings.eps = 1e-2;
-
     (run_cvxgenOptimization(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix));
 
-    steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x);
+    steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x, chosen_theta);
 
+    if(std::abs(steering_angle - prev_steering_angle) > steering_angle_change){
+        steering_angle = (steering_angle + prev_steering_angle)/2.6;
+    }
+    prev_steering_angle = steering_angle;
 }
 
 void mpcBlock::doMPC::publisherCallback() {
@@ -133,13 +140,15 @@ void mpcBlock::doMPC::debug() { //Prints stuff on console for debugging. Comment
 //        std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
 //        std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
 //        std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
+    ROS_INFO("steering angle: %f", steering_angle);
+
 }
 
 int main(int argc, char ** argv) {
     ros::init(argc, argv, "doMPC");
     mpcBlock::doMPC mpc_class_init;
 
-    ros::Rate loop_rate(1000);
+    ros::Rate loop_rate(800);
 
     while(ros::ok()){
 

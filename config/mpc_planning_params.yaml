@@ -14,11 +14,13 @@ theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
-high_velocity: 6 #2.5
-low_velocity: 1 #1.0
+high_velocity: 6
+low_velocity: 1.0
 
 #waypoint parameters
 look_ahead_distance: 0.7
+
+steering_angle_change: 0.1
 
 #MPC Tuning parameters
 lower_threshold: 1.0 #The threshold that decides if there's an obstacle (should prolly make it velocity based)
@@ -29,5 +31,5 @@ min_halfspace_width: 0.2 #If halfspace on any side is less than this, set to zer
 
 Q_matrix_1: 1 #State cost on waypoint error (horizontal)
 Q_matrix_2: 1 #State cost on waypoint error (vertical)
-R_matrix_1: 3 #Input cost
-B_matrix: 0.2334 #velocity*deltaT (deltaT = 1/30)
+R_matrix_1: 1 #Input cost
+B_matrix: 0.5 #velocity*deltaT (deltaT = 1/30)

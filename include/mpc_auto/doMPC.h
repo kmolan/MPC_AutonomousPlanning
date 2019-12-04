@@ -91,11 +91,18 @@ namespace mpcBlock{
          */
         void marker_y_callback(const std_msgs::Float64::ConstPtr &msg);
 
+        /*!
+         * @brief subscribes to the final steering angle at waypoint
+         * @param msg pointer to final steering angle
+         */
+        void final_theta_callback(const std_msgs::Float64::ConstPtr &msg);
+
         ros::NodeHandle nodeH; ///<NodeHandle of the node
 
         ros::Subscriber marker_x_subs;
         ros::Subscriber marker_y_subs;
         ros::Subscriber lidar_sub; ///< subscribes to the lidar scan for obstacle avoidance
+        ros::Subscriber final_theta_subs;
 
         ros::Publisher drive_pub; ///< publishes on vehicle inputs (steering and velocity)
 
@@ -103,16 +110,20 @@ namespace mpcBlock{
         std::string laser_topic; ///< subscriber topic, lidar publishes values on this
         std::string marker_x_topic; ///<Topic over which marker_x_pubs subscribes
         std::string marker_y_topic; ///<Topic over which marker_y_pubs subscribes
+        std::string theta_topic; ///< subscriber topic, final steering angle at waypoint
 
         mpcBlock::laserdata current_scan; ///< struct to hold the laser data
 
         double steering_angle = 0.0; ///<optimal steering angle for the current iteration
+        double prev_steering_angle = 0.0; ///< Previous optimal steering angle
+        double steering_angle_change; // TODO:add
         double steering_limit; ///<Actuation physical limit on the steering angle limit on the vehicle
         double high_velocity; ///<Upper limit of the vehicle velocity
         double low_velocity; ///<Lower limit of the vehicle velocity
 
-        float rot_waypoint_x = 0; ///<optimal waypoint in vehicle frame, x-direction
-        float rot_waypoint_y = 0; ///<optimal waypoint in vehicle frame, y-direction
+        double rot_waypoint_x = 0; ///<optimal waypoint in vehicle frame, x-direction
+        double rot_waypoint_y = 0; ///<optimal waypoint in vehicle frame, y-direction
+        double chosen_theta = 0;
 
         //MPC parameters
         float lower_threshold; ///< The threshold that decides if there's an obstacle //TODO: Make this velocity based

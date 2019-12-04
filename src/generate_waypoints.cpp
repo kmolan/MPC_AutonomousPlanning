@@ -72,13 +72,20 @@ void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::Const
 
     float temp_prev_theta = std::atan2(waypoint_y - prev_waypoint[1], waypoint_x - prev_waypoint[0]);
     float temp_next_theta = std::atan2(next_waypoint[1] - waypoint_y, next_waypoint[0] - waypoint_x);
-    std::cout<< "num1 " << next_waypoint[1] - waypoint_y << " num2 " << next_waypoint[0] - waypoint_x << std::endl;
 
     mpcBlock::generate_waypoints::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
     chosen_waypoint_x.data = rot_waypoint_x;
     chosen_waypoint_y.data = rot_waypoint_y;
     chosen_theta.data = currentTheta - (temp_prev_theta + temp_next_theta)/2.0;
+
+    if(chosen_theta.data < -0.4189){
+        chosen_theta.data = -0.4189;
+    }
+
+    if(chosen_theta.data > 0.4189){
+        chosen_theta.data = 0.4189;
+    }
 }
 
 
@@ -116,7 +123,7 @@ void mpcBlock::generate_waypoints::publisherCallback() {
 }
 
 void mpcBlock::generate_waypoints::debug() { //Prints stuff on console for debugging
-    ROS_INFO("chosen theta: %f", chosen_theta.data);
+//    ROS_INFO("chosen theta: %f", chosen_theta.data);
 }
 
 int main(int argc, char ** argv) {
