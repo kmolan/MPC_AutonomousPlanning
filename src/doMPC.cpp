@@ -22,12 +22,6 @@ mpcBlock::doMPC::doMPC() {
     marker_y_subs = nodeH.subscribe(marker_y_topic, 10, &mpcBlock::doMPC::marker_y_callback, this); //subscribe y-waypoint
     final_theta_subs = nodeH.subscribe(theta_topic, 10, &mpcBlock::doMPC::final_theta_callback, this);
 
-    current_scan.angle_increment = 0.00582316;
-    current_scan.angle_sweep = 6.28319;
-    current_scan.zero_angle = int(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 0 degree
-    current_scan.left_angle = int(0.75*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 90 degree
-    current_scan.right_angle = int(0.25*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 90 degree angle
-
     current_scan.y_lower_distance = -1;
     current_scan.y_upper_distance = 1;
 }
@@ -70,6 +64,13 @@ void mpcBlock::doMPC::final_theta_callback(const std_msgs::Float64::ConstPtr &ms
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
 
+    current_scan.angle_increment = scan_msg->angle_increment;
+    current_scan.angle_sweep = scan_msg->angle_max - scan_msg->angle_min;
+
+    current_scan.zero_angle = int(0.5*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 0 degree
+    current_scan.left_angle = int(0.75*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for left side 90 degree
+    current_scan.right_angle = int(0.25*current_scan.angle_sweep/current_scan.angle_increment); //Calculate index for 90 degree angle
+
     int x_lower_index = current_scan.right_angle;
     int x_upper_index = current_scan.left_angle;
 
@@ -111,10 +112,10 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
 //
 //    current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
 //
-//    if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
-//        current_scan.y_mid_distance = breakneck_steering;
-//        ROS_WARN("breakneck steering implemented");
-//    }
+    if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
+        current_scan.y_mid_distance = breakneck_steering;
+        ROS_WARN("breakneck steering implemented");
+    }
 //
 //    if(current_scan.y_mid_distance > midline_threshold){
 //        current_scan.y_mid_distance = 0;

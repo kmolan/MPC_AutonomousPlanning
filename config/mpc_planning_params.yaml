@@ -1,5 +1,5 @@
 #File name for the csv
-waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/final_race_waypoints.csv"
+waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/MPC_centerline_1.csv"
 
 #Subscriber and publisher topics
 pose_topic: "pf/pose/odom"
@@ -14,16 +14,16 @@ theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
-high_velocity: 6
-low_velocity: 2
+high_velocity: 5
+low_velocity: 1
 
 #waypoint parameters
-look_ahead_distance: 0.7
+look_ahead_distance: 1.0
 
 steering_angle_change: 0.01
 
 #MPC Tuning parameters
-lower_threshold: 1.5 #The threshold that decides if there's an obstacle (should prolly make it velocity based)
+lower_threshold: 2.0 #The threshold that decides if there's an obstacle (should prolly make it velocity based)
 midline_threshold: 0.5 #Decides to ignore for large gaps that occurs in cornering
 breakneck_steering: 0.4 #Steering for when obstacle on waypoint (needs most tuning, maybe change the method?)
 breakneck_steering_threshold: 0.15 #Half-space width for breakneck_steering activation
