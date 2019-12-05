@@ -1,4 +1,4 @@
-/* Produced by CVXGEN, 2019-12-04 05:11:31 -0500.  */
+/* Produced by CVXGEN, 2019-12-04 21:43:46 -0500.  */
 /* CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com. */
 /* The code in this file is Copyright (C) 2006-2017 Jacob Mattingley. */
 /* CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial */
@@ -11,7 +11,7 @@ double eval_gap(void) {
   int i;
   double gap;
   gap = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     gap += work.z[i]*work.s[i];
   return gap;
 }
@@ -29,111 +29,91 @@ void set_defaults(void) {
   settings.kkt_reg = 1e-7;
 }
 void setup_pointers(void) {
-  work.y = work.x + 356;
-  work.s = work.x + 459;
-  work.z = work.x + 915;
-  vars.u_0 = work.x + 152;
-  vars.u_1 = work.x + 154;
-  vars.u_2 = work.x + 156;
-  vars.u_3 = work.x + 158;
-  vars.u_4 = work.x + 160;
-  vars.u_5 = work.x + 162;
-  vars.u_6 = work.x + 164;
-  vars.u_7 = work.x + 166;
-  vars.u_8 = work.x + 168;
-  vars.u_9 = work.x + 170;
-  vars.u_10 = work.x + 172;
-  vars.u_11 = work.x + 174;
-  vars.u_12 = work.x + 176;
-  vars.u_13 = work.x + 178;
-  vars.u_14 = work.x + 180;
-  vars.u_15 = work.x + 182;
-  vars.u_16 = work.x + 184;
-  vars.u_17 = work.x + 186;
-  vars.u_18 = work.x + 188;
-  vars.u_19 = work.x + 190;
-  vars.u_20 = work.x + 192;
-  vars.u_21 = work.x + 194;
-  vars.u_22 = work.x + 196;
-  vars.u_23 = work.x + 198;
-  vars.u_24 = work.x + 200;
-  vars.u_25 = work.x + 202;
-  vars.u_26 = work.x + 204;
-  vars.u_27 = work.x + 206;
-  vars.u_28 = work.x + 208;
-  vars.u_29 = work.x + 210;
-  vars.u_30 = work.x + 212;
-  vars.u_31 = work.x + 214;
-  vars.u_32 = work.x + 216;
-  vars.u_33 = work.x + 218;
-  vars.u_34 = work.x + 220;
-  vars.u_35 = work.x + 222;
-  vars.u_36 = work.x + 224;
-  vars.u_37 = work.x + 226;
-  vars.u_38 = work.x + 228;
-  vars.u_39 = work.x + 230;
-  vars.u_40 = work.x + 232;
-  vars.u_41 = work.x + 234;
-  vars.u_42 = work.x + 236;
-  vars.u_43 = work.x + 238;
-  vars.u_44 = work.x + 240;
-  vars.u_45 = work.x + 242;
-  vars.u_46 = work.x + 244;
-  vars.u_47 = work.x + 246;
-  vars.u_48 = work.x + 248;
-  vars.u_49 = work.x + 250;
-  vars.u_50 = work.x + 252;
-  vars.x_1 = work.x + 254;
-  vars.x_2 = work.x + 256;
-  vars.x_3 = work.x + 258;
-  vars.x_4 = work.x + 260;
-  vars.x_5 = work.x + 262;
-  vars.x_6 = work.x + 264;
-  vars.x_7 = work.x + 266;
-  vars.x_8 = work.x + 268;
-  vars.x_9 = work.x + 270;
-  vars.x_10 = work.x + 272;
-  vars.x_11 = work.x + 274;
-  vars.x_12 = work.x + 276;
-  vars.x_13 = work.x + 278;
-  vars.x_14 = work.x + 280;
-  vars.x_15 = work.x + 282;
-  vars.x_16 = work.x + 284;
-  vars.x_17 = work.x + 286;
-  vars.x_18 = work.x + 288;
-  vars.x_19 = work.x + 290;
-  vars.x_20 = work.x + 292;
-  vars.x_21 = work.x + 294;
-  vars.x_22 = work.x + 296;
-  vars.x_23 = work.x + 298;
-  vars.x_24 = work.x + 300;
-  vars.x_25 = work.x + 302;
-  vars.x_26 = work.x + 304;
-  vars.x_27 = work.x + 306;
-  vars.x_28 = work.x + 308;
-  vars.x_29 = work.x + 310;
-  vars.x_30 = work.x + 312;
-  vars.x_31 = work.x + 314;
-  vars.x_32 = work.x + 316;
-  vars.x_33 = work.x + 318;
-  vars.x_34 = work.x + 320;
-  vars.x_35 = work.x + 322;
-  vars.x_36 = work.x + 324;
-  vars.x_37 = work.x + 326;
-  vars.x_38 = work.x + 328;
-  vars.x_39 = work.x + 330;
-  vars.x_40 = work.x + 332;
-  vars.x_41 = work.x + 334;
-  vars.x_42 = work.x + 336;
-  vars.x_43 = work.x + 338;
-  vars.x_44 = work.x + 340;
-  vars.x_45 = work.x + 342;
-  vars.x_46 = work.x + 344;
-  vars.x_47 = work.x + 346;
-  vars.x_48 = work.x + 348;
-  vars.x_49 = work.x + 350;
-  vars.x_50 = work.x + 352;
-  vars.x_51 = work.x + 354;
+  work.y = work.x + 286;
+  work.s = work.x + 368;
+  work.z = work.x + 894;
+  vars.u_0 = work.x + 122;
+  vars.u_1 = work.x + 124;
+  vars.u_2 = work.x + 126;
+  vars.u_3 = work.x + 128;
+  vars.u_4 = work.x + 130;
+  vars.u_5 = work.x + 132;
+  vars.u_6 = work.x + 134;
+  vars.u_7 = work.x + 136;
+  vars.u_8 = work.x + 138;
+  vars.u_9 = work.x + 140;
+  vars.u_10 = work.x + 142;
+  vars.u_11 = work.x + 144;
+  vars.u_12 = work.x + 146;
+  vars.u_13 = work.x + 148;
+  vars.u_14 = work.x + 150;
+  vars.u_15 = work.x + 152;
+  vars.u_16 = work.x + 154;
+  vars.u_17 = work.x + 156;
+  vars.u_18 = work.x + 158;
+  vars.u_19 = work.x + 160;
+  vars.u_20 = work.x + 162;
+  vars.u_21 = work.x + 164;
+  vars.u_22 = work.x + 166;
+  vars.u_23 = work.x + 168;
+  vars.u_24 = work.x + 170;
+  vars.u_25 = work.x + 172;
+  vars.u_26 = work.x + 174;
+  vars.u_27 = work.x + 176;
+  vars.u_28 = work.x + 178;
+  vars.u_29 = work.x + 180;
+  vars.u_30 = work.x + 182;
+  vars.u_31 = work.x + 184;
+  vars.u_32 = work.x + 186;
+  vars.u_33 = work.x + 188;
+  vars.u_34 = work.x + 190;
+  vars.u_35 = work.x + 192;
+  vars.u_36 = work.x + 194;
+  vars.u_37 = work.x + 196;
+  vars.u_38 = work.x + 198;
+  vars.u_39 = work.x + 200;
+  vars.u_40 = work.x + 202;
+  vars.x_1 = work.x + 204;
+  vars.x_2 = work.x + 206;
+  vars.x_3 = work.x + 208;
+  vars.x_4 = work.x + 210;
+  vars.x_5 = work.x + 212;
+  vars.x_6 = work.x + 214;
+  vars.x_7 = work.x + 216;
+  vars.x_8 = work.x + 218;
+  vars.x_9 = work.x + 220;
+  vars.x_10 = work.x + 222;
+  vars.x_11 = work.x + 224;
+  vars.x_12 = work.x + 226;
+  vars.x_13 = work.x + 228;
+  vars.x_14 = work.x + 230;
+  vars.x_15 = work.x + 232;
+  vars.x_16 = work.x + 234;
+  vars.x_17 = work.x + 236;
+  vars.x_18 = work.x + 238;
+  vars.x_19 = work.x + 240;
+  vars.x_20 = work.x + 242;
+  vars.x_21 = work.x + 244;
+  vars.x_22 = work.x + 246;
+  vars.x_23 = work.x + 248;
+  vars.x_24 = work.x + 250;
+  vars.x_25 = work.x + 252;
+  vars.x_26 = work.x + 254;
+  vars.x_27 = work.x + 256;
+  vars.x_28 = work.x + 258;
+  vars.x_29 = work.x + 260;
+  vars.x_30 = work.x + 262;
+  vars.x_31 = work.x + 264;
+  vars.x_32 = work.x + 266;
+  vars.x_33 = work.x + 268;
+  vars.x_34 = work.x + 270;
+  vars.x_35 = work.x + 272;
+  vars.x_36 = work.x + 274;
+  vars.x_37 = work.x + 276;
+  vars.x_38 = work.x + 278;
+  vars.x_39 = work.x + 280;
+  vars.x_40 = work.x + 282;
+  vars.x_41 = work.x + 284;
 }
 void setup_indexed_params(void) {
   /* In CVXGEN, you can say */
@@ -237,26 +217,6 @@ void setup_indexed_optvars(void) {
   vars.x[40] = vars.x_40;
   vars.u[40] = vars.u_40;
   vars.x[41] = vars.x_41;
-  vars.u[41] = vars.u_41;
-  vars.x[42] = vars.x_42;
-  vars.u[42] = vars.u_42;
-  vars.x[43] = vars.x_43;
-  vars.u[43] = vars.u_43;
-  vars.x[44] = vars.x_44;
-  vars.u[44] = vars.u_44;
-  vars.x[45] = vars.x_45;
-  vars.u[45] = vars.u_45;
-  vars.x[46] = vars.x_46;
-  vars.u[46] = vars.u_46;
-  vars.x[47] = vars.x_47;
-  vars.u[47] = vars.u_47;
-  vars.x[48] = vars.x_48;
-  vars.u[48] = vars.u_48;
-  vars.x[49] = vars.x_49;
-  vars.u[49] = vars.u_49;
-  vars.x[50] = vars.x_50;
-  vars.u[50] = vars.u_50;
-  vars.x[51] = vars.x_51;
 }
 void setup_indexing(void) {
   setup_pointers();
@@ -265,13 +225,13 @@ void setup_indexing(void) {
 }
 void set_start(void) {
   int i;
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     work.x[i] = 0;
-  for (i = 0; i < 103; i++)
+  for (i = 0; i < 82; i++)
     work.y[i] = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     work.s[i] = (work.h[i] > 0) ? work.h[i] : settings.s_init;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     work.z[i] = settings.z_init;
 }
 double eval_objv(void) {
@@ -280,39 +240,39 @@ double eval_objv(void) {
   /* Borrow space in work.rhs. */
   multbyP(work.rhs, work.x);
   objv = 0;
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     objv += work.x[i]*work.rhs[i];
   objv *= 0.5;
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     objv += work.q[i]*work.x[i];
-  objv += work.quad_902543003648[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_781620764672[0];
+  objv += work.quad_902543003648[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_622431752192[0]+work.quad_781620764672[0];
   return objv;
 }
 void fillrhs_aff(void) {
   int i;
   double *r1, *r2, *r3, *r4;
   r1 = work.rhs;
-  r2 = work.rhs + 356;
+  r2 = work.rhs + 286;
   r3 = work.rhs + 812;
-  r4 = work.rhs + 1268;
+  r4 = work.rhs + 1338;
   /* r1 = -A^Ty - G^Tz - Px - q. */
   multbymAT(r1, work.y);
   multbymGT(work.buffer, work.z);
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     r1[i] += work.buffer[i];
   multbyP(work.buffer, work.x);
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     r1[i] -= work.buffer[i] + work.q[i];
   /* r2 = -z. */
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     r2[i] = -work.z[i];
   /* r3 = -Gx - s + h. */
   multbymG(r3, work.x);
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     r3[i] += -work.s[i] + work.h[i];
   /* r4 = -Ax + b. */
   multbymA(r4, work.x);
-  for (i = 0; i < 103; i++)
+  for (i = 0; i < 82; i++)
     r4[i] += work.b[i];
 }
 void fillrhs_cc(void) {
@@ -324,19 +284,19 @@ void fillrhs_cc(void) {
   double sigma;
   double smu;
   double minval;
-  r2 = work.rhs + 356;
-  ds_aff = work.lhs_aff + 356;
+  r2 = work.rhs + 286;
+  ds_aff = work.lhs_aff + 286;
   dz_aff = work.lhs_aff + 812;
   mu = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     mu += work.s[i]*work.z[i];
   /* Don't finish calculating mu quite yet. */
   /* Find min(min(ds./s), min(dz./z)). */
   minval = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     if (ds_aff[i] < minval*work.s[i])
       minval = ds_aff[i]/work.s[i];
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     if (dz_aff[i] < minval*work.z[i])
       minval = dz_aff[i]/work.z[i];
   /* Find alpha. */
@@ -345,20 +305,20 @@ void fillrhs_cc(void) {
   else
       alpha = -1/minval;
   sigma = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     sigma += (work.s[i] + alpha*ds_aff[i])*
       (work.z[i] + alpha*dz_aff[i]);
   sigma /= mu;
   sigma = sigma*sigma*sigma;
   /* Finish calculating mu now. */
-  mu *= 0.0021929824561403508;
+  mu *= 0.0019011406844106464;
   smu = sigma*mu;
   /* Fill-in the rhs. */
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     work.rhs[i] = 0;
-  for (i = 812; i < 1371; i++)
+  for (i = 812; i < 1420; i++)
     work.rhs[i] = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     r2[i] = work.s_inv[i]*(smu - ds_aff[i]*dz_aff[i]);
 }
 void refine(double *target, double *var) {
@@ -369,7 +329,7 @@ void refine(double *target, double *var) {
   for (j = 0; j < settings.refine_steps; j++) {
     norm2 = 0;
     matrix_multiply(residual, var);
-    for (i = 0; i < 1371; i++) {
+    for (i = 0; i < 1420; i++) {
       residual[i] = residual[i] - target[i];
       norm2 += residual[i]*residual[i];
     }
@@ -384,7 +344,7 @@ void refine(double *target, double *var) {
     /* Solve to find new_var = KKT \ (target - A*var). */
     ldl_solve(residual, new_var);
     /* Update var += new_var, or var += KKT \ (target - A*var). */
-    for (i = 0; i < 1371; i++) {
+    for (i = 0; i < 1420; i++) {
       var[i] -= new_var[i];
     }
   }
@@ -394,7 +354,7 @@ void refine(double *target, double *var) {
     /* it's expensive. */
     norm2 = 0;
     matrix_multiply(residual, var);
-    for (i = 0; i < 1371; i++) {
+    for (i = 0; i < 1420; i++) {
       residual[i] = residual[i] - target[i];
       norm2 += residual[i]*residual[i];
     }
@@ -412,11 +372,11 @@ double calc_ineq_resid_squared(void) {
   /* Find -Gx. */
   multbymG(work.buffer, work.x);
   /* Add -s + h. */
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     work.buffer[i] += -work.s[i] + work.h[i];
   /* Now find the squared norm. */
   norm2_squared = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     norm2_squared += work.buffer[i]*work.buffer[i];
   return norm2_squared;
 }
@@ -427,11 +387,11 @@ double calc_eq_resid_squared(void) {
   /* Find -Ax. */
   multbymA(work.buffer, work.x);
   /* Add +b. */
-  for (i = 0; i < 103; i++)
+  for (i = 0; i < 82; i++)
     work.buffer[i] += work.b[i];
   /* Now find the squared norm. */
   norm2_squared = 0;
-  for (i = 0; i < 103; i++)
+  for (i = 0; i < 82; i++)
     norm2_squared += work.buffer[i]*work.buffer[i];
   return norm2_squared;
 }
@@ -443,7 +403,7 @@ void better_start(void) {
   double alpha;
   work.block_33[0] = -1;
   /* Make sure sinvz is 1 to make hijacked KKT system ok. */
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     work.s_inv_z[i] = 1;
   fill_KKT();
   ldl_factor();
@@ -452,40 +412,40 @@ void better_start(void) {
   ldl_solve(work.rhs, work.lhs_aff);
   /* Don't do any refinement for now. Precision doesn't matter too much. */
   x = work.lhs_aff;
-  s = work.lhs_aff + 356;
+  s = work.lhs_aff + 286;
   z = work.lhs_aff + 812;
-  y = work.lhs_aff + 1268;
+  y = work.lhs_aff + 1338;
   /* Just set x and y as is. */
-  for (i = 0; i < 356; i++)
+  for (i = 0; i < 286; i++)
     work.x[i] = x[i];
-  for (i = 0; i < 103; i++)
+  for (i = 0; i < 82; i++)
     work.y[i] = y[i];
   /* Now complete the initialization. Start with s. */
   /* Must have alpha > max(z). */
   alpha = -1e99;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     if (alpha < z[i])
       alpha = z[i];
   if (alpha < 0) {
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       work.s[i] = -z[i];
   } else {
     alpha += 1;
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       work.s[i] = -z[i] + alpha;
   }
   /* Now initialize z. */
   /* Now must have alpha > max(-z). */
   alpha = -1e99;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     if (alpha < -z[i])
       alpha = -z[i];
   if (alpha < 0) {
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       work.z[i] = z[i];
   } else {
     alpha += 1;
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       work.z[i] = z[i] + alpha;
   }
 }
@@ -494,16 +454,16 @@ void fillrhs_start(void) {
   int i;
   double *r1, *r2, *r3, *r4;
   r1 = work.rhs;
-  r2 = work.rhs + 356;
+  r2 = work.rhs + 286;
   r3 = work.rhs + 812;
-  r4 = work.rhs + 1268;
-  for (i = 0; i < 356; i++)
+  r4 = work.rhs + 1338;
+  for (i = 0; i < 286; i++)
     r1[i] = -work.q[i];
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     r2[i] = 0;
-  for (i = 0; i < 456; i++)
+  for (i = 0; i < 526; i++)
     r3[i] = work.h[i];
-  for (i = 0; i < 103; i++)
+  for (i = 0; i < 82; i++)
     r4[i] = work.b[i];
 }
 long solve(void) {
@@ -527,7 +487,7 @@ long solve(void) {
   else
     set_start();
   for (iter = 0; iter < settings.max_iters; iter++) {
-    for (i = 0; i < 456; i++) {
+    for (i = 0; i < 526; i++) {
       work.s_inv[i] = 1.0 / work.s[i];
       work.s_inv_z[i] = work.s_inv[i]*work.z[i];
     }
@@ -543,19 +503,19 @@ long solve(void) {
     ldl_solve(work.rhs, work.lhs_cc);
     refine(work.rhs, work.lhs_cc);
     /* Add the two together and store in aff. */
-    for (i = 0; i < 1371; i++)
+    for (i = 0; i < 1420; i++)
       work.lhs_aff[i] += work.lhs_cc[i];
     /* Rename aff to reflect its new meaning. */
     dx = work.lhs_aff;
-    ds = work.lhs_aff + 356;
+    ds = work.lhs_aff + 286;
     dz = work.lhs_aff + 812;
-    dy = work.lhs_aff + 1268;
+    dy = work.lhs_aff + 1338;
     /* Find min(min(ds./s), min(dz./z)). */
     minval = 0;
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       if (ds[i] < minval*work.s[i])
         minval = ds[i]/work.s[i];
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       if (dz[i] < minval*work.z[i])
         minval = dz[i]/work.z[i];
     /* Find alpha. */
@@ -564,13 +524,13 @@ long solve(void) {
     else
       alpha = -0.99/minval;
     /* Update the primal and dual variables. */
-    for (i = 0; i < 356; i++)
+    for (i = 0; i < 286; i++)
       work.x[i] += alpha*dx[i];
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       work.s[i] += alpha*ds[i];
-    for (i = 0; i < 456; i++)
+    for (i = 0; i < 526; i++)
       work.z[i] += alpha*dz[i];
-    for (i = 0; i < 103; i++)
+    for (i = 0; i < 82; i++)
       work.y[i] += alpha*dy[i];
     work.gap = eval_gap();
     work.eq_resid_squared = calc_eq_resid_squared();

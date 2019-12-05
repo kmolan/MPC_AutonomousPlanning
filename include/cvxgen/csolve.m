@@ -4,7 +4,7 @@
 %
 % solves the convex optimization problem
 %
-%   minimize(quad_form(x_0 - w, Q) + quad_form(u_0, R) + quad_form(x_1 - w, Q) + quad_form(u_1, R) + quad_form(x_2 - w, Q) + quad_form(u_2, R) + quad_form(x_3 - w, Q) + quad_form(u_3, R) + quad_form(x_4 - w, Q) + quad_form(u_4, R) + quad_form(x_5 - w, Q) + quad_form(u_5, R) + quad_form(x_6 - w, Q) + quad_form(u_6, R) + quad_form(x_7 - w, Q) + quad_form(u_7, R) + quad_form(x_8 - w, Q) + quad_form(u_8, R) + quad_form(x_9 - w, Q) + quad_form(u_9, R) + quad_form(x_10 - w, Q) + quad_form(u_10, R) + quad_form(x_11 - w, Q) + quad_form(u_11, R) + quad_form(x_12 - w, Q) + quad_form(u_12, R) + quad_form(x_13 - w, Q) + quad_form(u_13, R) + quad_form(x_14 - w, Q) + quad_form(u_14, R) + quad_form(x_15 - w, Q) + quad_form(u_15, R) + quad_form(x_16 - w, Q) + quad_form(u_16, R) + quad_form(x_17 - w, Q) + quad_form(u_17, R) + quad_form(x_18 - w, Q) + quad_form(u_18, R) + quad_form(x_19 - w, Q) + quad_form(u_19, R) + quad_form(x_20 - w, Q) + quad_form(u_20, R) + quad_form(x_21 - w, Q) + quad_form(u_21, R) + quad_form(x_22 - w, Q) + quad_form(u_22, R) + quad_form(x_23 - w, Q) + quad_form(u_23, R) + quad_form(x_24 - w, Q) + quad_form(u_24, R) + quad_form(x_25 - w, Q) + quad_form(u_25, R) + quad_form(x_26 - w, Q) + quad_form(u_26, R) + quad_form(x_27 - w, Q) + quad_form(u_27, R) + quad_form(x_28 - w, Q) + quad_form(u_28, R) + quad_form(x_29 - w, Q) + quad_form(u_29, R) + quad_form(x_30 - w, Q) + quad_form(u_30, R) + quad_form(x_31 - w, Q) + quad_form(u_31, R) + quad_form(x_32 - w, Q) + quad_form(u_32, R) + quad_form(x_33 - w, Q) + quad_form(u_33, R) + quad_form(x_34 - w, Q) + quad_form(u_34, R) + quad_form(x_35 - w, Q) + quad_form(u_35, R) + quad_form(x_36 - w, Q) + quad_form(u_36, R) + quad_form(x_37 - w, Q) + quad_form(u_37, R) + quad_form(x_38 - w, Q) + quad_form(u_38, R) + quad_form(x_39 - w, Q) + quad_form(u_39, R) + quad_form(x_40 - w, Q) + quad_form(u_40, R) + quad_form(x_41 - w, Q) + quad_form(u_41, R) + quad_form(x_42 - w, Q) + quad_form(u_42, R) + quad_form(x_43 - w, Q) + quad_form(u_43, R) + quad_form(x_44 - w, Q) + quad_form(u_44, R) + quad_form(x_45 - w, Q) + quad_form(u_45, R) + quad_form(x_46 - w, Q) + quad_form(u_46, R) + quad_form(x_47 - w, Q) + quad_form(u_47, R) + quad_form(x_48 - w, Q) + quad_form(u_48, R) + quad_form(x_49 - w, Q) + quad_form(u_49, R) + quad_form(x_50 - w, Q) + quad_form(u_50, R) + quad_form(x_51 - w, Q_final))
+%   minimize(quad_form(x_0 - w, Q) + quad_form(u_0, R) + quad_form(x_1 - w, Q) + quad_form(u_1, R) + quad_form(x_2 - w, Q) + quad_form(u_2, R) + quad_form(x_3 - w, Q) + quad_form(u_3, R) + quad_form(x_4 - w, Q) + quad_form(u_4, R) + quad_form(x_5 - w, Q) + quad_form(u_5, R) + quad_form(x_6 - w, Q) + quad_form(u_6, R) + quad_form(x_7 - w, Q) + quad_form(u_7, R) + quad_form(x_8 - w, Q) + quad_form(u_8, R) + quad_form(x_9 - w, Q) + quad_form(u_9, R) + quad_form(x_10 - w, Q) + quad_form(u_10, R) + quad_form(x_11 - w, Q) + quad_form(u_11, R) + quad_form(x_12 - w, Q) + quad_form(u_12, R) + quad_form(x_13 - w, Q) + quad_form(u_13, R) + quad_form(x_14 - w, Q) + quad_form(u_14, R) + quad_form(x_15 - w, Q) + quad_form(u_15, R) + quad_form(x_16 - w, Q) + quad_form(u_16, R) + quad_form(x_17 - w, Q) + quad_form(u_17, R) + quad_form(x_18 - w, Q) + quad_form(u_18, R) + quad_form(x_19 - w, Q) + quad_form(u_19, R) + quad_form(x_20 - w, Q) + quad_form(u_20, R) + quad_form(x_21 - w, Q) + quad_form(u_21, R) + quad_form(x_22 - w, Q) + quad_form(u_22, R) + quad_form(x_23 - w, Q) + quad_form(u_23, R) + quad_form(x_24 - w, Q) + quad_form(u_24, R) + quad_form(x_25 - w, Q) + quad_form(u_25, R) + quad_form(x_26 - w, Q) + quad_form(u_26, R) + quad_form(x_27 - w, Q) + quad_form(u_27, R) + quad_form(x_28 - w, Q) + quad_form(u_28, R) + quad_form(x_29 - w, Q) + quad_form(u_29, R) + quad_form(x_30 - w, Q) + quad_form(u_30, R) + quad_form(x_31 - w, Q) + quad_form(u_31, R) + quad_form(x_32 - w, Q) + quad_form(u_32, R) + quad_form(x_33 - w, Q) + quad_form(u_33, R) + quad_form(x_34 - w, Q) + quad_form(u_34, R) + quad_form(x_35 - w, Q) + quad_form(u_35, R) + quad_form(x_36 - w, Q) + quad_form(u_36, R) + quad_form(x_37 - w, Q) + quad_form(u_37, R) + quad_form(x_38 - w, Q) + quad_form(u_38, R) + quad_form(x_39 - w, Q) + quad_form(u_39, R) + quad_form(x_40 - w, Q) + quad_form(u_40, R) + quad_form(x_41 - w, Q_final))
 %   subject to
 %     x_1 == A*x_0 + B*u_0
 %     x_2 == A*x_1 + B*u_1
@@ -47,16 +47,6 @@
 %     x_39 == A*x_38 + B*u_38
 %     x_40 == A*x_39 + B*u_39
 %     x_41 == A*x_40 + B*u_40
-%     x_42 == A*x_41 + B*u_41
-%     x_43 == A*x_42 + B*u_42
-%     x_44 == A*x_43 + B*u_43
-%     x_45 == A*x_44 + B*u_44
-%     x_46 == A*x_45 + B*u_45
-%     x_47 == A*x_46 + B*u_46
-%     x_48 == A*x_47 + B*u_47
-%     x_49 == A*x_48 + B*u_48
-%     x_50 == A*x_49 + B*u_49
-%     x_51 == A*x_50 + B*u_50
 %     abs(u_0) <= u_max
 %     abs(u_1) <= u_max
 %     abs(u_2) <= u_max
@@ -98,16 +88,6 @@
 %     abs(u_38) <= u_max
 %     abs(u_39) <= u_max
 %     abs(u_40) <= u_max
-%     abs(u_41) <= u_max
-%     abs(u_42) <= u_max
-%     abs(u_43) <= u_max
-%     abs(u_44) <= u_max
-%     abs(u_45) <= u_max
-%     abs(u_46) <= u_max
-%     abs(u_47) <= u_max
-%     abs(u_48) <= u_max
-%     abs(u_49) <= u_max
-%     abs(u_50) <= u_max
 %     norm(u_1(1) - u_0(1), inf) <= S
 %     norm(u_2(1) - u_1(1), inf) <= S
 %     norm(u_3(1) - u_2(1), inf) <= S
@@ -148,17 +128,86 @@
 %     norm(u_38(1) - u_37(1), inf) <= S
 %     norm(u_39(1) - u_38(1), inf) <= S
 %     norm(u_40(1) - u_39(1), inf) <= S
-%     norm(u_41(1) - u_40(1), inf) <= S
-%     norm(u_42(1) - u_41(1), inf) <= S
-%     norm(u_43(1) - u_42(1), inf) <= S
-%     norm(u_44(1) - u_43(1), inf) <= S
-%     norm(u_45(1) - u_44(1), inf) <= S
-%     norm(u_46(1) - u_45(1), inf) <= S
-%     norm(u_47(1) - u_46(1), inf) <= S
-%     norm(u_48(1) - u_47(1), inf) <= S
-%     norm(u_49(1) - u_48(1), inf) <= S
-%     norm(u_50(1) - u_49(1), inf) <= S
-%     u_50(1) == u_f
+%     x_1 >= x_lower
+%     x_2 >= x_lower
+%     x_3 >= x_lower
+%     x_4 >= x_lower
+%     x_5 >= x_lower
+%     x_6 >= x_lower
+%     x_7 >= x_lower
+%     x_8 >= x_lower
+%     x_9 >= x_lower
+%     x_10 >= x_lower
+%     x_11 >= x_lower
+%     x_12 >= x_lower
+%     x_13 >= x_lower
+%     x_14 >= x_lower
+%     x_15 >= x_lower
+%     x_16 >= x_lower
+%     x_17 >= x_lower
+%     x_18 >= x_lower
+%     x_19 >= x_lower
+%     x_20 >= x_lower
+%     x_21 >= x_lower
+%     x_22 >= x_lower
+%     x_23 >= x_lower
+%     x_24 >= x_lower
+%     x_25 >= x_lower
+%     x_26 >= x_lower
+%     x_27 >= x_lower
+%     x_28 >= x_lower
+%     x_29 >= x_lower
+%     x_30 >= x_lower
+%     x_31 >= x_lower
+%     x_32 >= x_lower
+%     x_33 >= x_lower
+%     x_34 >= x_lower
+%     x_35 >= x_lower
+%     x_36 >= x_lower
+%     x_37 >= x_lower
+%     x_38 >= x_lower
+%     x_39 >= x_lower
+%     x_40 >= x_lower
+%     x_1 <= x_upper
+%     x_2 <= x_upper
+%     x_3 <= x_upper
+%     x_4 <= x_upper
+%     x_5 <= x_upper
+%     x_6 <= x_upper
+%     x_7 <= x_upper
+%     x_8 <= x_upper
+%     x_9 <= x_upper
+%     x_10 <= x_upper
+%     x_11 <= x_upper
+%     x_12 <= x_upper
+%     x_13 <= x_upper
+%     x_14 <= x_upper
+%     x_15 <= x_upper
+%     x_16 <= x_upper
+%     x_17 <= x_upper
+%     x_18 <= x_upper
+%     x_19 <= x_upper
+%     x_20 <= x_upper
+%     x_21 <= x_upper
+%     x_22 <= x_upper
+%     x_23 <= x_upper
+%     x_24 <= x_upper
+%     x_25 <= x_upper
+%     x_26 <= x_upper
+%     x_27 <= x_upper
+%     x_28 <= x_upper
+%     x_29 <= x_upper
+%     x_30 <= x_upper
+%     x_31 <= x_upper
+%     x_32 <= x_upper
+%     x_33 <= x_upper
+%     x_34 <= x_upper
+%     x_35 <= x_upper
+%     x_36 <= x_upper
+%     x_37 <= x_upper
+%     x_38 <= x_upper
+%     x_39 <= x_upper
+%     x_40 <= x_upper
 %
 % with variables
 %      u_0   2 x 1
@@ -202,16 +251,6 @@
 %     u_38   2 x 1
 %     u_39   2 x 1
 %     u_40   2 x 1
-%     u_41   2 x 1
-%     u_42   2 x 1
-%     u_43   2 x 1
-%     u_44   2 x 1
-%     u_45   2 x 1
-%     u_46   2 x 1
-%     u_47   2 x 1
-%     u_48   2 x 1
-%     u_49   2 x 1
-%     u_50   2 x 1
 %      x_1   2 x 1
 %      x_2   2 x 1
 %      x_3   2 x 1
@@ -253,16 +292,6 @@
 %     x_39   2 x 1
 %     x_40   2 x 1
 %     x_41   2 x 1
-%     x_42   2 x 1
-%     x_43   2 x 1
-%     x_44   2 x 1
-%     x_45   2 x 1
-%     x_46   2 x 1
-%     x_47   2 x 1
-%     x_48   2 x 1
-%     x_49   2 x 1
-%     x_50   2 x 1
-%     x_51   2 x 1
 %
 % and parameters
 %        A   2 x 2
@@ -271,10 +300,11 @@
 %  Q_final   2 x 2    PSD
 %        R   2 x 2    PSD
 %        S   1 x 1    positive
-%      u_f   1 x 1
 %    u_max   2 x 1    positive
 %        w   2 x 1
 %      x_0   2 x 1
+%  x_lower   2 x 1
+%  x_upper   2 x 1
 %
 % Note:
 %   - Check status.converged, which will be 1 if optimization succeeded.
@@ -283,9 +313,9 @@
 %   - To change iterations, use settings.max_iters = 20.
 %   - You may wish to compare with cvxsolve to check the solver is correct.
 %
-% Specify params.A, ..., params.x_0, then run
+% Specify params.A, ..., params.x_upper, then run
 %   [vars, status] = csolve(params, settings)
-% Produced by CVXGEN, 2019-12-04 05:10:52 -0500.
+% Produced by CVXGEN, 2019-12-04 21:43:18 -0500.
 % CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
 % The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
 % CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial

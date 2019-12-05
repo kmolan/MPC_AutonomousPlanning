@@ -67,11 +67,14 @@ public:
      * @param y_waypoint optimal waypoint y-coordinate
      * @param x_waypoint optimal waypoint x-coordinate
      */
-    static void update_model(double y_waypoint, double x_waypoint, double u_final){
+    static void update_model(double y_waypoint, double x_waypoint, double y_lower_dist, double y_upper_dist){
         //goal point (waypoint for now)
         params.w[0] = y_waypoint;
         params.w[1] = x_waypoint;
-        params.u_f[0] = u_final;
+        params.x_lower[0] = y_lower_dist + 0.1;
+        params.x_lower[1] = -0.1;
+        params.x_upper[0] = y_upper_dist - 0.1;
+        params.x_upper[1] = x_waypoint + 0.3;
     }
 
     /*!
@@ -80,8 +83,8 @@ public:
      * @param x_waypoint newfound waypoint x-coordinate
      * @return optimal input derived from MPC
      */
-    static float solve_mpc(double y_waypoint, double x_waypoint, double u_final){
-        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint, u_final);
+    static float solve_mpc(double y_waypoint, double x_waypoint, double y_lower, double y_upper){
+        run_cvxgenOptimization::update_model(y_waypoint, x_waypoint, y_lower, y_upper);
 
         settings.verbose = 0;
         settings.eps = 1e-2;

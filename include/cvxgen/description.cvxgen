@@ -1,4 +1,4 @@
-# Produced by CVXGEN, 2019-12-04 05:10:52 -0500.
+# Produced by CVXGEN, 2019-12-04 21:43:19 -0500.
 # CVXGEN is Copyright (C) 2006-2017 Jacob Mattingley, jem@cvxgen.com.
 # The code in this file is Copyright (C) 2006-2017 Jacob Mattingley.
 # CVXGEN, or solvers produced by CVXGEN, cannot be used for commercial
@@ -19,7 +19,7 @@
 dimensions
   m = 2  # inputs.
   n = 2  # states.
-  T = 50  # horizon.
+  T = 40  # horizon.
 end
 
 parameters
@@ -32,9 +32,11 @@ parameters
   S nonnegative #slew rate limit
   w (n) #waypoints
   u_max (m) nonnegative  # theta limit = [0.4189 ; 1]
-  u_f #final steering angle
-  sin_theta0 #sin(theta_0)
-  cos_theta0 #cos(theta_0)
+  #sin_theta0 #sin(theta_0)
+  #cos_theta0 #cos(theta_0)
+  x_lower (n) #[right side dist, -0.1]
+  x_upper (n) #[left side dist, w[1] + 0.25]
+
 end
 
 variables
@@ -49,5 +51,6 @@ subject to
   x[t+1] == A*x[t] + B*(u[t]), t=0..T  # dynamics constraint
   abs(u[t]) <= u_max, t=0..T  # maximum input box constraint
   norminf(u[t+1][1] - u[t][1]) <= S, t=0..T-1 #slew rate constraint
-  u[T][1] == u_f #final steering angle constraint
+  x[t] >= x_lower, t=1..T
+  x[t] <= x_upper, t=1..T
 end

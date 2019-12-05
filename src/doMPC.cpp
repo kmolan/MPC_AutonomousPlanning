@@ -66,13 +66,15 @@ void mpcBlock::doMPC::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) 
 void mpcBlock::doMPC::final_theta_callback(const std_msgs::Float64::ConstPtr &msg) {
     chosen_theta = msg->data;
 
-    mpcBlock::doMPC::controller_callback();
 }
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
 
     int x_lower_index = current_scan.right_angle;
     int x_upper_index = current_scan.left_angle;
+
+    current_scan.y_lower_distance = -scan_msg->ranges[x_lower_index];
+    current_scan.y_upper_distance = scan_msg->ranges[x_upper_index];
 
     for(int i = current_scan.zero_angle; i>=current_scan.right_angle; i--){
         if(scan_msg->ranges[i] < lower_threshold){
@@ -88,30 +90,41 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
         }
     }
 
-    current_scan.y_lower_distance = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
-    current_scan.y_upper_distance =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
+    double y_lower_dist = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
+    double y_upper_dist =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
 
-    if(current_scan.y_lower_distance > -min_halfspace_width){
-        current_scan.y_lower_distance = 0;
+    if(std::abs(y_lower_dist) < std::abs(y_upper_dist)){
+        current_scan.y_lower_distance = y_lower_dist + 0.3;
     }
 
-    if(current_scan.y_upper_distance < min_halfspace_width){
-        current_scan.y_upper_distance = 0;
+    else if(std::abs(y_upper_dist) < std::abs(y_lower_dist)){
+        current_scan.y_upper_distance = y_upper_dist - 0.3;
     }
 
-    current_scan.y_mid_distance = 0;
-    current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
+//    if(current_scan.y_lower_distance > -min_halfspace_width){
+//        current_scan.y_lower_distance = 0;
+//    }
+//
+//    if(current_scan.y_upper_distance < min_halfspace_width){
+//        current_scan.y_upper_distance = 0;
+//    }
+//
+//    current_scan.y_mid_distance = (current_scan.y_lower_distance + current_scan.y_upper_distance)/2.0;
+//
+//    if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
+//        current_scan.y_mid_distance = breakneck_steering;
+//        ROS_WARN("breakneck steering implemented");
+//    }
+//
+//    if(current_scan.y_mid_distance > midline_threshold){
+//        current_scan.y_mid_distance = 0;
+//    }
+//
+//    current_scan.y_mid_distance = 0;
+//    rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance; //offset by midline
 
-    if(current_scan.y_lower_distance > -breakneck_steering_threshold && current_scan.y_upper_distance < breakneck_steering_threshold){
-        current_scan.y_mid_distance = breakneck_steering;
-        ROS_WARN("breakneck steering implemented");
-    }
 
-    if(current_scan.y_mid_distance > midline_threshold){
-        current_scan.y_mid_distance = 0;
-    }
-
-    rot_waypoint_y = rot_waypoint_y + current_scan.y_mid_distance; //offset by midline
+    mpcBlock::doMPC::controller_callback();
 }
 
 void mpcBlock::doMPC::controller_callback() {
@@ -119,16 +132,16 @@ void mpcBlock::doMPC::controller_callback() {
 
     (run_cvxgenOptimization(Q_matrix_1, Q_matrix_2, R_matrix_1, B_matrix));
 
-    steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x, chosen_theta);
-
-    if( (current_loop_time - prev_loop_time)*1000000000 > 0.01) {
-        steering_angle = (steering_angle + prev_steering_angle) / 2.0; //TODO: add more previous iterations?
-        prev_steering_angle = steering_angle;
-    }
+    steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x, current_scan.y_lower_distance, current_scan.y_upper_distance);
 
     if(std::isnan(steering_angle)){
         ROS_WARN("Steering angle is NAN!");
         steering_angle = prev_steering_angle;
+    }
+
+    if( (current_loop_time - prev_loop_time)*1000000000.0 > 0.01) {
+        steering_angle = (steering_angle + prev_steering_angle) / 2.0; //TODO: add more previous iterations?
+        prev_steering_angle = steering_angle;
     }
 
     prev_loop_time = current_loop_time;
@@ -140,13 +153,12 @@ void mpcBlock::doMPC::publisherCallback() {
     drive_msg.drive.steering_angle = steering_angle; //Sets steering angle
     drive_msg.drive.speed = high_velocity - (high_velocity - low_velocity) * std::abs(steering_angle) / steering_limit; //Interpolation function
     drive_pub.publish(drive_msg); //Sets velocity based on steering angle conditions
-
 }
 
 void mpcBlock::doMPC::debug() { //Prints stuff on console for debugging. Commented out code is temporarily not being debugged
 
-//        std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
-//        std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
+        std::cout << "upper: " << current_scan.y_upper_distance << std::endl;
+        std::cout << "lower: " << current_scan.y_lower_distance << std::endl;
 //        std::cout << "mid: " << current_scan.y_mid_distance << std::endl;
     ROS_INFO("steering angle: %f", steering_angle);
 }
@@ -155,7 +167,7 @@ int main(int argc, char ** argv) {
     ros::init(argc, argv, "doMPC");
     mpcBlock::doMPC mpc_class_init;
 
-    ros::Rate loop_rate(1000);
+    ros::Rate loop_rate(100);
 
     while(ros::ok()){
 
