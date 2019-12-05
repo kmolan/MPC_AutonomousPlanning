@@ -64,6 +64,9 @@ void mpcBlock::doMPC::final_theta_callback(const std_msgs::Float64::ConstPtr &ms
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
 
+    float y_lower_dist = -1;
+    float y_upper_dist = 1;
+
     current_scan.angle_increment = scan_msg->angle_increment;
     current_scan.angle_sweep = scan_msg->angle_max - scan_msg->angle_min;
 
@@ -78,28 +81,28 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     current_scan.y_upper_distance = scan_msg->ranges[x_upper_index];
 
     for(int i = current_scan.zero_angle; i>=current_scan.right_angle; i--){
-        if(scan_msg->ranges[i] < lower_threshold){
+        if( !std::isinf(scan_msg->ranges[i]) && !std::isnan(scan_msg->ranges[i]) && scan_msg->ranges[i] < lower_threshold){
             x_lower_index = i;
             break;
         }
     }
 
     for(int i = current_scan.zero_angle; i<=current_scan.left_angle; i++){
-        if(scan_msg->ranges[i] < lower_threshold){
+        if(!std::isinf(scan_msg->ranges[i]) && !std::isnan(scan_msg->ranges[i]) && scan_msg->ranges[i] < lower_threshold){
             x_upper_index = i;
             break;
         }
     }
 
-    double y_lower_dist = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
-    double y_upper_dist =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
+    y_lower_dist = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size())) ;
+    y_upper_dist =  scan_msg->ranges[x_upper_index-1]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size())) ;
 
     if(std::abs(y_lower_dist) < std::abs(y_upper_dist)){
-        current_scan.y_lower_distance = y_lower_dist + 0.3;
+        current_scan.y_lower_distance = y_lower_dist + 0.4;
     }
 
     else if(std::abs(y_upper_dist) < std::abs(y_lower_dist)){
-        current_scan.y_upper_distance = y_upper_dist - 0.3;
+        current_scan.y_upper_distance = y_upper_dist - 0.4;
     }
 
 //    if(current_scan.y_lower_distance > -min_halfspace_width){
