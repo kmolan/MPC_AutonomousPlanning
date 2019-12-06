@@ -23,7 +23,7 @@ look_ahead_distance: 1.0
 steering_angle_change: 0.01
 
 #MPC Tuning parameters
-lower_threshold: 1.5 #The threshold that decides if there's an obstacle (should prolly make it velocity based)
+lower_threshold: 2.0 #The threshold that decides if there's an obstacle (should prolly make it velocity based)
 offset: 0.0
 
 midline_threshold: 0.5 #Decides to ignore for large gaps that occurs in cornering

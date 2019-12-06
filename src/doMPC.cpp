@@ -54,8 +54,7 @@ void mpcBlock::doMPC::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) 
 }
 
 void mpcBlock::doMPC::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) {
-    rot_waypoint_y = msg->data - offset;
-
+    rot_waypoint_y = msg->data + offset;
 }
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
@@ -93,14 +92,14 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     current_scan.y_lower_distance = -scan_msg->ranges[x_lower_index];
     current_scan.y_upper_distance = scan_msg->ranges[x_upper_index];
 
-    if(std::abs(current_scan.y_lower_distance) < 0.5){
+    if(std::abs(current_scan.y_lower_distance) < 1.0){
         ROS_INFO("lower diffused");
-        offset = 0.2;
+        rot_waypoint_y =  rot_waypoint_y + 0.5;
     }
 
-    if(std::abs(current_scan.y_upper_distance) < 0.5){
+    if(std::abs(current_scan.y_upper_distance) < 1.0){
         ROS_INFO("upper diffused");
-        offset = -0.2;
+        rot_waypoint_y =  rot_waypoint_y - 0.5;
     }
 
     mpcBlock::doMPC::controller_callback();
@@ -148,7 +147,7 @@ int main(int argc, char ** argv) {
     ros::Rate loop_rate(100);
 
     while(ros::ok()){
-        mpc_class_init.debug();
+//        mpc_class_init.debug();
         mpc_class_init.publisherCallback();
 
         ros::spinOnce();
