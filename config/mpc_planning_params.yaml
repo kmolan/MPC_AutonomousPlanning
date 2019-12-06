@@ -1,5 +1,5 @@
 #File name for the csv
-waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/MPC_centerline_2.csv"
+waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/skir.csv"
 
 #Subscriber and publisher topics
 pose_topic: "pf/pose/odom"
@@ -15,10 +15,10 @@ theta_topic: "approach_theta"
 #Physical parameters
 steering_limit: 0.4189
 high_velocity: 5
-low_velocity: 1
+low_velocity: 2
 
 #waypoint parameters
-look_ahead_distance: 1.5
+look_ahead_distance: 1.0
 
 steering_angle_change: 0.01
 

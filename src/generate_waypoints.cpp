@@ -100,12 +100,19 @@ void mpcBlock::generate_waypoints::updatePositions() {
 
 void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
 
-    const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
-    currentX = pose_msg.position.x; //vehicle pose X
-    currentY = pose_msg.position.y; //vehicle pose Y
-    currentTheta = mpcBlock::generate_waypoints::convert_to_Theta(pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
+    pf_loop_time = ros::Time::now().toNSec();
 
-    pf_update = true;
+    if(pf_loop_time - pf_last_loop_time > 0.02*1000000000.0) {
+        const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
+        currentX = pose_msg.position.x; //vehicle pose X
+        currentY = pose_msg.position.y; //vehicle pose Y
+        currentTheta = mpcBlock::generate_waypoints::convert_to_Theta(
+                pose_msg.orientation); //vehicle orientation theta converted from quaternion to euler angle
+
+        pf_update = true;
+    }
+
+    pf_last_loop_time = pf_loop_time;
 }
 
 void mpcBlock::generate_waypoints::ackermann_callback(const ackermann_msgs::AckermannDriveStamped::ConstPtr &ackermsg) {

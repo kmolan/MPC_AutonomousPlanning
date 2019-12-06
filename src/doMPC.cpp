@@ -143,7 +143,7 @@ void mpcBlock::doMPC::controller_callback() {
         steering_angle = prev_steering_angle;
     }
 
-    if( (current_loop_time - prev_loop_time)*1000000000.0 > 0.01) {
+    if( (current_loop_time - prev_loop_time)*1000000000.0 > 0.001) {
         steering_angle = (steering_angle + prev_steering_angle) / 2.0; //TODO: add more previous iterations?
         prev_steering_angle = steering_angle;
     }

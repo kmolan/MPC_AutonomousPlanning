@@ -103,6 +103,9 @@ namespace mpcBlock {
         float prev_waypoint[2]; ///< array containing x- and y-coordinate of previous waypoint
         float next_waypoint[2]; ///<array containing x- and y-coordinate of next waypoint
 
+        double pf_loop_time;
+        double pf_last_loop_time;
+
         double currentVelocity; ///<Current velocity of the body
         double currentSteering; ///<Current steering angle of the body
         bool pf_update; ///<Flag that activates if particle filter updates
