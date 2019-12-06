@@ -46,6 +46,7 @@ void mpcBlock::doMPC::getParams() {
     nodeH.getParam("Q_matrix_2" ,Q_matrix_2);
     nodeH.getParam("R_matrix_1", R_matrix_1);
     nodeH.getParam("B_matrix", B_matrix);
+    nodeH.getParam("offset", offset);
 }
 
 void mpcBlock::doMPC::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) {
@@ -53,7 +54,8 @@ void mpcBlock::doMPC::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) 
 }
 
 void mpcBlock::doMPC::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) {
-    rot_waypoint_y = msg->data;
+    rot_waypoint_y = msg->data - offset;
+
 }
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
@@ -72,7 +74,7 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     current_scan.y_upper_distance = scan_msg->ranges[x_upper_index];
 
     for(int i = current_scan.zero_angle; i>=current_scan.right_angle; i--){
-        if( !std::isinf(scan_msg->ranges[i]) && !std::isnan(scan_msg->ranges[i]) && scan_msg->ranges[i] < lower_threshold){M    
+        if( !std::isinf(scan_msg->ranges[i]) && !std::isnan(scan_msg->ranges[i]) && scan_msg->ranges[i] < lower_threshold){
             x_lower_index = i;
             break;
         }
@@ -91,8 +93,15 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     current_scan.y_lower_distance = -scan_msg->ranges[x_lower_index];
     current_scan.y_upper_distance = scan_msg->ranges[x_upper_index];
 
-    current_scan.y_lower_distance = -2;
-    current_scan.y_upper_distance = 2;
+    if(std::abs(current_scan.y_lower_distance) < 0.5){
+        ROS_INFO("lower diffused");
+        offset = 0.2;
+    }
+
+    if(std::abs(current_scan.y_upper_distance) < 0.5){
+        ROS_INFO("upper diffused");
+        offset = -0.2;
+    }
 
     mpcBlock::doMPC::controller_callback();
 }
@@ -109,8 +118,8 @@ void mpcBlock::doMPC::controller_callback() {
         steering_angle = prev_steering_angle;
     }
 
-    if( (current_loop_time - prev_loop_time)*1000000000.0 > 0.001) {
-        steering_angle = (steering_angle + prev_steering_angle) / 2.0; //TODO: add more previous iterations?
+    if( prev_steering_angle*steering_angle < 0 && std::abs(steering_angle) > 0.001 ) {
+        steering_angle = (steering_angle + prev_steering_angle) / 2.0;
         prev_steering_angle = steering_angle;
     }
 
