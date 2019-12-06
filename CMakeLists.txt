@@ -8,15 +8,15 @@ add_compile_options(-std=c++11)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  nav_msgs
-  roscpp
-  rospy
-  sensor_msgs
-  std_msgs
-  visualization_msgs
-  tf2_ros
-)
+        geometry_msgs
+        nav_msgs
+        roscpp
+        rospy
+        sensor_msgs
+        std_msgs
+        visualization_msgs
+        tf2_ros
+        )
 find_package(Eigen3 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
@@ -109,10 +109,10 @@ find_package(Eigen3 REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES pure_pursuit
-#  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy sensor_msgs std_msgs visualization_msgs
-#  DEPENDS system_lib
+        #  INCLUDE_DIRS include
+        #  LIBRARIES pure_pursuit
+        #  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy sensor_msgs std_msgs visualization_msgs
+        #  DEPENDS system_lib
 )
 
 ###########
@@ -122,10 +122,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  include/cvxgen
-  ${catkin_INCLUDE_DIRS}
-  ${EIGEN3_INCLUDE_DIRS}
+        include
+        include/cvxgen
+        ${catkin_INCLUDE_DIRS}
+        ${EIGEN3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -157,12 +157,12 @@ add_executable(doMPC src/doMPC.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(generate_waypoints
-  ${catkin_LIBRARIES}
-)
+        ${catkin_LIBRARIES}
+        )
 
 target_link_libraries(waypoint_visualization
         ${catkin_LIBRARIES}
-)
+        )
 
 target_link_libraries( doMPC
         ${PROJECT_SOURCE_DIR}/include/cvxgen/solver.o
@@ -170,7 +170,7 @@ target_link_libraries( doMPC
         ${PROJECT_SOURCE_DIR}/include/cvxgen/util.o
         ${PROJECT_SOURCE_DIR}/include/cvxgen/matrix_support.o
         ${catkin_LIBRARIES}
-)
+        )
 
 #############
 ## Install ##

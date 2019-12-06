@@ -59,7 +59,7 @@ public:
         params.u_max[0] = 0.4189;
         params.u_max[1] = 1;
 
-        params.S[0] = 5.0/40.0; //TODO: Tune
+        params.S[0] = 0.1; //TODO: Tune
     }
 
     /*!

@@ -121,6 +121,10 @@ namespace mpcBlock {
 
         std::string waypoint_filename; ///<Address of the CSV file containing waypoints
         std::string pose_topic; ///< subscriber topic, particle filter publishes poses on this
+
+        int updatecount;
+        double averagepos_x;
+        double averagepos_y;
     };
 
 }

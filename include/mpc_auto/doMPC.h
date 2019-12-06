@@ -91,12 +91,6 @@ namespace mpcBlock{
          */
         void marker_y_callback(const std_msgs::Float64::ConstPtr &msg);
 
-        /*!
-         * @brief subscribes to the final steering angle at waypoint
-         * @param msg pointer to final steering angle
-         */
-        void final_theta_callback(const std_msgs::Float64::ConstPtr &msg);
-
         ros::NodeHandle nodeH; ///<NodeHandle of the node
 
         ros::Subscriber marker_x_subs;
