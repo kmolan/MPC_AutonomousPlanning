@@ -15,6 +15,8 @@ MPC path planning and obstacle avoidance for an autonomous vehicle, part of the 
 3. Update the drive and lidar topics appropriately.
 4. Optional - update the map files in the racecar simulator to test the MPC capabilities on the simulator.
 
+Note: We use CVXGEN for MPC optimization, and is used under an academic license. 
+
 # In action
 
 Static obstacle avoidance in action, with a nominal velocity of 6 m/s:
