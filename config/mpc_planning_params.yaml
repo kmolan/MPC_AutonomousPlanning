@@ -1,5 +1,5 @@
 #File name for the csv
-waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/skir.csv"
+waypoint_filename: "/home/anmolk/mpc_ws/src/MPC_AutonomousPlanning/waypoint_CSVs/skirkanich.csv"
 
 #Subscriber and publisher topics
 pose_topic: "pf/pose/odom"
