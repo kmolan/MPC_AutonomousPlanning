@@ -21,7 +21,7 @@ Note: We use CVXGEN for MPC optimization, and is used under an academic license.
 
 * Launch the particle filter 
 ~~~
-    roslaunch particle\_filter localize.launch
+    roslaunch particle_filter localize.launch
 ~~~
 * Localize the vehicle on the RVIZ GUI
 ~~~
@@ -29,7 +29,7 @@ Note: We use CVXGEN for MPC optimization, and is used under an academic license.
 ~~~
 * Launch the MPC package
 ~~~
-    roslaunch mpc\_auto mpc\_auto.launch
+    roslaunch mpc_auto mpc_auto.launch
 ~~~
 # In action
 
