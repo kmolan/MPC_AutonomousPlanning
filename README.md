@@ -17,6 +17,20 @@ MPC path planning and obstacle avoidance for an autonomous vehicle, part of the 
 
 Note: We use CVXGEN for MPC optimization, and is used under an academic license. 
 
+# How to run this package
+
+* Launch the particle filter 
+~~~
+    roslaunch particle\_filter localize.launch
+~~~
+* Localize the vehicle on the RVIZ GUI
+~~~
+    rosrun rviz rviz
+~~~
+* Launch the MPC package
+~~~
+    roslaunch mpc\_auto mpc\_auto.launch
+~~~
 # In action
 
 Static obstacle avoidance in action, with a nominal velocity of 6 m/s:
@@ -29,7 +43,8 @@ Static obstacle avoidance with a nominal velocity of 4m/s:
 
 <p align="center">
   <img src=media/skirkanich.gif>
-</p>  
+</p>
 
 # Contact Information
 For questions and queries email me at anmolkathail@gmail.com
+
