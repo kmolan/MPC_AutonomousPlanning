@@ -10,6 +10,7 @@ laser_topic: "scan"
 visualization_topic: "visualization_marker"
 marker_x_topic: "chosen_x_waypoint"
 marker_y_topic: "chosen_y_waypoint"
+waypoint_index_topic: "chosen_waypoint_index"
 theta_topic: "approach_theta"
 
 #Physical parameters
@@ -20,16 +21,8 @@ low_velocity: 2
 #waypoint parameters
 look_ahead_distance: 1.0
 
-steering_angle_change: 0.01
-
 #MPC Tuning parameters
-lower_threshold: 2.0 #The threshold that decides if there's an obstacle (should prolly make it velocity based)
-offset: 0.0
-
-midline_threshold: 0.5 #Decides to ignore for large gaps that occurs in cornering
-breakneck_steering: 0.4 #Steering for when obstacle on waypoint (needs most tuning, maybe change the method?)
-breakneck_steering_threshold: 0.15 #Half-space width for breakneck_steering activation
-min_halfspace_width: 0.2 #If halfspace on any side is less than this, set to zero. Prevents running into obstacle. Tune.
+lower_threshold: 2.0 #The threshold that decides if there's an obstacle
 
 Q_matrix_1: 2 #State cost on waypoint error (horizontal)
 Q_matrix_2: 1 #State cost on waypoint error (vertical)

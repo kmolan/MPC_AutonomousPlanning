@@ -39,7 +39,6 @@ namespace mpcBlock{
 
         float y_upper_distance; ///<the y-axis distance from the vehicle towards closest obstacle at left side of the car
         float y_lower_distance; ///<the y-axis distance from the vehicle towards closest obstacle at right side of the car
-        float y_mid_distance; ///<the mean of upper and lower distances
     };
 
     class doMPC{
@@ -96,7 +95,6 @@ namespace mpcBlock{
         ros::Subscriber marker_x_subs;
         ros::Subscriber marker_y_subs;
         ros::Subscriber lidar_sub; ///< subscribes to the lidar scan for obstacle avoidance
-        ros::Subscriber final_theta_subs;
 
         ros::Publisher drive_pub; ///< publishes on vehicle inputs (steering and velocity)
 
@@ -104,7 +102,6 @@ namespace mpcBlock{
         std::string laser_topic; ///< subscriber topic, lidar publishes values on this
         std::string marker_x_topic; ///<Topic over which marker_x_pubs subscribes
         std::string marker_y_topic; ///<Topic over which marker_y_pubs subscribes
-        std::string theta_topic; ///< subscriber topic, final steering angle at waypoint
 
         mpcBlock::laserdata current_scan; ///< struct to hold the laser data
 
@@ -117,19 +114,12 @@ namespace mpcBlock{
 
         double rot_waypoint_x = 0; ///<optimal waypoint in vehicle frame, x-direction
         double rot_waypoint_y = 0; ///<optimal waypoint in vehicle frame, y-direction
-        double chosen_theta = 0;
 
         double current_loop_time; ///<Keeps track of controller_callback function
         double prev_loop_time; ///<Keeps track of controller_callback function
 
-        double offset;
-
         //MPC parameters
         float lower_threshold; ///< The threshold that decides if there's an obstacle //TODO: Make this velocity based
-        float midline_threshold; ///< Decides to ignore for large gaps that occurs in cornering
-        float breakneck_steering; ///< Steering for when obstacle on waypoint //TODO: Tune
-        float min_halfspace_width; ///< If halfspace on any side is less than this, set to zero. Prevents running into obstacle. //TODO: Tune
-        float breakneck_steering_threshold; ///< Half-space width for breakneck_steering activation
         double Q_matrix_1;  ///<State cost on waypoint error (horizontal)
         double Q_matrix_2; ///< State cost on waypoint error (vertical)
         double R_matrix_1; ///< Input cost

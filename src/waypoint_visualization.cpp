@@ -1,6 +1,7 @@
 /**Optional node for visualization of the waypoint**/
 
 #include "mpc_auto/waypoint_visualization.h"
+#include "mpc_auto/read_waypoints.h"
 
 mpcBlock::visualizeWaypoint::visualizeWaypoint() {
 
@@ -9,8 +10,10 @@ mpcBlock::visualizeWaypoint::visualizeWaypoint() {
     getParams();
 
     vis_pub = nh.advertise<visualization_msgs::Marker>(visualization_topic, 0);
-    marker_x_subs = nh.subscribe(marker_x_topic, 1, &mpcBlock::visualizeWaypoint::marker_x_callback, this);
-    marker_y_subs = nh.subscribe(marker_y_topic, 1, &mpcBlock::visualizeWaypoint::marker_y_callback, this);
+
+    waypoint_index_subs = nh.subscribe(waypoint_index_topic, 10, &mpcBlock::visualizeWaypoint::waypoint_index_callback, this);
+
+    waypoint_data_full = mpcBlock::read_way_point_CSVfile(waypoint_filename);
 
     //visualization stuff
     marker.header.frame_id = "map";
@@ -33,23 +36,19 @@ mpcBlock::visualizeWaypoint::visualizeWaypoint() {
 
 void mpcBlock::visualizeWaypoint::getParams() {
     nh.getParam("visualization_topic", visualization_topic);
-    nh.getParam("marker_x_topic", marker_x_topic);
-    nh.getParam("marker_y_topic", marker_y_topic);
+    nh.getParam("waypoint_index_topic", waypoint_index_topic);
+    nh.getParam("waypoint_filename", waypoint_filename);
 }
 
-void mpcBlock::visualizeWaypoint::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) {
-    marker_x.data = msg->data;
-}
-
-void mpcBlock::visualizeWaypoint::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) {
-    marker_y.data = msg->data;
+void mpcBlock::visualizeWaypoint::waypoint_index_callback(const std_msgs::Float64::ConstPtr &msg) {
+    marker_x = waypoint_data_full[0][msg->data];
+    marker_y = waypoint_data_full[1][msg->data];
 }
 
 void mpcBlock::visualizeWaypoint::publisherCallback() {
-
     marker.header.frame_id = "map";
-    marker.pose.position.x = marker_x.data;
-    marker.pose.position.y = marker_y.data;
+    marker.pose.position.x = marker_x;
+    marker.pose.position.y = marker_y;
     marker.id += 1;
     marker.header.stamp = ros::Time();
     marker.lifetime = ros::Duration(0.1);
@@ -69,6 +68,7 @@ int main(int argc, char ** argv) {
     while(ros::ok()){
         wv_class_init.publisherCallback();
         wv_class_init.debug();
+
         ros::spinOnce();
         loop_rate.sleep();
     }

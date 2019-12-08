@@ -33,28 +33,24 @@ namespace mpcBlock{
         void getParams();
 
         /*!
-         * @brief subscribes to the x_waypoint
-         * @param msg pointer to the current x-waypoint
+         * @brief subscribes to the current waypoint index
+         * @param msg pointer to the current waypoint index
          */
-        void marker_x_callback(const std_msgs::Float64::ConstPtr &msg);
-
-        /*!
-         * @brief subscribes to the y_waypoint
-         * @param msg pointer to the current y-waypoint
-         */
-        void marker_y_callback(const std_msgs::Float64::ConstPtr &msg);
+        void waypoint_index_callback(const std_msgs::Float64::ConstPtr &msg);
 
         ros::NodeHandle nh; ///<NodeHandle of the node
-        ros::Subscriber marker_x_subs; ///<Subscribes to the x-coordinate of current waypoint
-        ros::Subscriber marker_y_subs; ///<Subscribes to the y-coordinate to current waypoint
+        ros::Subscriber waypoint_index_subs; ///<Subscribes to the current waypoint index
         ros::Publisher vis_pub; ///< For visualization stuff on RViz
+
+        std::vector <std::vector<float>> waypoint_data_full; ///< Original raw waypoint data
 
         visualization_msgs::Marker marker; ///<visualization marker object
         std::string visualization_topic; ///<topic over which vis_pub publishes
-        std::string marker_x_topic; ///<Topic over which marker_x_subs subscribes
-        std::string marker_y_topic; ///<Topic over which marker_y_subs subscribes
+        std::string waypoint_index_topic; ///<Topic over which marker_x_subs subscribes
+        std::string waypoint_filename; ///<Address of the CSV file containing waypoints
 
-        std_msgs::Float64 marker_x; ///<Container for current waypoint data, x-coordinate
-        std_msgs::Float64 marker_y; ///<Container for current waypoint data, y-coordinate
+        double marker_x; ///<Current x-waypoint
+        double marker_y; ///<Current y-waypoint
+
     };
 }

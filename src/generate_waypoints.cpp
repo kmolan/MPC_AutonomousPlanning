@@ -17,14 +17,10 @@ mpcBlock::generate_waypoints::generate_waypoints() {
     }
 
     localization_sub = n.subscribe(pose_topic, 1, &mpcBlock::generate_waypoints::pose_callback, this);
-    ackermann_subs = n.subscribe(drive_topic, 1, &mpcBlock::generate_waypoints::ackermann_callback, this);
 
     marker_x_pubs = n.advertise<std_msgs::Float64>(marker_x_topic, 1); //publish x-waypoint
     marker_y_pubs = n.advertise<std_msgs::Float64>(marker_y_topic,1); //publish y-waypoint
-    theta_pubs = n.advertise<std_msgs::Float64>(theta_topic, 1);
-
-    averagepos_x = 0;
-    averagepos_y = 0;
+    waypoint_index_pubs = n.advertise<std_msgs::Float64>(waypoint_index_topic, 1);
 }
 
 void mpcBlock::generate_waypoints::GetParams() {
@@ -35,28 +31,10 @@ void mpcBlock::generate_waypoints::GetParams() {
     n.getParam("pose_topic", pose_topic);
     n.getParam("marker_x_topic", marker_x_topic);
     n.getParam("marker_y_topic", marker_y_topic);
-    n.getParam("theta_topic", theta_topic);
-    n.getParam("drive_topic", drive_topic);
-}
-
-void mpcBlock::generate_waypoints::updatePositions() {
-    if(pf_update){
-        prev_loop_time = current_loop_time;
-        pf_update = false;
-    }
-
-    else {
-        current_loop_time = ros::Time::now().toNSec();
-    }
-
-    currentApproxX = currentX + currentVelocity*std::cos(currentTheta)*(current_loop_time - prev_loop_time)/1000000000.0;
-    currentApproxY = currentY + currentVelocity*std::sin(currentTheta)*(current_loop_time - prev_loop_time)/1000000000.0;
-
-    prev_loop_time = current_loop_time;
+    n.getParam("waypoint_index_topic", waypoint_index_topic);
 }
 
 void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg) {
-
 
     const geometry_msgs::Pose pose_msg = odom_msg->pose.pose;
     currentX = pose_msg.position.x; //vehicle pose X
@@ -85,30 +63,14 @@ void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::Const
     waypoint_x = waypoint_data1[last_index];
     waypoint_y = waypoint_data2[last_index];
 
-    prev_waypoint[0] = waypoint_data1[last_index - 1];
-    prev_waypoint[1] = waypoint_data2[last_index - 1];
-
-    next_waypoint[0] = waypoint_data1[last_index + 1];
-    next_waypoint[1] = waypoint_data2[last_index + 1];
-
     rot_waypoint_x = waypoint_x - currentX;
     rot_waypoint_y = waypoint_y - currentY;
-
-    float temp_prev_theta = std::atan2(waypoint_y - prev_waypoint[1], waypoint_x - prev_waypoint[0]);
-    float temp_next_theta = std::atan2(next_waypoint[1] - waypoint_y, next_waypoint[0] - waypoint_x);
 
     mpcBlock::generate_waypoints::rotate_points(currentTheta, &rot_waypoint_x, &rot_waypoint_y);
 
     chosen_waypoint_x.data = rot_waypoint_x;
     chosen_waypoint_y.data = rot_waypoint_y;
-
-    marker_y_pubs.publish(chosen_waypoint_y);
-    marker_x_pubs.publish(chosen_waypoint_x);
-}
-
-void mpcBlock::generate_waypoints::ackermann_callback(const ackermann_msgs::AckermannDriveStamped::ConstPtr &ackermsg) {
-    currentVelocity = ackermsg->drive.speed;
-    currentSteering = ackermsg->drive.steering_angle;
+    waypoint_index_msg.data = last_index;
 }
 
 double mpcBlock::generate_waypoints::convert_to_Theta(const geometry_msgs::Quaternion msg){
@@ -139,7 +101,9 @@ void mpcBlock::generate_waypoints::rotate_points(const double theta, float *dist
 }
 
 void mpcBlock::generate_waypoints::publisherCallback() {
-//    theta_pubs.publish(chosen_theta);
+    marker_y_pubs.publish(chosen_waypoint_y);
+    marker_x_pubs.publish(chosen_waypoint_x);
+    waypoint_index_pubs.publish(waypoint_index_msg);
 }
 
 void mpcBlock::generate_waypoints::debug() { //Prints stuff on console for debugging
@@ -150,12 +114,11 @@ int main(int argc, char ** argv) {
     ros::init(argc, argv, "mpc_auto_node");
     mpcBlock::generate_waypoints wp_class_init;
 
-    ros::Rate loop_rate(50);
+    ros::Rate loop_rate(30);
 
     while(ros::ok()){
-        wp_class_init.updatePositions();
         wp_class_init.debug();
-//        wp_class_init.publisherCallback();
+        wp_class_init.publisherCallback();
 
         ros::spinOnce();
         loop_rate.sleep();

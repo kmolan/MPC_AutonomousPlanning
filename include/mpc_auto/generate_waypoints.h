@@ -31,11 +31,6 @@ namespace mpcBlock {
         generate_waypoints();
 
         /*!
-         * @brief Approximates new position based on previous positions and current heading angle and velocity
-         */
-        void updatePositions();
-
-        /*!
          * @brief calls all the class publishers
          */
         void publisherCallback();
@@ -52,8 +47,6 @@ namespace mpcBlock {
          * @param pose_msg container pointer for the vehicle pose
          */
         void pose_callback(const nav_msgs::Odometry::ConstPtr &odom_msg);
-
-        void ackermann_callback(const ackermann_msgs::AckermannDriveStamped::ConstPtr &ackermsg);
 
         /*!
          * @brief fetches parameters and assigns it to member variables
@@ -78,14 +71,13 @@ namespace mpcBlock {
         ros::NodeHandle n; ///< NodeHandle
         ros::Publisher marker_x_pubs; ///<publishes the current waypoint, x-coordinate
         ros::Publisher marker_y_pubs; ///<publishes the current waypoint, y-coordinate
-        ros::Publisher theta_pubs; ///<publishes the current waypoint's approach heading angle
+        ros::Publisher waypoint_index_pubs; ///<publishes index of the chosen waypoints
 
         ros::Subscriber localization_sub; ///<  subscribes to the particle filter for localization
-        ros::Subscriber ackermann_subs; ///<Subscribes to ackermann messages for current velocity and steering angle
 
         //WayPoint data containers
         std::vector <std::vector<float>> waypoint_data_full; ///< Original raw waypoint data
-        std::vector<float> waypoint_data1; ///<Processed waypoint data in y-direction //TODO: Check axes
+        std::vector<float> waypoint_data1; ///<Processed waypoint data in y-direction
         std::vector<float> waypoint_data2;///<Processed waypoint data in x-direction
         float rot_waypoint_x = 0; ///<optimal waypoint in vehicle frame, x-direction
         float rot_waypoint_y = 0; ///<optimal waypoint in vehicle frame, y-direction
@@ -94,37 +86,19 @@ namespace mpcBlock {
 
         std::string marker_x_topic; ///<Topic over which marker_x_pubs publishes
         std::string marker_y_topic; ///<Topic over which marker_y_pubs publishes
-        std::string theta_topic; ///<Topic over which theta_pubs publishes
-        std::string drive_topic; ///< publisher topic, controller node publishes vehicle inputs on this
+        std::string waypoint_index_topic; ///<Topic over which waypoint_index_pubs publishes
         std_msgs::Float64 chosen_waypoint_x; ///<Container for current waypoint x-coordinate
         std_msgs::Float64 chosen_waypoint_y; ///<Container for current waypoint y-coordinate
-        std_msgs::Float64 chosen_theta; ///<Final steering angle at the waypoint
+        std_msgs::Float64 waypoint_index_msg; ///<Container for current waypoint index
 
-        float prev_waypoint[2]; ///< array containing x- and y-coordinate of previous waypoint
-        float next_waypoint[2]; ///<array containing x- and y-coordinate of next waypoint
-
-        double pf_loop_time;
-        double pf_last_loop_time;
-
-        double currentVelocity; ///<Current velocity of the body
-        double currentSteering; ///<Current steering angle of the body
-        bool pf_update; ///<Flag that activates if particle filter updates
-        double current_loop_time; ///<Keeps track of updatePositions function
-        double prev_loop_time; ///<Keeps track of updatePositions function
         double currentX; ///<Current X-coordinate from particle filter
         double currentY; ///<Current Y-coordinate from particle filter
         double currentTheta; ///<Current Heading angle from particle filter
-        double currentApproxX; ///<Approximate position of X-coordinate
-        double currentApproxY; ///<Approximate position of Y-coordinate
 
         int last_index = -1; ///<Index of the selected optimal waypoint
 
         std::string waypoint_filename; ///<Address of the CSV file containing waypoints
         std::string pose_topic; ///< subscriber topic, particle filter publishes poses on this
-
-        int updatecount;
-        double averagepos_x;
-        double averagepos_y;
     };
 
 }

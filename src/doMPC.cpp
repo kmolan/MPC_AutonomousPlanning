@@ -30,23 +30,16 @@ void mpcBlock::doMPC::getParams() {
     //Get parameters
     nodeH.getParam("laser_topic", laser_topic);
     nodeH.getParam("drive_topic", drive_topic);
-    nodeH.getParam("steering_angle_change", steering_angle_change);
     nodeH.getParam("marker_x_topic", marker_x_topic);
-    nodeH.getParam("theta_topic", theta_topic);
     nodeH.getParam("marker_y_topic", marker_y_topic);
     nodeH.getParam("steering_limit", steering_limit);
     nodeH.getParam("high_velocity", high_velocity);
     nodeH.getParam("low_velocity", low_velocity);
     nodeH.getParam("lower_threshold", lower_threshold);
-    nodeH.getParam("midline_threshold", midline_threshold);
-    nodeH.getParam("breakneck_steering", breakneck_steering);
-    nodeH.getParam("min_halfspace_width",min_halfspace_width);
-    nodeH.getParam("breakneck_steering_threshold", breakneck_steering_threshold);
     nodeH.getParam("Q_matrix_1", Q_matrix_1);
     nodeH.getParam("Q_matrix_2" ,Q_matrix_2);
     nodeH.getParam("R_matrix_1", R_matrix_1);
     nodeH.getParam("B_matrix", B_matrix);
-    nodeH.getParam("offset", offset);
 }
 
 void mpcBlock::doMPC::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) {
@@ -54,7 +47,7 @@ void mpcBlock::doMPC::marker_x_callback(const std_msgs::Float64::ConstPtr &msg) 
 }
 
 void mpcBlock::doMPC::marker_y_callback(const std_msgs::Float64::ConstPtr &msg) {
-    rot_waypoint_y = msg->data + offset;
+    rot_waypoint_y = msg->data;
 }
 
 void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &scan_msg){
@@ -94,12 +87,12 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
 
     if(std::abs(current_scan.y_lower_distance) < 1.0){
         ROS_INFO("lower diffused");
-        rot_waypoint_y =  rot_waypoint_y + 0.5;
+        rot_waypoint_y =  rot_waypoint_y + 0.05;
     }
 
     if(std::abs(current_scan.y_upper_distance) < 1.0){
         ROS_INFO("upper diffused");
-        rot_waypoint_y =  rot_waypoint_y - 0.5;
+        rot_waypoint_y =  rot_waypoint_y - 0.05;
     }
 
     mpcBlock::doMPC::controller_callback();
