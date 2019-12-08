@@ -32,8 +32,6 @@ parameters
   S nonnegative #slew rate limit
   w (n) #waypoints
   u_max (m) nonnegative  # theta limit = [0.4189 ; 1]
-  #sin_theta0 #sin(theta_0)
-  #cos_theta0 #cos(theta_0)
   x_lower (n) #[right side dist, -0.1]
   x_upper (n) #[left side dist, w[1] + 0.25]
 

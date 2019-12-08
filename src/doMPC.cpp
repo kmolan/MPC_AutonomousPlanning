@@ -36,6 +36,7 @@ void mpcBlock::doMPC::getParams() {
     nodeH.getParam("high_velocity", high_velocity);
     nodeH.getParam("low_velocity", low_velocity);
     nodeH.getParam("lower_threshold", lower_threshold);
+    nodeH.getParam("offset", offset);
     nodeH.getParam("Q_matrix_1", Q_matrix_1);
     nodeH.getParam("Q_matrix_2" ,Q_matrix_2);
     nodeH.getParam("R_matrix_1", R_matrix_1);
@@ -82,17 +83,17 @@ void mpcBlock::doMPC::lidar_callback(const sensor_msgs::LaserScan::ConstPtr &sca
     double y_lower_dist = scan_msg->ranges[x_lower_index]*std::sin(-Pi + 2*Pi*float(x_lower_index)/float(scan_msg->ranges.size()));
     double y_upper_dist = scan_msg->ranges[x_upper_index]*std::sin(-Pi + 2*Pi*float(x_upper_index)/float(scan_msg->ranges.size()));
 
-    current_scan.y_lower_distance = -scan_msg->ranges[x_lower_index];
-    current_scan.y_upper_distance = scan_msg->ranges[x_upper_index];
+    current_scan.y_lower_distance = y_lower_dist;
+    current_scan.y_upper_distance = y_upper_dist;
 
     if(std::abs(current_scan.y_lower_distance) < 1.0){
-        ROS_INFO("lower diffused");
-        rot_waypoint_y =  rot_waypoint_y + 0.05;
+        ROS_WARN("Obstacle detected on the right!");
+        rot_waypoint_y =  rot_waypoint_y + offset;
     }
 
     if(std::abs(current_scan.y_upper_distance) < 1.0){
-        ROS_INFO("upper diffused");
-        rot_waypoint_y =  rot_waypoint_y - 0.05;
+        ROS_WARN("Obstacle detected on the left!");
+        rot_waypoint_y =  rot_waypoint_y - offset;
     }
 
     mpcBlock::doMPC::controller_callback();
@@ -105,13 +106,13 @@ void mpcBlock::doMPC::controller_callback() {
 
     steering_angle = run_cvxgenOptimization::solve_mpc(rot_waypoint_y, rot_waypoint_x, current_scan.y_lower_distance, current_scan.y_upper_distance);
 
-    if(std::isnan(steering_angle)){
+    if(std::isnan(steering_angle)){ //If optimization not converged
         ROS_WARN("Steering angle is NAN!");
         steering_angle = prev_steering_angle;
     }
 
-    if( prev_steering_angle*steering_angle < 0 && std::abs(steering_angle) > 0.001 ) {
-        steering_angle = (steering_angle + prev_steering_angle) / 2.0;
+    if( current_loop_time - prev_loop_time > 0.01*1000000000.0 ) {
+        steering_angle = (steering_angle + prev_steering_angle) / 2.0; //smoothing the steering angle every 0.01 seconds
         prev_steering_angle = steering_angle;
     }
 
@@ -128,9 +129,9 @@ void mpcBlock::doMPC::publisherCallback() {
 
 void mpcBlock::doMPC::debug() { //Prints stuff on console for debugging. Commented out code is temporarily not being debugged
 
-    ROS_INFO("upper: %f", current_scan.y_upper_distance);
-    ROS_INFO("lower: %f", current_scan.y_lower_distance);
-    ROS_INFO("steering angle: %f", steering_angle);
+    ROS_DEBUG("upper distance: %f", current_scan.y_upper_distance);
+    ROS_DEBUG("lower distance: %f", current_scan.y_lower_distance);
+    ROS_DEBUG("steering angle: %f", steering_angle);
 }
 
 int main(int argc, char ** argv) {
@@ -140,7 +141,7 @@ int main(int argc, char ** argv) {
     ros::Rate loop_rate(100);
 
     while(ros::ok()){
-//        mpc_class_init.debug();
+        mpc_class_init.debug();
         mpc_class_init.publisherCallback();
 
         ros::spinOnce();

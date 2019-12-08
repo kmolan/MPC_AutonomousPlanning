@@ -32,7 +32,6 @@ namespace mpcBlock{
         double angle_increment; ///< the angle between two consecutive readings
         double angle_sweep; ///<the total sweep of angle for lidar readings
 
-        //TODO:Refactor
         int zero_angle; ///<the index for zero angle (straight ahead) in lidar readings
         int left_angle; ///<the index for +90 degrees in lidar readings (left of the vehicle)
         int right_angle; ///<the index for -90 degrees in lidar readings (right of the vehicle)
@@ -124,6 +123,7 @@ namespace mpcBlock{
         double Q_matrix_2; ///< State cost on waypoint error (vertical)
         double R_matrix_1; ///< Input cost
         double B_matrix; ///< velocity*deltaT (deltaT = 1/30)
+        double offset; ///<waypoint deflection amount on obstacle detection
 
     };
 }

@@ -20,7 +20,7 @@ mpcBlock::generate_waypoints::generate_waypoints() {
 
     marker_x_pubs = n.advertise<std_msgs::Float64>(marker_x_topic, 1); //publish x-waypoint
     marker_y_pubs = n.advertise<std_msgs::Float64>(marker_y_topic,1); //publish y-waypoint
-    waypoint_index_pubs = n.advertise<std_msgs::Float64>(waypoint_index_topic, 1);
+    waypoint_index_pubs = n.advertise<std_msgs::Float64>(waypoint_index_topic, 1); //publish waypoint index
 }
 
 void mpcBlock::generate_waypoints::GetParams() {
@@ -51,7 +51,7 @@ void mpcBlock::generate_waypoints::pose_callback(const nav_msgs::Odometry::Const
         float distance = sqrt(
                 std::pow(currentX - waypoint_data1[i], 2) + std::pow(currentY - waypoint_data2[i], 2));
         rot_waypoint_x = (waypoint_data1[i] - currentX) * cos(-currentTheta) -
-                         (waypoint_data2[i] - currentY) * sin(-currentTheta); //TODO: make it a rotation matrix
+                         (waypoint_data2[i] - currentY) * sin(-currentTheta);
 
         if (distance_min > distance && distance >= look_ahead_distance && rot_waypoint_x > 0) {
             distance_min = distance;
@@ -107,7 +107,7 @@ void mpcBlock::generate_waypoints::publisherCallback() {
 }
 
 void mpcBlock::generate_waypoints::debug() { //Prints stuff on console for debugging
-//    ROS_INFO("chosen theta: %f", chosen_theta.data);
+//    ROS_DEBUG("chosen theta: %f", chosen_theta.data);
 }
 
 int main(int argc, char ** argv) {

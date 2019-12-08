@@ -6,12 +6,11 @@ pose_topic: "pf/pose/odom"
 drive_topic: "drive" #vesc/high_level/ackermann_cmd_mux/input/nav_1
 laser_topic: "scan"
 
-#Visualization stuff
+#Publisher topics
 visualization_topic: "visualization_marker"
 marker_x_topic: "chosen_x_waypoint"
 marker_y_topic: "chosen_y_waypoint"
 waypoint_index_topic: "chosen_waypoint_index"
-theta_topic: "approach_theta"
 
 #Physical parameters
 steering_limit: 0.4189
@@ -23,7 +22,7 @@ look_ahead_distance: 1.0
 
 #MPC Tuning parameters
 lower_threshold: 2.0 #The threshold that decides if there's an obstacle
-
+offset: 0.05 #waypoint deflection amount on obstacle detection
 Q_matrix_1: 2 #State cost on waypoint error (horizontal)
 Q_matrix_2: 1 #State cost on waypoint error (vertical)
 R_matrix_1: 2 #Input cost
