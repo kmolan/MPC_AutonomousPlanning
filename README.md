@@ -28,5 +28,6 @@ Static obstacle avoidance with a nominal velocity of 4m/s:
 <p align="center">
   <img src=media/skirkanich.gif>
 </p>  
+
 # Contact Information
 For questions and queries email me at anmolkathail@gmail.com
